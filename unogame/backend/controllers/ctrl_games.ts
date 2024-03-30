@@ -1,8 +1,8 @@
-// import { filename0 } from "./games/filename0";
-// import { filename1 } from "./games/filename1";
+// import { functionName1 } from "./games/filename_0";
+// import { functionName2 } from "./games/filename_1";
 // import ...
 
-// export { filename0, filename1, ... };
+// export { functionName1, functionName2, ... };
 
 // usage
 // import * as Games from "path";
