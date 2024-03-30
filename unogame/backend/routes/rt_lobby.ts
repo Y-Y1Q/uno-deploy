@@ -13,7 +13,7 @@ const testLogout = `
 `;
 
 router.get("/", (req, res) => {
-  res.send(testLogout);
+  res.send(" Test Lobby " + testLogout);
 });
 
 export default router;

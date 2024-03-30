@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
       "<br></br>" +
       'Username: <input name="username"><br>' +
       'Password: <input name="password" type="password"><br>' +
-      '<input type="submit" text="Login"></form>' +
+      '<input type="submit" value="Login"></form>' +
       "<br></br>" +
       '<form action="/user/signup" method="post">' +
       "<br></br>" +
@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
       "<br></br>" +
       'Username: <input name="username"><br>' +
       'Password: <input name="password" type="password"><br>' +
-      '<input type="submit" text="Signup"></form>'
+      '<input type="submit" value="Signup"></form>'
   );
 });
 
