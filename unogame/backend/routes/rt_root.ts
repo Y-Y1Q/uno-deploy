@@ -5,7 +5,7 @@ const router = express.Router();
 router.get("/", (req, res) => {
   res.send(
     '<form action="/user/login" method="post">' +
-      "LOGIN" +
+      "TEST LOGIN" +
       "<br></br>" +
       'Username: <input name="username"><br>' +
       'Password: <input name="password" type="password"><br>' +
@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
       '<form action="/user/signup" method="post">' +
       "<br></br>" +
       "<br></br>" +
-      "SIGNUP" +
+      "TEST SIGNUP" +
       "<br></br>" +
       'Username: <input name="username"><br>' +
       'Password: <input name="password" type="password"><br>' +
