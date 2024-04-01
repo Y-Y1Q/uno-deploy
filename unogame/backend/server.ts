@@ -3,6 +3,7 @@ import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import * as Routes from "./routes";
+import * as TestRoutes from "./routes/test";
 import * as Session from "./middleware/session";
 import { isAuthenticated } from "./middleware/check_auth";
 import { setUpDevelopmentEnvironment } from "./utilities/setup_development_environment";
@@ -36,10 +37,11 @@ app.use(Session.config);
 
 // Todo, learn socket.io
 
-app.use("/", Routes.root);
-app.use("/user", Routes.user);
-app.use("/lobby", isAuthenticated, Routes.lobby);
-app.use("/test", isAuthenticated, Routes.test);
+// Temp routes for testing
+app.use(Routes.user);
+app.use(TestRoutes.root);
+app.use("/lobby", isAuthenticated, TestRoutes.lobby);
+app.use("/time", isAuthenticated, TestRoutes.logTime);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
