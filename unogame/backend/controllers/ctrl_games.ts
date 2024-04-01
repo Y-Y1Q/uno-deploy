@@ -7,3 +7,4 @@
 // usage
 // import * as Games from "path";
 // import * as Games from "../../controllers/ctrl_games";
+// Games.functionName1

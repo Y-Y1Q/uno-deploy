@@ -8,13 +8,21 @@ const signUp = async (req, res) => {
   console.log(req.body);
   const { username, password } = req.body;
 
+  if (req.session.user !== undefined) {
+    return res
+      .status(HttpCode.BadRequest)
+      .json({
+        error: "You are already logged in as: " + req.session.user.username,
+      });
+  }
+
   try {
     const userExists = await UsersDB.foundUser(username);
 
     if (userExists) {
       return res
         .status(HttpCode.BadRequest)
-        .json({ error: "Username already exists" });
+        .json({ error: username + " is taken" });
     }
 
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
@@ -22,10 +30,14 @@ const signUp = async (req, res) => {
 
     const newUser = await UsersDB.addUser(username, hash);
 
-    req.session.user.id = newUser.id;
-    req.session.user.username = newUser.username;
+    req.session.user = {
+      id: newUser.id,
+      username: newUser.username,
+    };
 
-    return res.status(HttpCode.Created).json({ message: "User created" });
+    return res
+      .status(HttpCode.Created)
+      .json({ message: username + " created" });
   } catch (error) {
     console.log(error);
     return res

@@ -5,7 +5,23 @@ import bcrypt from "bcryptjs";
 const logIn = async (req, res) => {
   const { username, password } = req.body;
 
+  if (req.session.user !== undefined) {
+    return res
+      .status(HttpCode.BadRequest)
+      .json({
+        error: "You are already logged in as: " + req.session.user.username,
+      });
+  }
+
   try {
+    const userExists = await UsersDB.foundUser(username);
+
+    if (!userExists) {
+      return res
+        .status(HttpCode.BadRequest)
+        .json({ error: username + " does not exist" });
+    }
+
     const user = await UsersDB.getUser(username);
     const isPasswordSame = await bcrypt.compare(password, user.password);
 
@@ -15,7 +31,7 @@ const logIn = async (req, res) => {
         username: user.username,
       };
 
-      return res.status(HttpCode.OK).redirect("/lobby");
+      return res.status(HttpCode.OK).json({ message: username + " is logged in" });
     } else {
       return res
         .status(HttpCode.Forbidden)

@@ -5,5 +5,6 @@
 // export { functionName1, functionName2, ... };
 
 // usage
-// import * as Games from "path";
-// import * as Games from "../../controllers/ctrl_gameplay";
+// import * as Gameplay from "path";
+// import * as Gameplay from "../../controllers/ctrl_gameplay";
+// Gameplay.funtionName1
