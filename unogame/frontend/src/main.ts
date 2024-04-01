@@ -1,16 +1,19 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+// import { route } from './router.ts'
+// import typescriptLogo from './typescript.svg'
+// import viteLogo from '/vite.svg'
+// import { setupCounter } from './counter.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
     <nav id="nav" class="sidebar">
-      <a href= "/" onclick="route()">Lobby</a>
-      <a href= "/login" onclick="route()">Login</a>
-      <a href= "/signup" onclick="route()">Sign up</a>
+    <a href="/" onclick="event.preventDefault(); window.route(event)">Lobby</a>
+    <a href="/login" onclick="event.preventDefault(); window.route(event)">Login</a>
+    <a href="/signup" onclick="event.preventDefault(); window.route(event)">Sign up</a>
     </nav>
   <div>
 `
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+// setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+
+
