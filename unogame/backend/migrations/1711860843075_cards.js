@@ -11,11 +11,19 @@ exports.up = pgm => {
 
     const cardValues = [];
 
-    for (let color = 0; color < 4; color++) {
-        for (let type = 0; type < 15; type++) {
-            cardValues.push({ color, type });
-        }
+// create a set of 108 Uno cards in database
+for (let color = 0; color < 4; color++) {
+
+    cardValues.push({ color, type: 0 }); // Number 0
+    cardValues.push({ color, type: 13 }); // Wild
+    cardValues.push({ color, type: 14 }); // Wild Draw 4
+    
+    // Number 1 - 9, skip, reverse, draw 2 will have two sets in each color
+    for (let type = 1; type <= 12; type++) {
+        cardValues.push({ color, type }); 
+        cardValues.push({ color, type }); 
     }
+}
 
     pgm.sql(`
     INSERT INTO cards (color, type)
