@@ -1,4 +1,5 @@
 import renderLobbyPage from "./lobby";
+import renderLoginPage from "./login";
 
 // Extend the Window interface to include a route property
 declare global {
@@ -26,7 +27,7 @@ const route = (event: Event) => {
 const routes: {[key: string]: () => void} = {
     "/404": () => {},
     "/": renderLobbyPage,
-    "/login": () => {},
+    "/login": renderLoginPage,
 }
 
 // Handle location changes
