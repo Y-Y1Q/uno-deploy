@@ -33,7 +33,12 @@ const renderLobbyPage = () => {
 
                 <div class="w-1/3 border border-pink-500 p-4">
                     <h2 class="text-lg font-bold mb-4">LOBBY CONTAINER</h2>
-                    <!-- Lobby content goes here -->
+                    <h3 class="mb-2">Welcome Donald Trump</h3>
+                    <div class="flex flex-col justify-center items-center">
+                        <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Start Game</button>
+                        <button class="bg-red-500 text-white px-4 py-2 rounded mt-4">Join a Game</button>
+                        <button class="bg-green-500 text-white px-4 py-2 rounded mt-4">Log out</button>
+                    </div>
                 </div>
 
                 <div class="w-1/3 border border-blue-500 p-4">
@@ -43,10 +48,10 @@ const renderLobbyPage = () => {
             </div>
         `;
 
-        // Adding style to the rules content
+   
         const rulesContentDiv = appDiv.querySelector<HTMLDivElement>('.rules-content');
         if (rulesContentDiv) {
-            rulesContentDiv.classList.add('max-h-400', 'overflow-y-auto'); // Adding Tailwind CSS classes for styling
+            rulesContentDiv.classList.add('max-h-400', 'overflow-y-auto'); 
         }
     }
 }
