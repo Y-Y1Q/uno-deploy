@@ -5,13 +5,13 @@ import './style.css'
 // import { setupCounter } from './counter.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
+  <div class="flex justify-center items-center h-screen">
     <nav id="nav">
-    <a href="/" onclick="event.preventDefault(); window.route(event)">Lobby</a>
-    <a href="/login" onclick="event.preventDefault(); window.route(event)">Login</a>
-    <a href="/signup" onclick="event.preventDefault(); window.route(event)">Sign up</a>
+      <a href="/" onclick="event.preventDefault(); window.route(event)">Lobby</a>
+      <a href="/login" onclick="event.preventDefault(); window.route(event)">Login</a>
+      <a href="/signup" onclick="event.preventDefault(); window.route(event)">Sign up</a>
     </nav>
-  <div>
+  </div>
 `
 
 // setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
