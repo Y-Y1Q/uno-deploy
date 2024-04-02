@@ -4,8 +4,17 @@ const renderLobbyPage = () => {
     if (appDiv) {
         appDiv.innerHTML = `
             <div>
-                <h1>Welcome to the Lobby!</h1>
-                <p>This is the lobby page where you can...</p>
+                <div class="flex">
+                <div class="w-1/3 border border-red-500 p-4">
+                    <h2 class="text-lg font-bold mb-4 text-red-500">RULES CONTAINER</h2>
+                </div>
+                <div class="w-1/3 border border-pink-500 p-4">
+                    <h2 class="text-lg font-bold mb-4">LOBBY CONTAINER</h2>
+                </div>
+                <div class="w-1/3 border border-blue-500 p-4">
+                    <h2 class="text-lg font-bold mb-4">CHAT BOX CONTAINER</h2>
+                </div>
+        
             </div>
         `;
     }
