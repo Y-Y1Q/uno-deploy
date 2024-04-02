@@ -6,11 +6,9 @@ const logIn = async (req, res) => {
   const { username, password } = req.body;
 
   if (req.session.user !== undefined) {
-    return res
-      .status(HttpCode.BadRequest)
-      .json({
-        error: "You are already logged in as: " + req.session.user.username,
-      });
+    return res.status(HttpCode.BadRequest).json({
+      error: "You are already logged in as: " + req.session.user.username,
+    });
   }
 
   try {
@@ -31,7 +29,9 @@ const logIn = async (req, res) => {
         username: user.username,
       };
 
-      return res.status(HttpCode.OK).json({ message: username + " is logged in" });
+      return res
+        .status(HttpCode.OK)
+        .json({ message: username + " is logged in" });
     } else {
       return res
         .status(HttpCode.Forbidden)

@@ -9,11 +9,9 @@ const signUp = async (req, res) => {
   const { username, password } = req.body;
 
   if (req.session.user !== undefined) {
-    return res
-      .status(HttpCode.BadRequest)
-      .json({
-        error: "You are already logged in as: " + req.session.user.username,
-      });
+    return res.status(HttpCode.BadRequest).json({
+      error: "You are already logged in as: " + req.session.user.username,
+    });
   }
 
   try {
