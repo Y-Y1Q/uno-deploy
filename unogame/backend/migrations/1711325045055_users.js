@@ -20,7 +20,8 @@ exports.up = pgm => {
             default: pgm.func("current_timestamp")
         },
         win_count: {
-            type: "int"
+            type: "int",
+            default: 0
         }
     });
 };

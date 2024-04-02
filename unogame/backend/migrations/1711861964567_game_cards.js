@@ -7,8 +7,6 @@ exports.up = pgm => {
         game_id: {
             type: "int",
             notNull: true,
-            references: "games(id)",
-            onDelete: "cascade"
         },
         user_id: {
             type: "int",
@@ -19,7 +17,17 @@ exports.up = pgm => {
             references: "cards(id)",
         },
         card_order: {
-            type: "int"
+            type: "int",
+        }
+    });
+
+    // add unique foreign key columns after creating the table
+    // to avoid a conflict (can't refer when creating table)
+    pgm.addConstraint("game_cards", "fk", {
+        foreignKeys: {
+            columns: ["game_id", "user_id"],
+            references: "game_users (game_id, user_id)",
+            onDelete: "cascade"
         }
     });
 };

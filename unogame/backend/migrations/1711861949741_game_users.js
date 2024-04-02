@@ -8,12 +8,13 @@ exports.up = pgm => {
             type: "int",
             notNull: true,
             references: "games(id)",
-            onDelete: "cascade"
+            onDelete: "cascade",
         },
         user_id: {
             type: "int",
             notNull: true,
             references: "users(id)",
+            onDelete: "cascade"
         },
         turn_order: {
             type: "int",
@@ -23,6 +24,11 @@ exports.up = pgm => {
             default: false
         }
     });
+
+    pgm.createIndex("game_users", ["game_id", "user_id"], {
+        unique: true,
+        name: "unique_pair",
+      });
 };
 
 exports.down = pgm => {
