@@ -1,4 +1,3 @@
-// lobby.ts
 const renderLobbyPage = () => {
     const appDiv = document.querySelector<HTMLDivElement>('#app');
 
@@ -48,57 +47,83 @@ const renderLobbyPage = () => {
             </div>
         `;
 
-        const startGameButton = appDiv.querySelector<HTMLButtonElement>('#startGameButton');
         const lobbyContainer = appDiv.querySelector<HTMLDivElement>('#lobbyContainer');
 
-        if (startGameButton && lobbyContainer) {
-            startGameButton.addEventListener('click', () => {
-                lobbyContainer.innerHTML = `
-                    <h2 class="text-lg font-bold mb-4">LOBBY</h2>
-            <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
-                <div class="mb-4">
-                    <h3 class="text-xl font-bold">Welcome Donald Trump</h3>
-                </div>
-                <div class="mb-4">
-                    <input class="w-full p-2 border border-gray-300 rounded" placeholder="Room Name"></input>
-                </div>
-                <div class="mb-4">
-                    <select id="playerCount" name="playerCount" class="w-full p-2 border border-gray-300 rounded">
-                        <option value="" disabled selected>Select Number of Players</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <select id="playerChoice" name="playerChoice" class="w-full p-2 border border-gray-300 rounded">
-                        <option value="" disabled selected>Select Players</option>
-                        <option value="P.Diddy">P.Diddy</option>
-                        <option value="6ix9ine">6ix9ine</option>
-                        <option value="Kanye West">Kanye West</option>
-                        <option value="Chris Brown">Chris Brown</option>
-                    </select>
-                </div>
-                <div>
-                    <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full">Start Game</button>
-                    <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton">Go Back</button>
-                </div>
-            </div>
-                `;
+        if (lobbyContainer) {
+            lobbyContainer.addEventListener('click', (event) => {
+                const target = event.target as HTMLElement;
+                
+                if (target.id === 'startGameButton') {
+                    lobbyContainer.innerHTML = `
+                        <h2 class="text-lg font-bold mb-4">LOBBY</h2>
+                        <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
+                            <div class="mb-4">
+                                <h3 class="text-xl font-bold">Welcome Donald Trump</h3>
+                            </div>
+                            <div class="mb-4">
+                                <input class="w-full p-2 border border-gray-300 rounded" placeholder="Room Name"></input>
+                            </div>
+                            <div class="mb-4">
+                                <select id="playerCount" name="playerCount" class="w-full p-2 border border-gray-300 rounded">
+                                    <option value="" disabled selected>Select Number of Players</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <select id="playerChoice" name="playerChoice" class="w-full p-2 border border-gray-300 rounded">
+                                    <option value="" disabled selected>Select Players</option>
+                                    <option value="P.Diddy">P.Diddy</option>
+                                    <option value="6ix9ine">6ix9ine</option>
+                                    <option value="Kanye West">Kanye West</option>
+                                    <option value="Chris Brown">Chris Brown</option>
+                                </select>
+                            </div>
+                            <div>
+                                <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="confirmSelectionButton">Confirm Selection</button>
+                                <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton">Go Back</button>
+                            </div>
+                        </div>
+                    `;
 
-                const goBackButton = lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
-                if (goBackButton) {
-                    goBackButton.addEventListener('click', () => {
-                        history.back(); // navigate back to the previous page
-                    });
+                    const goBackButton = lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
+                    if (goBackButton) {
+                        goBackButton.addEventListener('click', () => {
+                            history.back(); // Navigate back to the previous page
+                        });
+                    }
+                } else if (target.id === 'confirmSelectionButton') {
+                    lobbyContainer.innerHTML = `
+                        <h2 class="text-lg font-bold mb-4">WAITING ROOM</h2>
+                        <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
+                            <div class="mb-4">
+                                <h3 class="text-xl font-bold">Welcome Donald Trump</h3>
+                            </div>
+                            <div class="mb-4">
+                                r.kelly room
+                            </div>
+                            <div class="mb-4">
+                                <p> 1/2 players joined</p>
+                                <p> You are in the room</p>
+                                <p> Waiting for other players to join</p>
+                            </div>
+                            <div>
+                                <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="confirmSelectionButton">Confirm Selection</button>
+                                <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton">Go Back</button>
+                            </div>
+                        </div>
+                    `;
+
+                    const goBackButton = lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
+                    if (goBackButton) {
+                        goBackButton.addEventListener('click', () => {
+                            history.back(); // Navigate back to the previous page
+                        });
+                    }
                 }
             });
-        }
-
-        const rulesContentDiv = appDiv.querySelector<HTMLDivElement>('.rules-content');
-        if (rulesContentDiv) {
-            rulesContentDiv.classList.add('max-h-400', 'overflow-y-auto'); 
         }
     }
 }
