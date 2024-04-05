@@ -94,6 +94,7 @@ const renderLobbyPage = () => {
                             history.back(); // navigate back to the previous page
                         });
                     }
+
                 } else if (target.id === 'confirmSelectionButton') {
                     lobbyContainer.innerHTML = `
                         <h2 class="text-lg font-bold mb-4">WAITING ROOM</h2>
@@ -122,6 +123,7 @@ const renderLobbyPage = () => {
                             history.back(); // Navigate back to the previous page
                         });
                     }
+                    
                 } else if (target.id === 'joinRoomButton') {
                     lobbyContainer.innerHTML = `
                         <h2 class="text-lg font-bold mb-4">JOIN A ROOM</h2>
