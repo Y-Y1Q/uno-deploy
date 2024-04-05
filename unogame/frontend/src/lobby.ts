@@ -35,8 +35,8 @@ const renderLobbyPage = () => {
                     <h3 class="mb-2">Welcome Donald Trump</h3>
                     <div class="flex flex-col justify-center items-center">
                         <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4" id="startGameButton">Start Game</button>
-                        <button class="bg-red-500 text-white px-4 py-2 rounded mt-4">Join a Game</button>
-                        <button class="bg-green-500 text-white px-4 py-2 rounded mt-4">Log out</button>
+                        <button class="bg-red-500 text-white px-4 py-2 rounded mt-4" id="joinRoomButton">Join a Game</button>
+                        <button class="bg-green-500 text-white px-4 py-2 rounded mt-4" >Log out</button>
                     </div>
                 </div>
 
@@ -91,7 +91,7 @@ const renderLobbyPage = () => {
                     const goBackButton = lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
                     if (goBackButton) {
                         goBackButton.addEventListener('click', () => {
-                            history.back(); // Navigate back to the previous page
+                            history.back(); // navigate back to the previous page
                         });
                     }
                 } else if (target.id === 'confirmSelectionButton') {
@@ -120,6 +120,31 @@ const renderLobbyPage = () => {
                     if (goBackButton) {
                         goBackButton.addEventListener('click', () => {
                             history.back(); // Navigate back to the previous page
+                        });
+                    }
+                } else if (target.id === 'joinRoomButton') {
+                    lobbyContainer.innerHTML = `
+                        <h2 class="text-lg font-bold mb-4">JOIN A ROOM</h2>
+                        <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
+                            <div class="mb-4">
+                                <h3 class="text-xl font-bold">Welcome Donald Trump</h3>
+                            </div>
+                            <div class="mb-4">
+                                r.kelly room
+                            </div>
+                            <div class="mb-4">
+                                kanye west room
+                            </div>
+                            <div>
+                                <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton">Go Back</button>
+                            </div>
+                        </div>
+                    `;
+
+                    const goBackButton = lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
+                    if (goBackButton) {
+                        goBackButton.addEventListener('click', () => {
+                            history.back(); // navigate back to the previous page
                         });
                     }
                 }
