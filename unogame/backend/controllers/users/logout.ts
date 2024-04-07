@@ -1,7 +1,16 @@
-const logOut = (req, res) => {
-  req.session.destroy();
+import HttpCode from "../../utilities/http_code";
 
-  res.redirect("/");
+const logOut = (req, res) => {
+  try {
+    req.session.destroy();
+    res
+      .status(HttpCode.OK)
+      .json({ message: "You have successfully logged out." });
+    // res.redirect("/");
+  } catch (err) {
+    console.log(err);
+    res.status(HttpCode.InternalServerError).json({ error: "Logout failed" });
+  }
 };
 
 export { logOut };

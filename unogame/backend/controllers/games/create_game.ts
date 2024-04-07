@@ -9,9 +9,7 @@ const createGame = async (req, res) => {
       return res.status(HttpCode.OK).json({ message: roomname + " created" });
     })
     .catch((err) => {
-      return res
-        .status(HttpCode.BadRequest)
-        .json({ error: err });
+      return res.status(HttpCode.BadRequest).json({ error: err });
     });
 };
 
