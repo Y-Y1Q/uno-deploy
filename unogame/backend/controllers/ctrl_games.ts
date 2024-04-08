@@ -1,3 +1,3 @@
-import { createGame } from "./games/create_game";
+import { createGameroom } from "./games/create_game";
 
-export { createGame };
+export { createGameroom };

@@ -3,6 +3,6 @@ import * as Games from "../controllers/ctrl_games";
 
 const router = express.Router();
 
-router.post("/creategame", Games.createGame);
+router.post("/creategameroom", Games.createGameroom);
 
 export default router;

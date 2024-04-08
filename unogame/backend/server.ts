@@ -56,7 +56,7 @@ app.use(Routes.game);
 app.use("/test", TestRoutes.root);
 app.use("/test/lobby", isAuthenticated, TestRoutes.lobby, Routes.chat);
 app.use("/test/time", isAuthenticated, TestRoutes.logTime);
-app.use("/test/roomcreate", TestRoutes.game);
+app.use("/test/game", TestRoutes.game);
 
 httpServer.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

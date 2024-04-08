@@ -1,10 +1,10 @@
 import * as GamesDB from "../../db/db_games";
 import HttpCode from "../../utilities/http_code";
 
-const createGame = async (req, res) => {
+const createGameroom = async (req, res) => {
   const { roomname } = req.body;
 
-  GamesDB.createGame(roomname)
+  GamesDB.createGameroom(roomname)
     .then((id) => {
       return res.status(HttpCode.OK).json({ id: id });
     })
@@ -19,4 +19,4 @@ const createGame = async (req, res) => {
     });
 };
 
-export { createGame };
+export { createGameroom };
