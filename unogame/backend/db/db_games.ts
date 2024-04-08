@@ -1,3 +1,3 @@
-import { createGameroom, getAllGamerooms } from "./games/create_game";
+import { createGameroom, getAllGamerooms,getGameroomsByName } from "./games/create_game";
 
-export { createGameroom, getAllGamerooms };
+export { createGameroom, getAllGamerooms,getGameroomsByName };

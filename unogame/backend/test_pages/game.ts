@@ -12,6 +12,11 @@ router.get("/", (req, res) => {
       '<form action="/getallgamerooms" method="post">' +
       "TEST GET ALL GAMEROOMS (all columns are included, filter after FE done)<br>" +
       '<button type="submit">submit</button></form>' +
+      "<br><br><br>" +
+      '<form action="/getgameroomsbyname" method="post">' +
+      "TEST GET GAMEROOMS BY NAMES<br>" +
+      'Room Name: <input name="roomname">' +
+      '<button type="submit">submit</button></form>' +
       "<br><br><br>"
   );
 });
