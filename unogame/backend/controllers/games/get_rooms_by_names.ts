@@ -9,7 +9,7 @@ const getGameroomsByName = async (req, res) => {
       return res.status(HttpCode.OK).json({ results: data });
     })
     .catch((err) => {
-      return res.status(HttpCode.BadRequest).json({ message: err });
+      return res.status(HttpCode.BadRequest).json({ error: err });
     });
 };
 

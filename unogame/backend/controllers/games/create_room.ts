@@ -9,13 +9,7 @@ const createGameroom = async (req, res) => {
       return res.status(HttpCode.OK).json({ id: id });
     })
     .catch((err) => {
-      let msg = "";
-      if (err.code == 23505) {
-        msg = "This name is already taken!!!";
-      } else {
-        msg = err.detail;
-      }
-      return res.status(HttpCode.BadRequest).json({ message: msg });
+      return res.status(HttpCode.BadRequest).json({ error: err });
     });
 };
 
