@@ -17,6 +17,12 @@ router.get("/", (req, res) => {
       "TEST GET GAMEROOMS BY NAMES<br>" +
       'Room Name: <input name="roomname">' +
       '<button type="submit">submit</button></form>' +
+      "<br><br><br>" +
+      '<form action="/joingameroom" method="post">' +
+      "TEST JOINING GAMEROOM, game id and user id required<br>" +
+      'Room ID: <input name="roomid">' +
+      'User ID: <input name="userid">' +
+      '<button type="submit">submit</button></form>' +
       "<br><br><br>"
   );
 });
