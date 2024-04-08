@@ -1,5 +1,6 @@
 // import render404Page from "./404";
 import renderLobbyPage from "./lobby";
+import renderUnoGamePage from "./unoGame";
 import renderLoginPage from "./login";
 
 // extend the Window interface to include a route property
@@ -28,7 +29,9 @@ const route = (event: Event) => {
 const routes: {[key: string]: () => void} = {
     // "/404": render404Page,
     "/": renderLobbyPage,
+    "/unogame": renderUnoGamePage,
     "/login": renderLoginPage,
+   
 }
 
 // handle location changes
