@@ -1,4 +1,4 @@
-import '../style.css'
+import './style.css'
 import { validateForm } from './registration.ts'
 
 const renderSignUpPage = () => {
