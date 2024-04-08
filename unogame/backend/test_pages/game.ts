@@ -20,6 +20,17 @@ router.get("/", (req, res) => {
       "<br><br><br>" +
       '<form action="/joingameroom" method="post">' +
       "TEST JOINING GAMEROOM, game id and user id required<br>" +
+      "If you see empty data returned, it means good, the http code is 200<br>" +
+      "If you see a message in json, it means bad, the http code is 4xx<br>" +
+      'Room ID: <input name="roomid">' +
+      'User ID: <input name="userid">' +
+      '<button type="submit">submit</button></form>' +
+      "<br><br><br>" +
+      '<form action="/quitgameroom" method="post">' +
+      "TEST QUITTING GAMEROOM, game id and user id required<br>" +
+      "If you see empty data returned, it means good, the http code is 200<br>" +
+      "Note that deleting unexisting row still works, but that is controlled by FE" +
+      "If you see a message in json, it means bad, the http code is 4xx<br>" +
       'Room ID: <input name="roomid">' +
       'User ID: <input name="userid">' +
       '<button type="submit">submit</button></form>' +
