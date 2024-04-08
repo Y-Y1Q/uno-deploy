@@ -17,6 +17,7 @@ const renderUnoGamePage = () => {
                                 <p class="text-base mb-2">STATUS - PLAY</p>
                                 <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2" id="abandonButton">Abandon</button>
                                 <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" id="drawButton">Draw</button>
+                                <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" id="sayUnoButton">SAY UNO!</button>
                             </div>
                         </div>
 
