@@ -1,9 +1,12 @@
 import { db } from "../db_connection";
 
-const createGame = (roomname) =>
-  db.one(
+const createGameroom = async (roomname) => {
+  const ret = await db.one(
     "INSERT INTO games (room_name) VALUES ($1) RETURNING id",
     [roomname]
   );
 
-export { createGame };
+  return ret.id;
+};
+
+export { createGameroom };

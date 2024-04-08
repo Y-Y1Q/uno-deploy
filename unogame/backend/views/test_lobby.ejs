@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    ul.no-bullets {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .split {
+      height: 100%;
+      width: 50%;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      overflow-x: hidden;
+      padding-left: 20px;
+      padding-top: 20px;
+    }
+
+    .left {
+      left: 0;
+    }
+
+    .right {
+      right: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="split left">
+    <h3>Test Logout</h3>
+    <form action="/logout" method="post">
+      <button type="submit">Logout</button>
+    </form>
+
+  </div>
+  <div class="split right">
+    <h3>Test Chat</h3>
+    <div id="messages"></div>
+    <form id="message-form">
+      <input type="text" id="message-input" placeholder="Enter your message">
+      <button type="submit">Send</button>
+    </form>
+
+    <ul class="no-bullets"></ul>
+  </div>
+
+
+
+  <script type="module">
+    import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
+    const socket = io();
+
+    const messagesContainer = document.getElementById('messages');
+    const messageForm = document.getElementById('message-form');
+    const messageInput = document.getElementById('message-input');
+
+    messageForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const message = messageInput.value.trim();
+      if (message !== '') {
+        fetch(`${document.location.pathname}/chat`, {
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message }),
+        });
+      }
+
+      messageInput.value = '';
+    });
+
+    // Listening messages from a room
+    socket.on(
+      `chat:message:0`,
+      ({ from, timestamp, message }) => {
+        const li = document.createElement('li')
+        li.textContent = from + ": " + message;
+        document.querySelector('ul').appendChild(li)
+      },
+    );
+  </script>
+</body>
+
+</html>

@@ -1,5 +1,6 @@
 const requestTime = (req, res, next) => {
-  console.log(`Request received at ${Date.now()}: ${req.method}`);
+  const timestamp = new Date().toLocaleString();
+  console.log(`\nRequest received at ${timestamp}: ${req.method}`);
 
   next();
 };
