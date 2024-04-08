@@ -1,4 +1,7 @@
 node_modules/*
-build/*
+
+build/server.js
 static/*
 views/*
+
+.env

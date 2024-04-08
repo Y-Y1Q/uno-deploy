@@ -1,39 +1,45 @@
 import path from "path";
 import express from "express";
-import createError from "http-errors";
-import rootRoutes from "./routes/root";
-import testRoutes from "./routes/test";
-import { setUpDevelopmentEnvironment } from "./utilities/set-up-development-environment";
+import morgan from "morgan";
+import cookieParser from "cookie-parser";
+import * as Routes from "./routes";
+import * as Session from "./middleware/session";
+import { isAuthenticated } from "./middleware/check_auth";
+import { setUpDevelopmentEnvironment } from "./utilities/setup_development_environment";
 
 const app = express();
-
-const PORT = process.env.PORT || 3333;
 
 if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
 
   setUpDevelopmentEnvironment();
 
-  app.use(require('connect-livereload')({
-    port: 35729
-  }));
-  
+  app.use(
+    require("connect-livereload")({
+      port: 35729,
+    })
+  );
 }
 
-const morgan = require("morgan");
+const PORT = process.env.PORT || 3333;
 
 app.use(morgan("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.set("views", path.resolve("views"));
 app.set("view engine", "ejs");
 app.use(express.static(path.resolve("static")));
 
-app.use("/", rootRoutes);
-app.use("/tests", testRoutes);
+app.use(Session.config);
 
-app.use((_request, _response, next) => {
-  next(createError(404));
-});
+// Todo, learn socket.io
+
+app.use("/", Routes.root);
+app.use("/user", Routes.user);
+app.use("/lobby", isAuthenticated, Routes.lobby);
+app.use("/test", isAuthenticated, Routes.test);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
