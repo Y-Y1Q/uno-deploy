@@ -5,11 +5,17 @@ const createGame = async (req, res) => {
   const { roomname } = req.body;
 
   GamesDB.createGame(roomname)
-    .then(() => {
-      return res.status(HttpCode.OK).json({ message: roomname + " created" });
+    .then((id) => {
+      return res.status(HttpCode.OK).json({ id: id });
     })
     .catch((err) => {
-      return res.status(HttpCode.BadRequest).json({ error: err });
+      let msg = "";
+      if (err.code == 23505) {
+        msg = "This name is already taken!!!";
+      } else {
+        msg = err.detail;
+      }
+      return res.status(HttpCode.BadRequest).json({ message: msg });
     });
 };
 
