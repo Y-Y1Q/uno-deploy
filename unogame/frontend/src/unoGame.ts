@@ -11,12 +11,12 @@ const renderUnoGamePage = () => {
                             UNO GAME INTERFACE
                         </div>
 
-                        <div class="w-1/3 border border-red-500 p-4">
+                        <div class="w-1/3 border border-red-500 p-4" id="lobbyContainer">
                             <div class="leaderboard bg-gray-200 p-4 rounded">
                                 <h3 class="text-lg font-bold mb-2">LEADERBOARD INTERFACE</h3>
                                 <p class="text-base mb-2">STATUS - PLAY</p>
-                                <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2">Abandon</button>
-                                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Draw</button>
+                                <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2" id="startGameButton">Abandon</button>
+                                <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" id="joinRoomButton">Draw</button>
                             </div>
                         </div>
 
