@@ -25,8 +25,8 @@ const setToLocal = (req, res, next) => {
 };
 
 const logToConsole = (req, res, next) => {
-  if (req.session !== undefined) {
-    console.log(JSON.stringify(req.session));
+  if (req.session.user !== undefined) {
+    console.log("Session data: " + JSON.stringify(req.session));
   }
   next();
 };

@@ -2,6 +2,7 @@ import path from "path";
 import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import * as Routes from "./routes";
@@ -40,11 +41,22 @@ app.set("views", path.resolve("views"));
 app.set("view engine", "ejs");
 app.use(express.static(path.resolve("static")));
 
+// Setup express session
+const corsOptions = {
+  credentials: true
+};
 app.use(Session.config);
 app.use(Session.setToLocal);
+app.use(cors(corsOptions));
+
+if (process.env.NODE_ENV === "development") {
+  app.use(Session.logToConsole);
+}
 
 // Setup socket IO
-const io = new Server(httpServer);
+const io = new Server(httpServer, {
+  cors: corsOptions
+});
 io.engine.use(Session.config);
 app.set("io", io);
 io.on("connection", handleSocketConnection);
