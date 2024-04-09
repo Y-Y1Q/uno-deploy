@@ -43,7 +43,7 @@ app.use(express.static(path.resolve("static")));
 
 // Setup express session
 const corsOptions = {
-  credentials: true
+  credentials: true,
 };
 app.use(Session.config);
 app.use(Session.setToLocal);
@@ -55,20 +55,21 @@ if (process.env.NODE_ENV === "development") {
 
 // Setup socket IO
 const io = new Server(httpServer, {
-  cors: corsOptions
+  cors: corsOptions,
 });
 io.engine.use(Session.config);
 app.set("io", io);
 io.on("connection", handleSocketConnection);
 
 app.use(Routes.user);
-app.use(Routes.game);
+app.use(isAuthenticated, Routes.game);
+app.use(isAuthenticated, Routes.chat);
 
 // test routes
 app.use("/test", TestRoutes.root);
-app.use("/test/lobby", isAuthenticated, TestRoutes.lobby, Routes.chat);
+app.use("/test/lobby", isAuthenticated, TestRoutes.lobby);
 app.use("/test/time", isAuthenticated, TestRoutes.logTime);
-app.use("/test/game", TestRoutes.game);
+app.use("/test/game", isAuthenticated, TestRoutes.game);
 
 httpServer.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
