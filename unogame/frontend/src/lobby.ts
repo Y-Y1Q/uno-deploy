@@ -120,7 +120,7 @@ const renderLobbyPage = () => {
                     const goBackButton = lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
                     if (goBackButton) {
                         goBackButton.addEventListener('click', () => {
-                            history.back(); // Navigate back to the previous page
+                            history.back(); // navigate back to the previous page
                         });
                     }
                     

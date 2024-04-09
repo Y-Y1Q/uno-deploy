@@ -44,20 +44,21 @@ function storeFormData (form: HTMLFormElement) {
         username: (form.elements as any).username.value,
         password: (form.elements as any).password1.value,
       };
-      console.log(user);
+      console.log("[registration.ts] Stored User Data:", user);
   }
 }
 
 function processFormData(e: Event) {
   e.preventDefault();
   const form = e.target as HTMLFormElement;
-  console.log("before validateForm");
+  console.log("[registration.ts] Before validateForm");
   validateForm(form);
-  console.log("after validateForm");
+  console.log("[registration.ts] After validateForm");
   // Submit data if valid 
   if (form.checkValidity()) {
-      storeFormData(form);
-  }
+    storeFormData(form);
+    console.log("[registration.ts] Form submission successful!");
+}
 }
 
 // Add Event Listener 
