@@ -62,8 +62,8 @@ app.set("io", io);
 io.on("connection", handleSocketConnection);
 
 app.use(Routes.user);
-app.use(isAuthenticated, Routes.game);
-app.use(isAuthenticated, Routes.chat);
+app.use(Routes.game);
+app.use(Routes.chat);
 
 // test routes
 app.use("/test", TestRoutes.root);

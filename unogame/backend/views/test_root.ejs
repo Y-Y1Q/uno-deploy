@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Signup</title>
+</head>
+
+<body>
+    <form id="loginForm" action="/login" method="post">
+        TEST LOGIN<br>
+        Username: <input name="username"><br>
+        Password: <input name="password" type="password"><br>
+        <input type="button" value="Login" onclick="submitForm('loginForm')">
+    </form>
+
+    <br><br>
+
+    <form id="signupForm" action="/signup" method="post">
+        <br><br>
+        TEST SIGNUP<br>
+        Username: <input name="username"><br>
+        Password: <input name="password" type="password"><br>
+        <input type="button" value="Signup" onclick="submitForm('signupForm')">
+    </form>
+
+    <script>
+        function submitForm(formId) {
+            const form = document.getElementById(formId);
+            form.submit();
+        }
+    </script>
+</body>
+
+</html>
