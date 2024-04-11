@@ -11,13 +11,15 @@ exports.up = pgm => {
         user_id: {
             type: "int",
             notNull: true,
+            // use 0 to represent for draw pile
+            // use -1 for discard pile
+            // removed fk for user_id
         },
         card_id: {
             type: "int",
-            references: "cards(id)",
         },
         card_order: {
-            type: "int",
+            type: "serial",
         }
     });
 
@@ -25,8 +27,8 @@ exports.up = pgm => {
     // to avoid a conflict (can't refer when creating table)
     pgm.addConstraint("game_cards", "fk", {
         foreignKeys: {
-            columns: ["game_id", "user_id"],
-            references: "game_users (game_id, user_id)",
+            columns: ["game_id"],
+            references: "games(id)",
             onDelete: "cascade"
         }
     });
