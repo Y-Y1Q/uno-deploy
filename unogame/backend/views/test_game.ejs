@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- If FE is on different port, fetch the room info to get id--> 
+<!-- If FE is on different port, fetch the room info to get id-->
 <input type="hidden" name="room-id" id="room-id" value="<%= id %>" />
 
 <head>
@@ -36,7 +36,7 @@
       right: 0;
     }
   </style>
-   
+
 </head>
 
 <body>
@@ -46,11 +46,15 @@
     <form action="/logout" method="post">
       <button type="submit">Logout</button>
     </form>
-
+    <br>
+    Testing chat with roomId for now, so this page doesn't check if the user is actually in the "game_users" table of DB
   </div>
+
+
   <div class="split right">
     <h3>Test Chat</h3>
-    <h4>In Room: <%= id %></h4>
+    <h4>In Room: <%= id %>
+    </h4>
     <div id="messages"></div>
     <form id="message-form">
       <input type="text" id="message-input" placeholder="Enter your message">
@@ -74,7 +78,7 @@
       event.preventDefault();
       const message = messageInput.value.trim();
       if (message !== '') {
-        fetch(`/${roomId}/chat`, {
+        fetch(`/test/game/${roomId}/chat`, {
           method: "post",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message }),
@@ -84,9 +88,9 @@
       messageInput.value = '';
     });
 
-   
 
-    // Listening chat event from lobby
+
+    // Listening chat event from specific room
     socket.on(
       `chat:message:${roomId}`,
       ({ from, timestamp, message }) => {
