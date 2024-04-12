@@ -4,7 +4,7 @@ import HttpCode from "../../utilities/http_code";
 const getGameroomsByName = async (req, res) => {
   const { roomname } = req.body;
 
-  GamesDB.getGameroomsByName(roomname)
+  await GamesDB.getGameroomsByName(roomname)
     .then((data) => {
       return res.status(HttpCode.OK).json({ results: data });
     })

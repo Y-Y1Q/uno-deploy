@@ -1,10 +1,7 @@
-import express from "express";
 import createHash from "create-hash";
 
-const router = express.Router();
-
-const chatSocketIO = (req, res) => {
-  let { id: roomId } = req.params; //   params - /:id
+const chatController = (req, res) => {
+  let { id: roomId } = req.params; //   params - someurl/:id  (placeholder)
   const { message } = req.body;
   const { username } = req.session.user;
 
@@ -16,7 +13,7 @@ const chatSocketIO = (req, res) => {
   console.log({ username, message, roomId });
 
   io.emit(`chat:message:${roomId}`, {
-    hash: createHash("sha256").update(username).digest("hex"),
+    hash: createHash("sha256").update(username).digest("hex"), // may use this to get some random profile img from img website
     from: username,
     timestamp: Date.now(),
     message,
@@ -25,7 +22,4 @@ const chatSocketIO = (req, res) => {
   res.sendStatus(200);
 };
 
-router.post("/chat", chatSocketIO); // in lobby
-router.post("/:id/chat", chatSocketIO); // in game,  :id as placeholder for roomId
-
-export default router;
+export { chatController };
