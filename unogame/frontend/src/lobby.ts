@@ -1,8 +1,10 @@
-const renderLobbyPage = () => {
-    const appDiv = document.querySelector<HTMLDivElement>('#app');
+import renderUnoGamePage from "./unoGame";
 
-    if (appDiv) {
-        appDiv.innerHTML = `
+const renderLobbyPage = () => {
+  const appDiv = document.querySelector<HTMLDivElement>("#app");
+
+  if (appDiv) {
+    appDiv.innerHTML = `
             <div class="flex">
                 <div class="w-1/3 border border-red-500 p-4">
                     <h2 class="text-lg font-bold mb-4 text-red-500">RULES CONTAINER</h2>
@@ -47,14 +49,15 @@ const renderLobbyPage = () => {
             </div>
         `;
 
-        const lobbyContainer = appDiv.querySelector<HTMLDivElement>('#lobbyContainer');
+    const lobbyContainer =
+      appDiv.querySelector<HTMLDivElement>("#lobbyContainer");
 
-        if (lobbyContainer) {
-            lobbyContainer.addEventListener('click', (event) => {
-                const target = event.target as HTMLElement;
-                
-                if (target.id === 'startGameButton') {
-                    lobbyContainer.innerHTML = `
+    if (lobbyContainer) {
+      lobbyContainer.addEventListener("click", (event) => {
+        const target = event.target as HTMLElement;
+
+        if (target.id === "startGameButton") {
+          lobbyContainer.innerHTML = `
                         <h2 class="text-lg font-bold mb-4">LOBBY</h2>
                         <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
                             <div class="mb-4">
@@ -88,15 +91,15 @@ const renderLobbyPage = () => {
                         </div>
                     `;
 
-                    const goBackButton = lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
-                    if (goBackButton) {
-                        goBackButton.addEventListener('click', () => {
-                            history.back(); // navigate back to the previous page
-                        });
-                    }
-
-                } else if (target.id === 'confirmSelectionButton') {
-                    lobbyContainer.innerHTML = `
+          const goBackButton =
+            lobbyContainer.querySelector<HTMLButtonElement>("#goBackButton");
+          if (goBackButton) {
+            goBackButton.addEventListener("click", () => {
+              history.back(); // navigate back to the previous page
+            });
+          }
+        } else if (target.id === "confirmSelectionButton") {
+          lobbyContainer.innerHTML = `
                         <h2 class="text-lg font-bold mb-4">WAITING ROOM</h2>
                         <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
                             <div class="mb-4">
@@ -117,15 +120,15 @@ const renderLobbyPage = () => {
                         </div>
                     `;
 
-                    const goBackButton = lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
-                    if (goBackButton) {
-                        goBackButton.addEventListener('click', () => {
-                            history.back(); // navigate back to the previous page
-                        });
-                    }
-                    
-                } else if (target.id === 'joinRoomButton') {
-                    lobbyContainer.innerHTML = `
+          const goBackButton =
+            lobbyContainer.querySelector<HTMLButtonElement>("#goBackButton");
+          if (goBackButton) {
+            goBackButton.addEventListener("click", () => {
+              history.back(); // navigate back to the previous page
+            });
+          }
+        } else if (target.id === "joinRoomButton") {
+          lobbyContainer.innerHTML = `
                         <h2 class="text-lg font-bold mb-4">JOIN A ROOM</h2>
                         <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
                             <div class="mb-4">
@@ -143,16 +146,22 @@ const renderLobbyPage = () => {
                         </div>
                     `;
 
-                    const goBackButton = lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
-                    if (goBackButton) {
-                        goBackButton.addEventListener('click', () => {
-                            history.back(); // navigate back to the previous page
-                        });
-                    }
-                }
+          const goBackButton =
+            lobbyContainer.querySelector<HTMLButtonElement>("#goBackButton");
+          if (goBackButton) {
+            goBackButton.addEventListener("click", () => {
+              history.back(); // navigate back to the previous page
             });
+          }
         }
+
+        // redirection to the game page
+        if (target.id === "playGameButton") {
+          renderUnoGamePage();
+        }
+      });
     }
-}
+  }
+};
 
 export default renderLobbyPage;
