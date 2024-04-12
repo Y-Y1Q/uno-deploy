@@ -62,14 +62,14 @@ app.set("io", io);
 io.on("connection", handleSocketConnection);
 
 app.use(Routes.user);
-app.use(Routes.game);
-app.use(Routes.chat);
+app.use("/lobby", isAuthenticated, Routes.lobby);
+app.use("/game", isAuthenticated, Routes.game);
 
 // test routes
 app.use("/test", TestRoutes.root);
 app.use("/test/lobby", isAuthenticated, TestRoutes.lobby);
-app.use("/test/time", isAuthenticated, TestRoutes.logTime);
 app.use("/test/game", isAuthenticated, TestRoutes.game);
+app.use("/test/time", isAuthenticated, TestRoutes.logTime);
 
 httpServer.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

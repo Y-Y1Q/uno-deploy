@@ -4,7 +4,7 @@ import HttpCode from "../../utilities/http_code";
 const createGameroom = async (req, res) => {
   const { roomname } = req.body;
 
-  GamesDB.createGameroom(roomname)
+  await GamesDB.createGameroom(roomname)
     .then((id) => {
       return res.status(HttpCode.OK).json({ id: id });
     })

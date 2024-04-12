@@ -2,7 +2,7 @@ import * as GamesDB from "../../db/db_games";
 import HttpCode from "../../utilities/http_code";
 
 const getGameroomsByName = async (req, res) => {
-  const {roomname } = req.body;
+  const { roomname } = req.body;
 
   await GamesDB.getGameroomsByName(roomname)
     .then((data) => {
