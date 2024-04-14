@@ -26,6 +26,48 @@ const renderLoginPage = () => {
                 </div>
             </div>
         `;
+
+    const loginForm = appDiv.querySelector<HTMLFormElement>("#loginForm");
+
+    if (loginForm) {
+      // add event listener to the login form submission
+      loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault(); // prevent form submission
+
+        // get form data
+        const formData = new FormData(loginForm);
+        const username = formData.get("username") as string;
+        const password = formData.get("password") as string;
+
+        try {
+          // send login request to the server
+          const response = await fetch("/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, password }),
+          });
+
+          // check if login was successful
+          if (!response.ok) {
+            throw new Error("Failed to log in");
+          }
+
+          // redirect to lobby upon successful login
+          const data = await response.json();
+          console.log("[login.ts] login successfl - message:", data.message);
+          window.location.href = "/lobby";
+        } catch (error) {
+          console.error("Login failed:", error.message);
+          const messageElement =
+            appDiv.querySelector<HTMLDivElement>("#message");
+          if (messageElement) {
+            messageElement.textContent = "Login failed. Please try again.";
+          }
+        }
+      });
+    }
   }
 };
 
