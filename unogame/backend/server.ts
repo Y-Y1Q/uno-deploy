@@ -42,16 +42,19 @@ app.set("view engine", "ejs");
 app.use(express.static(path.resolve("static")));
 
 // Setup express session
-const corsOptions = {
-  credentials: true,
-};
 app.use(Session.config);
 app.use(Session.setToLocal);
-app.use(cors(corsOptions));
-
 if (process.env.NODE_ENV === "development") {
   app.use(Session.logToConsole);
 }
+
+// handle cross origin request
+const corsOptions = {
+  origin: true,
+  credentials: true,
+};
+app.use(cors(corsOptions));
+app.options('*',cors(corsOptions));
 
 // Setup socket IO
 const io = new Server(httpServer, {
