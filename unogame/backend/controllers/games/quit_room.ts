@@ -5,6 +5,8 @@ const quitGameroom = async (req, res) => {
   const { id: roomId } = req.params;
   const { id: userId } = req.session.user;
 
+  // TODO: delete room after everyone quit?
+
   await GamesDB.quitGameroom(roomId, userId)
     .then(() => {
       return res

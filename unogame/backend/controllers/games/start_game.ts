@@ -10,6 +10,8 @@ const startGame = async (req, res) => {
       .json({ error: "The game is already started" });
   }
 
+  // TODO: check everyone is ready before starting the game
+
   await GamesDB.startGame(gameId)
     .then(() => {
       return res

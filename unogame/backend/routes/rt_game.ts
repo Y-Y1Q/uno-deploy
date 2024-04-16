@@ -11,9 +11,9 @@ router.post("/create", Games.createGameroom);
 router.get("/get-games/:name?", Games.getGamerooms);
 router.post("/:id/join", Games.joinGameroom);
 router.post("/:id/quit", isUserInGame, Games.quitGameroom);
+router.post("/:id/start", isUserInGame, Games.startGame);
 
 // Todo
-// router.post("/:id/start", Games.);
 // router.post("/:id/draw-card", Games.);
 // router.post("/:id/play-card", Games.);
 // router.post("/:id/say-uno", Games.);
