@@ -48,25 +48,18 @@
     <h3>TEST CREATE GAME </h3>
       <form action="/game/create" method="post">
         
-        Room Name: <input name="roomname">
+        Room Name: <input name="roomName">
         <button type="submit">submit</button>
       </form>
       <br><br><br>
     
-    <h3>TEST GET ALL GAMEROOMS </h3>
-      <form action="/game/get-all-games" method="get">
-        all columns are included, filter after FE done<br>
-        <button type="submit">submit</button>
-      </form>
+    <h3>TEST GET GAMEROOMS </h3>
+    If a name is included at the last part of url, it will filter by the name.<br>
+    If nothing is included, e.g. call it idrectly, it fetch all.<br>
+    Room Name (if you have): <input id="roomName"/>
+    <button onclick="window.location.href = '/game/get-games/' + document.getElementById('roomName').value">Click This</button>
       <br><br><br>
     
-    <h3>TEST GET GAMEROOMS BY NAMES </h3>
-      <form action="/game/get-game-by-name" method="get">
-        Room Name: <input name="roomname">
-        <button type="submit">submit</button>
-      </form>
-      <br><br><br>
-
       <h2> Test gameId - 1 </h2>
     
     <h3>TEST JOINING GAMEROOM </h3>

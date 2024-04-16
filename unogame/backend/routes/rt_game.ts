@@ -8,8 +8,7 @@ const router = express.Router();
 router.post("/:id/chat", isUserInGame, chatController);
 
 router.post("/create", Games.createGameroom);
-router.get("/get-all-games", Games.getAllGamerooms);
-router.get("/get-game-by-name", Games.getGameroomsByName);
+router.get("/get-games/:name?", Games.getGamerooms);
 router.post("/:id/join", Games.joinGameroom);
 router.post("/:id/quit", isUserInGame, Games.quitGameroom);
 
