@@ -7,10 +7,11 @@ const router = express.Router();
 
 router.post("/:id/chat", isUserInGame, chatController);
 
-router.post("/create", Games.createGameroom);
 router.get("/get-games/:name?", Games.getGamerooms);
+router.post("/create", Games.createGameroom);
 router.post("/:id/join", Games.joinGameroom);
 router.post("/:id/quit", isUserInGame, Games.quitGameroom);
+router.post("/:id/ready", isUserInGame, Games.readyGame);
 router.post("/:id/start", isUserInGame, Games.startGame);
 
 // Todo

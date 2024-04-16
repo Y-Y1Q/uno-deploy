@@ -7,9 +7,9 @@ const joinGameroom = async (req, res) => {
 
   const found = await GamesDB.foundUserInGame(roomId, userId);
   if (found) {
-    return res
-      .status(HttpCode.BadRequest)
-      .json({ error: "You already joined" });
+    return res.status(HttpCode.BadRequest).json({
+      error: "You already joined, you should direct into game (TODO redirect?)",
+    });
   }
 
   await GamesDB.joinGameroom(roomId, userId)

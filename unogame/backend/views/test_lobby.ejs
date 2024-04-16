@@ -58,27 +58,29 @@
     If nothing is included, e.g. call it idrectly, it fetch all.<br>
     Room Name (if you have): <input id="roomName"/>
     <button onclick="window.location.href = '/game/get-games/' + document.getElementById('roomName').value">Click This</button>
-      <br><br><br>
+      <br>
     
-      <h2> Test gameId - 1 </h2>
+    <h2> The following is tested with gameId=1 (included in the URL) 
+      and auto used current logged in userId from session
+    </h2>
     
     <h3>TEST JOINING GAMEROOM </h3>
       <form action="/game/1/join" method="post">
-        Using current logged in userId, and gameId - 1 to test<br>
-
         <button type="submit">submit</button>
       </form>
-      <br><br><br>
+      <br>
       
-    <h3>TEST QUITTING GAMEROOM, </h3>
+    <h3>TEST QUITTING GAMEROOM </h3>
       <form action="/game/1/quit" method="post">
-        Using current logged in userId, and gameId - 1 to test<br>
-
         <button type="submit">submit</button>
       </form>
-      <br><br><br>
+      <br>
 
-
+    <h3>TEST Getting Ready </h3>
+    <form action="/game/1/ready" method="post">
+      <button type="submit">submit</button>
+    </form>
+    <br>
 
     </form>
 

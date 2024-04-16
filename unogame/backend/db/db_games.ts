@@ -6,6 +6,7 @@ import { quitGameroom } from "./games/quit_room";
 import { foundUserInGame } from "./games/found_user_in_game";
 import { startGame } from "./games/start_game";
 import { getGameStarted } from "./games/get_game_started";
+import { readyGame } from "./games/ready_game";
 
 export {
   createGameroom,
@@ -16,4 +17,5 @@ export {
   foundUserInGame,
   startGame,
   getGameStarted,
+  readyGame
 };
