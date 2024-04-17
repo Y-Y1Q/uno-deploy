@@ -1,13 +1,14 @@
 import * as GamesDB from "../../db/db_games";
 import HttpCode from "../../utilities/http_code";
 
-const getReady = async (req, res) => {
+const toggleReady = async (req, res) => {
   const { id: gameId } = req.params;
   const { id: userId } = req.session.user;
 
-  await GamesDB.readyGame(gameId, userId)
+  await GamesDB.toggleReady(gameId, userId)
     .then((ready) => {
       return res.status(HttpCode.OK).json({
+        ready: ready,
         message:
           "Game with id=" +
           String(gameId) +
@@ -21,4 +22,4 @@ const getReady = async (req, res) => {
     });
 };
 
-export { getReady };
+export { toggleReady };

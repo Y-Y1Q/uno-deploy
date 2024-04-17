@@ -10,7 +10,18 @@ const startGame = async (req, res) => {
       .json({ error: "The game is already started" });
   }
 
-  // TODO: check everyone is ready before starting the game
+  // TODO: check if the user is owner??? how
+
+  const readyStates = await GamesDB.getAllUsersReady(gameId);
+  if (readyStates.length <= 1) {
+    return res.status(HttpCode.BadRequest).json({
+      error: "Only 1 user is present",
+    });
+  } else if (!readyStates.every((data) => data === true)) {
+    return res.status(HttpCode.BadRequest).json({
+      error: "Not all users are ready",
+    });
+  }
 
   await GamesDB.startGame(gameId)
     .then(() => {

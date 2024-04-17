@@ -1,13 +1,13 @@
 import * as GamesDB from "../../db/db_games";
 import HttpCode from "../../utilities/http_code";
 
-const quitGameroom = async (req, res) => {
+const quitGame = async (req, res) => {
   const { id: roomId } = req.params;
   const { id: userId } = req.session.user;
 
   // TODO: delete room after everyone quit?
 
-  await GamesDB.quitGameroom(roomId, userId)
+  await GamesDB.quitGame(roomId, userId)
     .then(() => {
       return res
         .status(HttpCode.OK)
@@ -20,4 +20,4 @@ const quitGameroom = async (req, res) => {
     });
 };
 
-export { quitGameroom };
+export { quitGame };

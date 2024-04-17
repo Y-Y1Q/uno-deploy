@@ -1,19 +1,14 @@
 import * as GamesDB from "../../db/db_games";
 import HttpCode from "../../utilities/http_code";
 
-const readyGame = async (req, res) => {
+const getUserReady = async (req, res) => {
   const { id: gameId } = req.params;
   const { id: userId } = req.session.user;
 
-  await GamesDB.readyGame(gameId, userId)
+  await GamesDB.getUserReady(gameId, userId)
     .then((ready) => {
       return res.status(HttpCode.OK).json({
-        message:
-          "Game with id=" +
-          String(gameId) +
-          " user id=" +
-          String(userId) +
-          (ready ? " is ready (YES)" : "is NOT ready (NO)"),
+        ready: ready,
       });
     })
     .catch((err) => {
@@ -21,4 +16,4 @@ const readyGame = async (req, res) => {
     });
 };
 
-export { readyGame };
+export { getUserReady };

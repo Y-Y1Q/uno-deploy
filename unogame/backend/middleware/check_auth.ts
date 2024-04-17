@@ -1,5 +1,5 @@
 import HttpCode from "../utilities/http_code";
-import { foundUserInGame } from "../db/db_games";
+import { checkUserInGame } from "../db/db_games";
 
 const isAuthenticated = (req, res, next) => {
   if (req.session.user !== undefined) {
@@ -15,9 +15,7 @@ const isUserInGame = async (req, res, next) => {
   const { id: gameId } = req.params;
   const { id: userId } = req.session.user;
 
-  const found = await foundUserInGame(gameId, userId);
-
-  if (found) {
+  if (await checkUserInGame(gameId, userId)) {
     next();
   } else {
     return res
