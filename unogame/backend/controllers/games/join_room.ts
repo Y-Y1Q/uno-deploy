@@ -16,7 +16,7 @@ const joinGameroom = async (req, res) => {
     .then(() => {
       return res
         .status(HttpCode.OK)
-        .json({ message: "userId - " + userId + " joined gameId - " + roomId });
+        .json({ message: "userId=" + userId + " gameId=" + roomId + " JOIN"});
     })
     .catch((err) => {
       return res.status(HttpCode.BadRequest).json({ error: err.detail });

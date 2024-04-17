@@ -11,7 +11,9 @@ const quitGameroom = async (req, res) => {
     .then(() => {
       return res
         .status(HttpCode.OK)
-        .json({ message: "userId - " + userId + " left roomId - " + roomId });
+        .json({
+          message: "userId=" + userId + " roomId=" + roomId + " LEAVE",
+        });
     })
     .catch((err) => {
       return res.status(HttpCode.BadRequest).json({ error: err });
