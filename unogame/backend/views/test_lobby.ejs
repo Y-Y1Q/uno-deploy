@@ -84,14 +84,20 @@
       </form>
       <br />
 
-      <h3>TEST Toggling Ready (impplying that user can cancel ready)</h3>
+      <h3>TEST Toggling Ready (implying that user can cancel ready)</h3>
       <form action="/game/1/toggle-ready" method="post">
         <button type="submit">submit</button>
       </form>
       <br />
 
-      <h3>TEST Toggling Ready (implying that user can cancel ready)</h3>
+      <h3>TEST Starting Game (it will restart previous game for now)</h3>
       <form action="/game/1/start" method="post">
+        <button type="submit">submit</button>
+      </form>
+      <br />
+
+      <h3>TEST Getting Game Cards for current user (card id only)</h3>
+      <form action="/game/1/get-cards" method="post">
         <button type="submit">submit</button>
       </form>
       <br />

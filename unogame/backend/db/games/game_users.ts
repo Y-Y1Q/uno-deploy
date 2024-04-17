@@ -1,14 +1,14 @@
 import { db } from "../db_connection";
 
 const joinGame = async (roomId, userId) => {
-  await db.one("INSERT INTO game_users (game_id, user_id) VALUES ($1,$2)", [
+  await db.none("INSERT INTO game_users (game_id, user_id) VALUES ($1,$2)", [
     roomId,
     userId,
   ]);
 };
 
 const quitGame = async (roomId, userId) => {
-  await db.one("DELETE FROM game_users WHERE game_id=$1 AND user_id=$2", [
+  await db.none("DELETE FROM game_users WHERE game_id=$1 AND user_id=$2", [
     roomId,
     userId,
   ]);
@@ -33,11 +33,12 @@ const getUserReady = async (gameid, userId) => {
 };
 
 const getAllUsersReady = async (gameid) => {
-  const ret = await db.any("SELECT ready FROM game_users WHERE game_id=$1", [
-    gameid,
-  ]);
+  const ret = await db.any(
+    "SELECT user_id as id,ready FROM game_users WHERE game_id=$1",
+    [gameid]
+  );
 
-  return ret.map((row) => row.ready);
+  return ret;
 };
 
 const toggleReady = async (gameid, userId) => {

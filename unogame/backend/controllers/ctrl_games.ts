@@ -5,6 +5,7 @@ import { quitGame } from "./games/quit_game";
 import { startGame } from "./games/start_game";
 import { getUserReady } from "./games/get_user_ready";
 import { toggleReady } from "./games/toggle_ready";
+import { getUserCards } from "./games/get_user_cards";
 
 export {
   createGame,
@@ -14,4 +15,5 @@ export {
   startGame,
   getUserReady,
   toggleReady,
+  getUserCards,
 };

@@ -14,5 +14,6 @@ router.post("/:id/quit", isUserInGame, Games.quitGame);
 router.post("/:id/get-ready", isUserInGame, Games.getUserReady);
 router.post("/:id/toggle-ready", isUserInGame, Games.toggleReady);
 router.post("/:id/start", isUserInGame, Games.startGame);
+router.post("/:id/get-cards", isUserInGame, Games.getUserCards);
 
 export default router;

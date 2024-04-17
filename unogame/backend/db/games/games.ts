@@ -1,4 +1,5 @@
 import { db } from "../db_connection";
+import { deleteCards } from "./game_cards";
 
 const getGames = async () => {
   const ret = await db.any("SELECT * FROM games");
@@ -24,11 +25,12 @@ const createGame = async (roomName) => {
 };
 
 const startGame = async (gameId) => {
-  await db.one("UPDATE games SET started=TRUE WHERE id=$1", [gameId]);
+  await db.none("UPDATE games SET started=TRUE WHERE id=$1", [gameId]);
 };
 
 const endGame = async (gameId) => {
-  await db.one("UPDATE games SET started=FALSE WHERE id=$1", [gameId]);
+  await deleteCards(gameId);
+  await db.none("UPDATE games SET started=FALSE WHERE id=$1", [gameId]);
 };
 
 const getGameStarted = async (gameId) => {
