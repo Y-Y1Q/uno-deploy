@@ -30,6 +30,8 @@ const startGame = async (req, res) => {
         .json({ message: "Game with id=" + String(gameId) + " start" });
     })
     .catch((err) => {
+      GamesDB.endGame(gameId);
+
       return res.status(HttpCode.BadRequest).json({ error: err.detail });
     });
 };

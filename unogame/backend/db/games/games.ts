@@ -23,14 +23,25 @@ const createGame = async (roomName) => {
   return ret.id;
 };
 
-const startGame = async (gameid) => {
-  await db.one("UPDATE games SET started=TRUE WHERE id=$1", [gameid]);
+const startGame = async (gameId) => {
+  await db.one("UPDATE games SET started=TRUE WHERE id=$1", [gameId]);
 };
 
-const getGameStarted = async (gameid) => {
-  const ret = await db.one("SELECT started FROM games WHERE id=$1", [gameid]);
+const endGame = async (gameId) => {
+  await db.one("UPDATE games SET started=FALSE WHERE id=$1", [gameId]);
+};
+
+const getGameStarted = async (gameId) => {
+  const ret = await db.one("SELECT started FROM games WHERE id=$1", [gameId]);
 
   return ret.started;
 };
 
-export { getGames, getGamesByName, createGame, startGame, getGameStarted };
+export {
+  getGames,
+  getGamesByName,
+  createGame,
+  startGame,
+  getGameStarted,
+  endGame,
+};

@@ -1,16 +1,16 @@
 import { db } from "../db_connection";
 
-const joinGame = async (roomid, userid) => {
+const joinGame = async (roomId, userId) => {
   await db.one("INSERT INTO game_users (game_id, user_id) VALUES ($1,$2)", [
-    roomid,
-    userid,
+    roomId,
+    userId,
   ]);
 };
 
-const quitGame = async (roomid, userid) => {
+const quitGame = async (roomId, userId) => {
   await db.one("DELETE FROM game_users WHERE game_id=$1 AND user_id=$2", [
-    roomid,
-    userid,
+    roomId,
+    userId,
   ]);
 };
 
@@ -23,10 +23,10 @@ const checkUserInGame = async (gameId, userId) => {
   return ret.exists;
 };
 
-const getUserReady = async (gameid, userid) => {
+const getUserReady = async (gameid, userId) => {
   const ret = await db.one(
     "SELECT ready FROM game_users WHERE game_id=$1 AND user_id=$2",
-    [gameid, userid]
+    [gameid, userId]
   );
 
   return ret.ready;
@@ -40,10 +40,10 @@ const getAllUsersReady = async (gameid) => {
   return ret.map((row) => row.ready);
 };
 
-const toggleReady = async (gameid, userid) => {
+const toggleReady = async (gameid, userId) => {
   const ret = await db.one(
     "UPDATE game_users SET ready=NOT ready WHERE game_id=$1 AND user_id=$2 RETURNING ready",
-    [gameid, userid]
+    [gameid, userId]
   );
 
   return ret.ready;

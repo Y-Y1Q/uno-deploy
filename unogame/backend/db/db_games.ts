@@ -3,6 +3,7 @@ import {
   getGamesByName,
   createGame,
   startGame,
+  endGame,
   getGameStarted,
 } from "./games/games";
 import {
@@ -19,6 +20,7 @@ export {
   getGamesByName,
   createGame,
   startGame,
+  endGame,
   getGameStarted,
   joinGame,
   quitGame,
