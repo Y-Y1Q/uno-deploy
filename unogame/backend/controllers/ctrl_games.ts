@@ -1,13 +1,19 @@
-import { createGameroom } from "./games/create_room";
-import { getAllGamerooms } from "./games/get_all_rooms";
-import { getGameroomsByName } from "./games/get_room_by_name";
-import { joinGameroom } from "./games/join_room";
-import { quitGameroom } from "./games/quit_room";
+import { createGame } from "./games/create_game";
+import { getGames } from "./games/get_games";
+import { joinGame } from "./games/join_game";
+import { quitGame } from "./games/quit_game";
+import { startGame } from "./games/start_game";
+import { getUserReady } from "./games/get_user_ready";
+import { toggleReady } from "./games/toggle_ready";
+import { getUserCards } from "./games/get_user_cards";
 
 export {
-  createGameroom,
-  getAllGamerooms,
-  getGameroomsByName,
-  joinGameroom,
-  quitGameroom,
+  createGame,
+  getGames,
+  joinGame,
+  quitGame,
+  startGame,
+  getUserReady,
+  toggleReady,
+  getUserCards,
 };

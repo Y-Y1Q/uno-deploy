@@ -1,140 +1,152 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    ul.no-bullets {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .split {
-  height: 100%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  overflow-x: hidden;
-  padding-left: 20px;
-  padding-top: 20px;
-}
-
-.left {
-  width: 65%; 
-  left: 0;
-}
-
-.right {
-  width: 30%; 
- right: 0
-}
-  </style>
-</head>
-
-<body>
-
-  <div class="split left">
-
-    <h3>Test Logout</h3>
-    <form action="/logout" method="post">
-      <button type="submit">Logout</button>
-    </form>
-      <br><br><br>
-
-
-    <h2></h2>
-    <h3>TEST CREATE GAME </h3>
-      <form action="/game/create" method="post">
-        
-        Room Name: <input name="roomname">
-        <button type="submit">submit</button>
-      </form>
-      <br><br><br>
-    
-    <h3>TEST GET ALL GAMEROOMS </h3>
-      <form action="/game/get-all-games" method="get">
-        all columns are included, filter after FE done<br>
-        <button type="submit">submit</button>
-      </form>
-      <br><br><br>
-    
-    <h3>TEST GET GAMEROOMS BY NAMES </h3>
-      <form action="/game/get-game-by-name" method="get">
-        Room Name: <input name="roomname">
-        <button type="submit">submit</button>
-      </form>
-      <br><br><br>
-
-      <h2> Test gameId - 1 </h2>
-    
-    <h3>TEST JOINING GAMEROOM </h3>
-      <form action="/game/1/join" method="post">
-        Using current logged in userId, and gameId - 1 to test<br>
-
-        <button type="submit">submit</button>
-      </form>
-      <br><br><br>
-      
-    <h3>TEST QUITTING GAMEROOM, </h3>
-      <form action="/game/1/quit" method="post">
-        Using current logged in userId, and gameId - 1 to test<br>
-
-        <button type="submit">submit</button>
-      </form>
-      <br><br><br>
-
-
-
-    </form>
-
-  </div>
-  <div class="split right">
-    <h3>Test Chat</h3>
-    <div id="messages"></div>
-    <form id="message-form">
-      <input type="text" id="message-input" placeholder="Enter your message">
-      <button type="submit">Send</button>
-    </form>
-
-    <ul class="no-bullets"></ul>
-  </div>
-
-
-
-  <script type="module">
-    import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
-    const socket = io();
-
-    const messagesContainer = document.getElementById('messages');
-    const messageForm = document.getElementById('message-form');
-    const messageInput = document.getElementById('message-input');
-
-    messageForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const message = messageInput.value.trim();
-      if (message !== '') {
-        fetch(`/lobby/chat`, {
-          method: "post",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message }),
-        });
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      ul.no-bullets {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
       }
 
-      messageInput.value = '';
-    });
+      .split {
+        height: 100%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        overflow-x: hidden;
+        padding-left: 20px;
+        padding-top: 20px;
+      }
 
-    // Listening chat event from lobby (roomId - 0)
-    socket.on(
-      `chat:message:0`,
-      ({ from, timestamp, message }) => {
-        const li = document.createElement('li')
+      .left {
+        width: 65%;
+        left: 0;
+      }
+
+      .right {
+        width: 30%;
+        right: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="split left">
+      <h3>Test Logout</h3>
+      <form action="/logout" method="post">
+        <button type="submit">Logout</button>
+      </form>
+      <br /><br /><br />
+
+      <h2></h2>
+      <h3>TEST Creating Games</h3>
+      <form action="/game/create" method="post">
+        Room Name: <input name="roomName" />
+        <button type="submit">submit</button>
+      </form>
+      <br /><br /><br />
+
+      <h3>TEST Getting Games</h3>
+      If a name is included at the last part of url, it will filter by the
+      name.<br />
+      If nothing is included, e.g. call it idrectly, it fetch all.<br />
+      Room Name (if you have): <input id="roomName" />
+      <button
+        onclick="window.location.href = '/game/get-games/' + document.getElementById('roomName').value"
+      >
+        Click This
+      </button>
+      <br />
+
+      <h2>
+        The following is tested with gameId=1 (included in the URL) and auto
+        used current logged in userId from session, look into backend/views
+        folder for details
+      </h2>
+
+      <h3>TEST Joining Game</h3>
+      <form action="/game/1/join" method="post">
+        <button type="submit">submit</button>
+      </form>
+      <br />
+
+      <h3>TEST Quitting Game</h3>
+      <form action="/game/1/quit" method="post">
+        <button type="submit">submit</button>
+      </form>
+      <br />
+
+      <h3>TEST Getting Ready State</h3>
+      <form action="/game/1/get-ready" method="post">
+        <button type="submit">submit</button>
+      </form>
+      <br />
+
+      <h3>TEST Toggling Ready (implying that user can cancel ready)</h3>
+      <form action="/game/1/toggle-ready" method="post">
+        <button type="submit">submit</button>
+      </form>
+      <br />
+
+      <h3>TEST Starting Game (it will restart previous game for now)</h3>
+      <form action="/game/1/start" method="post">
+        <button type="submit">submit</button>
+      </form>
+      <br />
+
+      <h3>TEST Getting Game Cards for current user (card id only)</h3>
+      <form action="/game/1/get-cards" method="post">
+        <button type="submit">submit</button>
+      </form>
+      <br />
+
+      <br /><br /><br />
+    </div>
+    <div class="split right">
+      <h3>Test Chat</h3>
+      <div id="messages"></div>
+      <form id="message-form">
+        <input
+          type="text"
+          id="message-input"
+          placeholder="Enter your message"
+        />
+        <button type="submit">Send</button>
+      </form>
+
+      <ul class="no-bullets"></ul>
+    </div>
+
+    <script type="module">
+      import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
+      const socket = io();
+
+      const messagesContainer = document.getElementById("messages");
+      const messageForm = document.getElementById("message-form");
+      const messageInput = document.getElementById("message-input");
+
+      messageForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const message = messageInput.value.trim();
+        if (message !== "") {
+          fetch(`/lobby/chat`, {
+            method: "post",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message }),
+          });
+        }
+
+        messageInput.value = "";
+      });
+
+      // Listening chat event from lobby (roomId - 0)
+      socket.on(`chat:message:0`, ({ from, timestamp, message }) => {
+        const li = document.createElement("li");
         li.textContent = from + ": " + message;
-        document.querySelector('ul').appendChild(li)
-      },
-    );
-  </script>
-</body>
-
+        document.querySelector("ul").appendChild(li);
+      });
+    </script>
+  </body>
 </html>

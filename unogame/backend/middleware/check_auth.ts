@@ -1,5 +1,5 @@
 import HttpCode from "../utilities/http_code";
-import { foundUserInGame } from "../db/db_games";
+import { checkUserInGame } from "../db/db_games";
 
 // * CHECK IF THE USER IS AUTHENTICATED 
 const isAuthenticated = (req, res, next) => {
@@ -19,11 +19,7 @@ const isAuthenticated = (req, res, next) => {
   const { id: gameId } = req.params; // extract game ID from request parameters
   const { id: userId } = req.session.user; // extract user ID from session
 
-   // check if user is found in the requested game asynchronously
-  const found = await foundUserInGame(gameId, userId);
-
-  // check if the user is found in the game
-  if (found) {
+  if (await checkUserInGame(gameId, userId)) {
     next();
   } else {
     // if user is not found in the game, send forbidden status with error message
