@@ -7,7 +7,7 @@ const renderLoginPage = () => {
                 <div class="w-96 bg-white rounded-lg shadow-xl p-8">
                     <h1 class="text-4xl font-bold text-center mb-8">Login</h1>
                     <!-- Form -->
-                    <form id="form" class="space-y-4">
+                    <form id="loginForm" method="POST" class="space-y-4">
                         <!-- Username Input -->
                         <div>
                             <label for="username" class="block text-gray-700">Username</label>
@@ -39,9 +39,12 @@ const renderLoginPage = () => {
         const username = formData.get("username") as string;
         const password = formData.get("password") as string;
 
+        console.log("Username:", username);
+        console.log("Password:", password);
+
         try {
           // send login request to the server
-          const response = await fetch("/login", {
+          const response = await fetch("/unogame/login", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -56,7 +59,7 @@ const renderLoginPage = () => {
 
           // redirect to lobby upon successful login
           const data = await response.json();
-          console.log("[login.ts] login successfl - message:", data.message);
+          console.log("[login.ts] login successful - message:", data.message);
           window.location.href = "/lobby";
         } catch (error) {
           console.error("Login failed:", error.message);

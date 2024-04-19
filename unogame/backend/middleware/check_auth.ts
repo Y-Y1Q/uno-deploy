@@ -1,29 +1,32 @@
 import HttpCode from "../utilities/http_code";
 import { foundUserInGame } from "../db/db_games";
 
-// check if the user is authenticated
+// * CHECK IF THE USER IS AUTHENTICATED 
 const isAuthenticated = (req, res, next) => {
   // check if the user session exists
   if (req.session.user !== undefined) {
     next(); 
   } else {
+    // if session doesn't exist, send forbidden status with error message
     return res
       .status(HttpCode.Forbidden)
       .json({ error: "You are not allowed to access this page" });
   }
 };
 
-// check if the user is a player in the requested game
-const isUserInGame = async (req, res, next) => {
-  const { id: gameId } = req.params;
-  const { id: userId } = req.session.user;
+// * CHECK IF THE USER IS IN THE GAME
+  const isUserInGame = async (req, res, next) => {
+  const { id: gameId } = req.params; // extract game ID from request parameters
+  const { id: userId } = req.session.user; // extract user ID from session
 
+   // check if user is found in the requested game asynchronously
   const found = await foundUserInGame(gameId, userId);
 
   // check if the user is found in the game
   if (found) {
     next();
   } else {
+    // if user is not found in the game, send forbidden status with error message
     return res
       .status(HttpCode.Forbidden)
       .json({ error: "You are not a player in the requested game page" });
