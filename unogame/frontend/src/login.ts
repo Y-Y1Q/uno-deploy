@@ -44,7 +44,7 @@ const renderLoginPage = () => {
 
         try {
           // send login request to the server
-          const response = await fetch("/unogame/login", {
+          const response = await fetch("/api/login", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

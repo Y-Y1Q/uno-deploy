@@ -13,8 +13,19 @@ import { isAuthenticated } from "./middleware/check_auth";
 import { handleSocketConnection } from "./middleware/socket_connect";
 import { setUpDevelopmentEnvironment } from "./utilities/setup_development_environment";
 
+import {
+  createProxyMiddleware,
+  Filter,
+  Options,
+  RequestHandler,
+} from "http-proxy-middleware";
+
+// import userRoutes from "./routes/rt_user";
+
 const app = express();
 const httpServer = createServer(app);
+
+const ServerURL = "http://localhost:3333";
 
 if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
@@ -61,9 +72,26 @@ io.engine.use(Session.config);
 app.set("io", io);
 io.on("connection", handleSocketConnection);
 
+// set up proxy middleware
+app.use(
+  "/api", // endpoint I want to proxy
+  createProxyMiddleware({
+    target: ServerURL, // specify the target URL
+    changeOrigin: true, // change the origin in the Host header to the target URL
+  })
+);
+
+// log request URL to check if the middleware is working
+app.use((req, res, next) => {
+  console.log(`[server.ts] Incoming request URL: ${req.method} ${req.url}`);
+  next();
+});
+
 app.use(Routes.user);
 app.use("/lobby", isAuthenticated, Routes.lobby);
 app.use("/game", isAuthenticated, Routes.game);
+
+// app.use("/unogame", userRoutes);
 
 // test routes
 app.use("/test", TestRoutes.root);
