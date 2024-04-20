@@ -86,7 +86,7 @@ io.on("connection", handleSocketConnection);
 
 // log request URL to check if the middleware is working
 app.use((req, res, next) => {
-  console.log(`[server.ts] Incoming request URL: ${req.method} ${req.url}`);
+  console.log(`[server.ts] Incoming request: METHOD:${req.method} ORIGIN:${req.headers.origin} URL:${req.url}`);
   next();
 });
 
