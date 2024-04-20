@@ -12,7 +12,7 @@
         TEST LOGIN<br>
         Username: <input name="username"><br>
         Password: <input name="password" type="password"><br>
-        <input type="button" value="Login" onclick="submitForm('loginForm')">
+        <button type="submit">login</button>
     </form>
 
     <br><br>
@@ -21,15 +21,12 @@
         <br><br>
         TEST SIGNUP<br>
         Username: <input name="username"><br>
+        Fullname: <input name="fullname"><br>
         Password: <input name="password" type="password"><br>
-        <input type="button" value="Signup" onclick="submitForm('signupForm')">
+        <button type="submit">signup</button>
     </form>
 
     <script>
-        function submitForm(formId) {
-            const form = document.getElementById(formId);
-            form.submit();
-        }
     </script>
 </body>
 

@@ -6,7 +6,7 @@ const SALT_ROUNDS = 10;
 
 const signUp = async (req, res) => {
   console.log(req.body);
-  const { username, password } = req.body;
+  const { username, password, fullname } = req.body;
 
   if (req.session.user !== undefined) {
     return res.status(HttpCode.BadRequest).json({
@@ -26,7 +26,7 @@ const signUp = async (req, res) => {
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     const hash = await bcrypt.hash(password, salt);
 
-    await UsersDB.addUser(username, hash);
+    await UsersDB.addUser(username, hash, fullname);
 
     return res
       .status(HttpCode.Created)

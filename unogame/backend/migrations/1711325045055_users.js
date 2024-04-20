@@ -14,6 +14,9 @@ exports.up = pgm => {
             type: "varchar(256)",
             notNull: true
         },
+        fullname: {
+            type: "varchar(100)",
+        },
         created_at: {
             type: "timestamp",
             notNull: true,
