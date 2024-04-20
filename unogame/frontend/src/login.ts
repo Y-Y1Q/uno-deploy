@@ -61,7 +61,7 @@ const renderLoginPage = () => {
           // redirect to lobby upon successful login
           const data = await response.json();
           console.log("[login.ts] login successful - message:", data.message);
-          window.location.href = "/lobby";
+          window.location.href = "/unogame/lobby";
         } catch (error) {
           console.error("Login failed:", error.message);
           const messageElement =
