@@ -1,6 +1,8 @@
 import { defineConfig } from "vite"
 
 export default defineConfig({
+    base: '/unogame/',
+    
     server: {
       proxy: {
         //  from FE localhost: /api/something-> http://localhost:3333/something
