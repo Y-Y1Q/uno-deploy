@@ -42,11 +42,9 @@ const renderLoginPage = () => {
         console.log("Username:", username);
         console.log("Password:", password);
 
-        const BE_URL = "http://localhost:3333";
-
         try {
           // send login request to the server
-          const response = await fetch(`${BE_URL}/login`, {
+          const response = await fetch(`/api/login`, {
             credentials: "include",
             method: "POST",
             headers: {
