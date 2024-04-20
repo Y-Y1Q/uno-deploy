@@ -1,40 +1,10 @@
 export function validateForm(form: HTMLFormElement) {
-  const messageContainer = document.querySelector('.message-container') as HTMLElement;
-  const password1E = document.getElementById('password1') as HTMLInputElement;
-  const message = document.getElementById('message') as HTMLDivElement;
-  let isValid = false;
-
-  // ConstraintAPI
-  if (form) {
-    isValid = form.checkValidity();
-}
-
-if (!isValid) {
-    if (message) {
-        message.textContent = 'Please fill out required fields.';
-        message.style.color = 'red';
-    }
-    if (messageContainer) {
-        messageContainer.style.borderColor = 'red';
-    }
-    if (password1E) {
-        password1E.setCustomValidity('');
-    }
-    return;
-}
-
-if (isValid) {
-    if (message) {
-        message.textContent = 'Successfully Registered!';
-        message.style.color = 'green';
-    }
-    if (messageContainer) {
-        messageContainer.style.borderColor = 'green';
-    }
-    if (password1E) {
-        password1E.setCustomValidity('');
-    }
-}
+    const name = (form.elements.namedItem('name') as HTMLInputElement)?.value;
+    const username = (form.elements.namedItem('username') as HTMLInputElement)?.value;
+    const password = (form.elements.namedItem('password1') as HTMLInputElement)?.value;
+  
+    console.log("User entered:", name, username, password);
+  
 }
 
 function storeFormData (form: HTMLFormElement) {
