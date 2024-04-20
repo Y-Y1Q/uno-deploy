@@ -54,7 +54,7 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
-app.options('*',cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 // Setup socket IO
 const io = new Server(httpServer, {
@@ -66,7 +66,9 @@ io.on("connection", handleSocketConnection);
 
 // log request URL's origin
 app.use((req, res, next) => {
-  console.log(`[server.ts] Incoming request -  METHOD:${req.method} ORIGIN:${req.headers.origin} URL:${req.url}`);
+  console.log(
+    `[server.ts] Incoming request -  METHOD:${req.method} ORIGIN:${req.headers.origin} URL:${req.url}`
+  );
   next();
 });
 
