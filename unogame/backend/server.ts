@@ -64,6 +64,12 @@ io.engine.use(Session.config);
 app.set("io", io);
 io.on("connection", handleSocketConnection);
 
+// log request URL to check if the middleware is working
+app.use((req, res, next) => {
+  console.log(`[server.ts] Incoming request -  METHOD:${req.method} ORIGIN:${req.headers.origin} URL:${req.url}`);
+  next();
+});
+
 app.use(Routes.user);
 app.use("/lobby", isAuthenticated, Routes.lobby);
 app.use("/game", isAuthenticated, Routes.game);

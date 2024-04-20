@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 const logIn = async (req, res) => {
   const { username, password } = req.body;
 
+  // check if user is already logged in
   if (req.session.user !== undefined) {
     return res.status(HttpCode.BadRequest).json({
       error: "You are already logged in as: " + req.session.user.username,
