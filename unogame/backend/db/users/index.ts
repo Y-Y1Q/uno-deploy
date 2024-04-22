@@ -18,7 +18,7 @@ const foundUser = async (username: string): Promise<boolean> => {
 
 
 const getAllUsers = async () => {
-  return await db.any("SELECT id, username, fullname FROM users");
+  return await db.manyOrNone("SELECT id, username, fullname FROM users");
 };
 
 

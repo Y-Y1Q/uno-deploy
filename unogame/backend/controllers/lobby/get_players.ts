@@ -7,7 +7,7 @@ import HttpCode from "../../utilities/http_code";
 const getPlayersList = async (req, res) => {
   
 try{
-    const playersList = UserDB.getAllUsers;
+    const playersList = await UserDB.getAllUsers();
     return res
     .status(HttpCode.OK)
     .json(playersList);
