@@ -50,6 +50,14 @@ const toggleReady = async (gameid, userId) => {
   return ret.ready;
 };
 
+const getGamesJoined = async (userId) => {
+  const ret = await db.any(
+    "SELECT game_id FROM game_users WHERE user_id = $1",
+   [userId]
+  );
+    return ret;
+}
+
 export {
   joinGame,
   quitGame,
@@ -57,4 +65,5 @@ export {
   getUserReady,
   getAllUsersReady,
   toggleReady,
+  getGamesJoined,
 };
