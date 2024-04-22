@@ -7,7 +7,8 @@ const joinGame = async (req, res) => {
 
   if (await GamesDB.checkUserInGame(roomId, userId)) {
     return res.status(HttpCode.BadRequest).json({
-      error: "You already joined, TODO redirect into game??? This should not be error",
+      error:
+        "You already joined, TODO redirect into game??? This should not be error",
     });
   }
 

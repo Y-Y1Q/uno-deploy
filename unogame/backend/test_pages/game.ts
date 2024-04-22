@@ -11,6 +11,6 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/:id/chat", chatController);
-router.post("/:id/inv", sendInvitation );
+router.post("/:id/inv", sendInvitation);
 
 export default router;

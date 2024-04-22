@@ -56,7 +56,7 @@ const getGamesCanJoin = async (userId) => {
   );
 
   return ret;
-}
+};
 
 export {
   getGames,

@@ -24,7 +24,7 @@ const getUserCards = async (gameId, userId) => {
     [gameId, userId]
   );
 
-  return ret.map(row => row.card_id);
+  return ret.map((row) => row.card_id);
 };
 
 export { drawCards, deleteCards, getUserCards };

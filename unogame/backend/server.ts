@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === "development") {
 
 const PORT = process.env.PORT || 3333;
 
-const BACKEND_PATH = (path.dirname(__dirname)); 
+const BACKEND_PATH = path.dirname(__dirname);
 const STATIC_PATH = path.join(BACKEND_PATH, "static");
 const VIEW_PATH = path.join(BACKEND_PATH, "views");
 // console.log(VIEW_PATH);

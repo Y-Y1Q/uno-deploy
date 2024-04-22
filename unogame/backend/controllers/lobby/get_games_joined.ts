@@ -6,18 +6,15 @@ import HttpCode from "../../utilities/http_code";
 
 const getGamesJoined = async (req, res) => {
   const { id: userId } = req.session.user;
-try{
+  try {
     const gamesJoined = await GamesDB.getGamesJoined(userId);
-    return res
-    .status(HttpCode.OK)
-    .json(gamesJoined);
-
-}catch(err){
+    return res.status(HttpCode.OK).json(gamesJoined);
+  } catch (err) {
     console.log(err);
     return res
       .status(HttpCode.InternalServerError)
       .json({ error: "Internal server error: " + err });
-}
+  }
 };
 
 export { getGamesJoined };

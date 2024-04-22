@@ -58,10 +58,10 @@ const getGamesJoined = async (userId) => {
     WHERE games.id IN (SELECT game_id FROM game_users WHERE user_id = $1)
     GROUP BY games.id
     ORDER BY games.id ASC`,
-   [userId]
+    [userId]
   );
-    return ret;
-}
+  return ret;
+};
 
 export {
   joinGame,

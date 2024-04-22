@@ -1,6 +1,5 @@
 const handleSocketConnection = (socket) => {
-
-  //  Adds the socket to a room identified by the user's ID 
+  //  Adds the socket to a room identified by the user's ID
   if (socket.request.session.user !== undefined) {
     socket.join(socket.request.session.user.id);
     console.log(`User ${socket.request.session.user.username} connected`);

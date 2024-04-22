@@ -7,7 +7,7 @@ import { sendInvitation } from "../controllers/ctrl_lobby";
 const router = express.Router();
 
 router.post("/:id/chat", isUserInGame, chatController);
-router.post("/:id/inv", isUserInGame, sendInvitation );
+router.post("/:id/inv", isUserInGame, sendInvitation);
 
 router.get("/get-games/:name?", Games.getGames);
 router.post("/create", Games.createGame);
