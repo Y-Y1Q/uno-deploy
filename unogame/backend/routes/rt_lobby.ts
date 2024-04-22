@@ -1,14 +1,15 @@
 import express from "express";
+import * as Lobby from "../controllers/ctrl_lobby"
 import { chatController } from "../controllers/ctrl_chat";
 
 const router = express.Router();
 
 router.post("/chat", chatController);
 
-// Todo
-// router.get("/get-games-joined", Lobby. );
-// router.get("/get-games-can-join", Lobby. );
-// router.get("/get-players", Lobby. ); 
-// router.post("/send-inv", Lobby. ); 
+
+router.post("/games-joined", Lobby.getGamesJoined);
+router.post("/games-can-join", Lobby.getGamesCanJoin);
+router.post("/players", Lobby.getPlayersList ); 
+
 
 export default router;
