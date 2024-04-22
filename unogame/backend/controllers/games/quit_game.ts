@@ -9,11 +9,9 @@ const quitGame = async (req, res) => {
 
   await GamesDB.quitGame(roomId, userId)
     .then(() => {
-      return res
-        .status(HttpCode.OK)
-        .json({
-          message: "userId=" + userId + " roomId=" + roomId + " LEAVE",
-        });
+      return res.status(HttpCode.OK).json({
+        message: "userId=" + userId + " roomId=" + roomId + " LEAVE",
+      });
     })
     .catch((err) => {
       return res.status(HttpCode.BadRequest).json({ error: err });

@@ -5,7 +5,9 @@ import {
   startGame,
   endGame,
   getGameStarted,
+  getGamesCanJoin,
 } from "./games/games";
+
 import {
   joinGame,
   quitGame,
@@ -13,7 +15,9 @@ import {
   getUserReady,
   getAllUsersReady,
   toggleReady,
+  getGamesJoined,
 } from "./games/game_users";
+
 import { drawCards, deleteCards, getUserCards } from "./games/game_cards";
 
 export {
@@ -32,4 +36,6 @@ export {
   drawCards,
   deleteCards,
   getUserCards,
+  getGamesJoined,
+  getGamesCanJoin,
 };

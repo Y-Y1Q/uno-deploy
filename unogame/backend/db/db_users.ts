@@ -1,6 +1,3 @@
-import { addUser } from "./users/add_user";
-import { foundUser } from "./users/found_user";
-import { getUser } from "./users/get_user";
+import { addUser, foundUser, getUser, getAllUsers } from "./users";
 
-export { addUser, foundUser, getUser };
-
+export { addUser, foundUser, getUser, getAllUsers };

@@ -1,11 +1,11 @@
 import HttpCode from "../utilities/http_code";
 import { checkUserInGame } from "../db/db_games";
 
-// * CHECK IF THE USER IS AUTHENTICATED 
+// * CHECK IF THE USER IS AUTHENTICATED
 const isAuthenticated = (req, res, next) => {
   // check if the user session exists
   if (req.session.user !== undefined) {
-    next(); 
+    next();
   } else {
     // if session doesn't exist, send forbidden status with error message
     return res
@@ -15,7 +15,7 @@ const isAuthenticated = (req, res, next) => {
 };
 
 // * CHECK IF THE USER IS IN THE GAME
-  const isUserInGame = async (req, res, next) => {
+const isUserInGame = async (req, res, next) => {
   const { id: gameId } = req.params; // extract game ID from request parameters
   const { id: userId } = req.session.user; // extract user ID from session
 
