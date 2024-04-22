@@ -32,14 +32,19 @@ if (process.env.NODE_ENV === "development") {
 
 const PORT = process.env.PORT || 3333;
 
+const BACKEND_PATH = (path.dirname(__dirname)); 
+const STATIC_PATH = path.join(BACKEND_PATH, "static");
+const VIEW_PATH = path.join(BACKEND_PATH, "views");
+// console.log(VIEW_PATH);
+
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.set("views", path.resolve("views"));
+app.set("views", VIEW_PATH);
 app.set("view engine", "ejs");
-app.use(express.static(path.resolve("static")));
+app.use(express.static(STATIC_PATH));
 
 // Setup express session
 app.use(Session.config);
