@@ -60,6 +60,25 @@
       </button>
       <br />
 
+      <h3>TEST Getting games joined</h3>
+      <form action="/lobby/games-joined" method="post">
+        <button type="submit">submit</button>
+      </form>
+      <br />
+
+      <h3>TEST Getting games can join</h3>
+      Condition: not started, not full, not joined
+      <form action="/lobby/games-can-join" method="post">
+        <button type="submit">submit</button>
+      </form>
+      <br />
+
+      <h3>TEST Getting players list</h3>
+      <form action="/lobby/players" method="post">
+        <button type="submit">submit</button>
+      </form>
+      <br />
+
       <h2>
         The following is tested with gameId=1 (included in the URL) and auto
         used current logged in userId from session, look into backend/views
@@ -101,6 +120,7 @@
         <button type="submit">submit</button>
       </form>
       <br />
+
 
       <br /><br /><br />
     </div>
