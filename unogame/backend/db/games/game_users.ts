@@ -51,8 +51,13 @@ const toggleReady = async (gameid, userId) => {
 };
 
 const getGamesJoined = async (userId) => {
-  const ret = await db.any(
-    "SELECT game_id FROM game_users WHERE user_id = $1",
+  const ret = await db.manyOrNone(
+    `SELECT games.id, games.room_name, games.max_players, COUNT(game_users.user_id) AS player_count
+    FROM games
+    LEFT JOIN game_users ON games.id = game_users.game_id
+    WHERE games.id IN (SELECT game_id FROM game_users WHERE user_id = $1)
+    GROUP BY games.id
+    ORDER BY games.id ASC`,
    [userId]
   );
     return ret;

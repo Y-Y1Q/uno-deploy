@@ -40,18 +40,17 @@ const getGameStarted = async (gameId) => {
 };
 
 const getGamesCanJoin = async (userId) => {
-  const ret = await db.any(
+  const ret = await db.manyOrNone(
     `SELECT games.id, games.room_name, games.max_players, COUNT(game_users.user_id) AS player_count
     FROM games
     LEFT JOIN game_users ON games.id = game_users.game_id
-    WHERE games.max_players > COUNT(game_users.user_id)
-      AND games.started = false
+    WHERE games.started = false
       AND games.id NOT IN (
         SELECT game_id
         FROM game_users
-        WHERE user_id = $1
-      )
-    GROUP BY games.id, games.room_name, games.max_players
+        WHERE user_id = $1)
+    GROUP BY games.id
+    HAVING games.max_players > COUNT(game_users.user_id)
     ORDER BY games.id ASC`,
     [userId]
   );
