@@ -61,7 +61,7 @@ const renderLoginPage = () => {
           // redirect to lobby upon successful login
           const data = await response.json();
           console.log("[login.ts] login successful - message:", data.message);
-          window.location.href = "/";
+          window.location.href = "/lobby";
         } catch (error) {
           console.error("Login failed:", error.message);
           const messageElement =
