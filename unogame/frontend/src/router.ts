@@ -3,52 +3,53 @@ import renderLobbyPage from "./lobby";
 import renderUnoGamePage from "./unoGame";
 import renderLoginPage from "./login";
 import renderSignUpPage from "./signup";
+import main from "./main";
 
 // extend the Window interface to include a route property
 declare global {
-    interface Window {
-        route?: (event: Event) => void;
-    }
+  interface Window {
+    route?: (event: Event) => void;
+  }
 }
 
 // route function
 const route = (event: Event) => {
-    // prevent the default action of the click event to the href
-    event.preventDefault();
+  // prevent the default action of the click event to the href
+  event.preventDefault();
 
-    // update the URL on the browser
-    window.history.pushState({}, "", (event.target as HTMLAnchorElement).href); 
+  // update the URL on the browser
+  window.history.pushState({}, "", (event.target as HTMLAnchorElement).href);
 
-    console.log("[router.js] Route clicked:", event.target);
-    console.log("[router.js] Updated URL:", window.location.href);
+  console.log("[router.js] Route clicked:", event.target);
+  console.log("[router.js] Updated URL:", window.location.href);
 
-    // call handleLocation to handle routing based on the new URL
-    handleLocation();
-}
+  // call handleLocation to handle routing based on the new URL
+  handleLocation();
+};
 
 // Routes mapping
-const routes: {[key: string]: () => void} = {
-    // "/404": render404Page,
-    "/": renderLobbyPage,
-    "/unogame": renderUnoGamePage,
-    "/login": renderLoginPage,
-    "/signup": renderSignUpPage,
-   
-}
+const routes: { [key: string]: () => void } = {
+  // "/404": render404Page,
+  "/": main,
+  "/lobby": renderLobbyPage,
+  "/unogame": renderUnoGamePage,
+  "/login": renderLoginPage,
+  "/signup": renderSignUpPage,
+};
 
 // handle location changes
 const handleLocation = async () => {
-    // get the current path from the URL
-    const path = window.location.pathname;
+  // get the current path from the URL
+  const path = window.location.pathname;
 
-    // find the corresponding route in the routes mapping
-    const routeHandler = routes[path] || routes["/404"];
+  // find the corresponding route in the routes mapping
+  const routeHandler = routes[path] || routes["/404"];
 
-    console.log("[router.ts] Current path:", path);
+  console.log("[router.ts] Current path:", path);
 
-    // call the corresponding route handler
-    routeHandler();
-}
+  // call the corresponding route handler
+  routeHandler();
+};
 
 // handle case where user clicks forward or backward button on the browser
 window.onpopstate = handleLocation;

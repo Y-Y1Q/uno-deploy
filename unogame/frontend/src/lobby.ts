@@ -36,9 +36,9 @@ const renderLobbyPage = () => {
                     <h2 class="text-lg font-bold mb-4">LOBBY CONTAINER</h2>
                     <h3 class="mb-2">Welcome Donald Trump</h3>
                     <div class="flex flex-col justify-center items-center">
-                        <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4" id="startGameButton">Start Game</button>
-                        <button class="bg-red-500 text-white px-4 py-2 rounded mt-4" id="joinRoomButton">Join a Game</button>
-                        <button class="bg-green-500 text-white px-4 py-2 rounded mt-4" >Log out</button>
+                        <button id="startGameButton" class="bg-blue-500 text-white px-4 py-2 rounded mt-4" >Start Game</button>
+                        <button id="joinRoomButton" class="bg-red-500 text-white px-4 py-2 rounded mt-4" >Join a Game</button>
+                        <button id="logoutButton" class="bg-green-500 text-white px-4 py-2 rounded mt-4" >Log out</button>
                     </div>
                 </div>
 
@@ -159,8 +159,32 @@ const renderLobbyPage = () => {
         if (target.id === "playGameButton") {
           renderUnoGamePage();
         }
+
+        if (target.id === "logoutButton") {
+          logout();
+        }
       });
     }
+  }
+};
+
+const logout = async () => {
+  try {
+    // send logout request to the server
+    const response = await fetch(`/api/logout`, {
+      credentials: "include",
+      method: "POST",
+    });
+
+    // check if logout was successful
+    if (response.ok) {
+      // redirect to the login page upon successful logout
+      window.location.href = "/login";
+    } else {
+      throw new Error("Failed to log out");
+    }
+  } catch (error) {
+    console.error("[lobby.ts] Logout failed:", error);
   }
 };
 
