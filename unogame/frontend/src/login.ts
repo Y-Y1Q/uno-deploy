@@ -1,5 +1,5 @@
 const renderLoginPage = () => {
-  const appDiv = document.querySelector<HTMLDivElement>("#app");
+  const appDiv = document.querySelector<HTMLDivElement>('#app');
 
   if (appDiv) {
     appDiv.innerHTML = `
@@ -30,47 +30,47 @@ const renderLoginPage = () => {
         `;
   }
 
-  const loginForm = appDiv?.querySelector<HTMLFormElement>("#loginForm");
+  const loginForm = appDiv?.querySelector<HTMLFormElement>('#loginForm');
 
   if (loginForm) {
     // add event listener to the login form submission
-    loginForm.addEventListener("submit", async (event) => {
+    loginForm.addEventListener('submit', async (event) => {
       event.preventDefault(); // prevent form submission
 
       // get form data
       const formData = new FormData(loginForm);
-      const username = formData.get("username") as string;
-      const password = formData.get("password") as string;
+      const username = formData.get('username') as string;
+      const password = formData.get('password') as string;
 
-      console.log("Username:", username);
-      console.log("Password:", password);
+      console.log('Username:', username);
+      console.log('Password:', password);
 
       try {
         // send login request to the server
         const response = await fetch(`/api/login`, {
-          credentials: "include",
-          method: "POST",
+          credentials: 'include',
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ username, password }),
         });
 
         // check if login was successful
         if (!response.ok) {
-          throw new Error("Failed to log in");
+          throw new Error('Failed to log in');
         }
 
         // redirect to lobby upon successful login
         const data = await response.json();
-        console.log("[login.ts] login successful - message:", data.message);
-        window.location.href = "/lobby";
+        console.log('[login.ts] login successful - message:', data.message);
+        window.location.href = '/lobby';
       } catch (error) {
-        console.error("Login failed:", error.message);
+        console.error('Login failed:', error.message);
         const messageElement =
-          appDiv?.querySelector<HTMLDivElement>("#message");
+          appDiv?.querySelector<HTMLDivElement>('#message');
         if (messageElement) {
-          messageElement.textContent = "Login failed. Please try again.";
+          messageElement.textContent = 'Login failed. Please try again.';
         }
       }
     });
