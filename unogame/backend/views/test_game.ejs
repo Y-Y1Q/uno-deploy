@@ -49,8 +49,9 @@
     This page doesn't check if the user is actually in the "game_users" table of DB or game exist<br>
 
 <h3>TEST Sending invitation</h3>
-According to FE waitroom wireframe
-For actual implemention, get player list, click that player's name to send invitation
+Should use two browsers, or private windows to test. 
+Sender in this game page, and receiver in lobby page 
+According to FE waitroom wireframe. For actual implemention, get player list -> click that player's name to send invitation
     <form  action="/test/game/<%= id %>/inv" method="post">
       To user: <input name="username"><br>
       <button type="submit">send inv</button>
