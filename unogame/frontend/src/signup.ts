@@ -1,7 +1,7 @@
-import { validateForm } from "./registration.ts"; // Assuming the registration validation function is correctly implemented
+import { validateForm } from './registration.ts'; // Assuming the registration validation function is correctly implemented
 
 const renderSignUpPage = () => {
-  const appDiv = document.querySelector<HTMLDivElement>("#app");
+  const appDiv = document.querySelector<HTMLDivElement>('#app');
   if (appDiv) {
     appDiv.innerHTML = `
         <div class="flex items-center justify-center h-screen bg-gray-900">
@@ -39,74 +39,74 @@ const renderSignUpPage = () => {
 };
 
 function attachValidationHandlers() {
-  const form = document.getElementById("form") as HTMLFormElement;
+  const form = document.getElementById('form') as HTMLFormElement;
   const passwordInput = document.getElementById(
-    "password1"
+    'password1',
   ) as HTMLInputElement;
 
   if (passwordInput) {
-    passwordInput.addEventListener("input", function () {
+    passwordInput.addEventListener('input', function () {
       if (passwordInput.value.length < 8) {
         // check if password is less than 8 characters
         passwordInput.setCustomValidity(
-          "Password must be at least 8 characters long."
+          'Password must be at least 8 characters long.',
         );
       } else {
-        passwordInput.setCustomValidity("");
+        passwordInput.setCustomValidity('');
       }
     });
   }
 
   if (form) {
-    form.addEventListener("submit", async (event) => {
+    form.addEventListener('submit', async (event) => {
       event.preventDefault(); // prevent form submission
       if (passwordInput) {
         validateForm(form); // console logs the form data
         try {
           const formData = {
-            fullname: form.querySelector<HTMLInputElement>("#name")?.value,
-            username: form.querySelector<HTMLInputElement>("#username")?.value,
-            password: form.querySelector<HTMLInputElement>("#password1")?.value,
+            fullname: form.querySelector<HTMLInputElement>('#name')?.value,
+            username: form.querySelector<HTMLInputElement>('#username')?.value,
+            password: form.querySelector<HTMLInputElement>('#password1')?.value,
           };
 
           // filter out null or undefined values
           const filteredFormData = Object.fromEntries(
             Object.entries(formData).filter(
-              ([_, value]) => value !== null && value !== undefined
-            )
+              ([_, value]) => value !== null && value !== undefined,
+            ),
           );
 
           // send signup request to the server
           const response = await fetch(`/api/signup`, {
-            credentials: "include",
-            method: "POST",
+            credentials: 'include',
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify(filteredFormData),
           });
 
           // check if signup was successful
           if (!response.ok) {
-            throw new Error("Failed to sign up");
+            throw new Error('Failed to sign up');
           }
 
           // redirect to lobby upon successful signup
           const data = await response.json();
-          console.log("[signup.ts] login successful - message:", data.message);
-          window.location.href = "/lobby";
+          console.log('[signup.ts] login successful - message:', data.message);
+          window.location.href = '/lobby';
         } catch (error) {
-          console.error("Signup failed:", error.message);
+          console.error('Signup failed:', error.message);
         }
       }
       //window.location.href = '/login';  // redirect to login page
     });
   }
 
-  const loginButton = document.getElementById("loginButton");
+  const loginButton = document.getElementById('loginButton');
   if (loginButton) {
-    loginButton.addEventListener("click", () => {
-      window.location.href = "/login"; // redirect to login page
+    loginButton.addEventListener('click', () => {
+      window.location.href = '/login'; // redirect to login page
     });
   }
 }

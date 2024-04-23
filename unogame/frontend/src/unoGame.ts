@@ -1,8 +1,8 @@
 const renderUnoGamePage = () => {
-    const appDiv = document.querySelector<HTMLDivElement>('#app');
+  const appDiv = document.querySelector<HTMLDivElement>('#app');
 
-    if (appDiv) {
-        appDiv.innerHTML = `
+  if (appDiv) {
+    appDiv.innerHTML = `
             <div class="flex">
                 <div class="w-1/3 border border-red-500 p-4">
                     <h2 class="text-lg font-bold mb-4 text-red-500">UNO GAME</h2>
@@ -32,39 +32,41 @@ const renderUnoGamePage = () => {
             </div>
         `;
 
-        const lobbyContainer = appDiv.querySelector<HTMLDivElement>('#lobbyContainer');
+    const lobbyContainer =
+      appDiv.querySelector<HTMLDivElement>('#lobbyContainer');
 
-        if (lobbyContainer) {
-            lobbyContainer.addEventListener('click', (event) => {
-                const target = event.target as HTMLElement;
-                
-                if (target.id === 'abandonButton') {
-                    lobbyContainer.innerHTML = `
+    if (lobbyContainer) {
+      lobbyContainer.addEventListener('click', (event) => {
+        const target = event.target as HTMLElement;
+
+        if (target.id === 'abandonButton') {
+          lobbyContainer.innerHTML = `
                     <!-- ABANDON GAME FUNCTIONALITY goes here -->
                     `;
 
-                    const goBackButton = lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
-                    if (goBackButton) {
-                        goBackButton.addEventListener('click', () => {
-                            history.back(); // navigate back to the previous page
-                        });
-                    }
-
-                } else if (target.id === 'drawButton') {
-                    lobbyContainer.innerHTML = `
+          const goBackButton =
+            lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
+          if (goBackButton) {
+            goBackButton.addEventListener('click', () => {
+              history.back(); // navigate back to the previous page
+            });
+          }
+        } else if (target.id === 'drawButton') {
+          lobbyContainer.innerHTML = `
                     <!-- DRAW GAME FUNCTIONALITY goes here -->
                     `;
 
-                    const goBackButton = lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
-                    if (goBackButton) {
-                        goBackButton.addEventListener('click', () => {
-                            history.back(); // Navigate back to the previous page
-                        });
-                    }  
-                }
+          const goBackButton =
+            lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
+          if (goBackButton) {
+            goBackButton.addEventListener('click', () => {
+              history.back(); // Navigate back to the previous page
             });
+          }
         }
+      });
     }
-}
+  }
+};
 
 export default renderUnoGamePage;

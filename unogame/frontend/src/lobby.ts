@@ -1,7 +1,7 @@
-import renderUnoGamePage from "./unoGame";
+import renderUnoGamePage from './unoGame';
 
 const renderLobbyPage = () => {
-  const appDiv = document.querySelector<HTMLDivElement>("#app");
+  const appDiv = document.querySelector<HTMLDivElement>('#app');
 
   if (appDiv) {
     appDiv.innerHTML = `
@@ -50,13 +50,13 @@ const renderLobbyPage = () => {
         `;
 
     const lobbyContainer =
-      appDiv.querySelector<HTMLDivElement>("#lobbyContainer");
+      appDiv.querySelector<HTMLDivElement>('#lobbyContainer');
 
     if (lobbyContainer) {
-      lobbyContainer.addEventListener("click", (event) => {
+      lobbyContainer.addEventListener('click', (event) => {
         const target = event.target as HTMLElement;
 
-        if (target.id === "startGameButton") {
+        if (target.id === 'startGameButton') {
           lobbyContainer.innerHTML = `
                         <h2 class="text-lg font-bold mb-4">LOBBY</h2>
                         <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
@@ -92,13 +92,13 @@ const renderLobbyPage = () => {
                     `;
 
           const goBackButton =
-            lobbyContainer.querySelector<HTMLButtonElement>("#goBackButton");
+            lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
           if (goBackButton) {
-            goBackButton.addEventListener("click", () => {
+            goBackButton.addEventListener('click', () => {
               history.back(); // navigate back to the previous page
             });
           }
-        } else if (target.id === "confirmSelectionButton") {
+        } else if (target.id === 'confirmSelectionButton') {
           lobbyContainer.innerHTML = `
                         <h2 class="text-lg font-bold mb-4">WAITING ROOM</h2>
                         <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
@@ -121,13 +121,13 @@ const renderLobbyPage = () => {
                     `;
 
           const goBackButton =
-            lobbyContainer.querySelector<HTMLButtonElement>("#goBackButton");
+            lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
           if (goBackButton) {
-            goBackButton.addEventListener("click", () => {
+            goBackButton.addEventListener('click', () => {
               history.back(); // navigate back to the previous page
             });
           }
-        } else if (target.id === "joinRoomButton") {
+        } else if (target.id === 'joinRoomButton') {
           lobbyContainer.innerHTML = `
                         <h2 class="text-lg font-bold mb-4">JOIN A ROOM</h2>
                         <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
@@ -147,20 +147,20 @@ const renderLobbyPage = () => {
                     `;
 
           const goBackButton =
-            lobbyContainer.querySelector<HTMLButtonElement>("#goBackButton");
+            lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
           if (goBackButton) {
-            goBackButton.addEventListener("click", () => {
+            goBackButton.addEventListener('click', () => {
               history.back(); // navigate back to the previous page
             });
           }
         }
 
         // redirection to the game page
-        if (target.id === "playGameButton") {
+        if (target.id === 'playGameButton') {
           renderUnoGamePage();
         }
 
-        if (target.id === "logoutButton") {
+        if (target.id === 'logoutButton') {
           logout();
         }
       });
@@ -172,20 +172,20 @@ const logout = async () => {
   try {
     // send logout request to the server
     const response = await fetch(`/api/logout`, {
-      credentials: "include",
-      method: "POST",
+      credentials: 'include',
+      method: 'POST',
     });
 
     // check if logout was successful
     if (response.ok) {
       // redirect to the mainn page upon successful logout
-      window.location.href = "/";
-      console.log("[Lobby.ts] Logged out successfully");
+      window.location.href = '/';
+      console.log('[Lobby.ts] Logged out successfully');
     } else {
-      throw new Error("Failed to log out");
+      throw new Error('Failed to log out');
     }
   } catch (error) {
-    console.error("[lobby.ts] Logout failed:", error);
+    console.error('[lobby.ts] Logout failed:', error);
   }
 };
 
