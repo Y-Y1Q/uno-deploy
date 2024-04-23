@@ -1,8 +1,8 @@
 const renderLoginPage = () => {
-    const appDiv = document.querySelector<HTMLDivElement>("#app");
+  const appDiv = document.querySelector<HTMLDivElement>("#app");
 
-    if (appDiv) {
-        appDiv.innerHTML = `
+  if (appDiv) {
+    appDiv.innerHTML = `
             <div class="flex items-center justify-center h-screen bg-gray-900">
                 <div class="w-96 bg-white rounded-lg shadow-xl p-8">
                     <h1 class="text-4xl font-bold text-center mb-8">Login</h1>
@@ -28,53 +28,53 @@ const renderLoginPage = () => {
                 </div>
             </div>
         `;
-    }
+  }
 
-    const loginForm = appDiv?.querySelector<HTMLFormElement>("#loginForm");
+  const loginForm = appDiv?.querySelector<HTMLFormElement>("#loginForm");
 
-    if (loginForm) {
-        // add event listener to the login form submission
-        loginForm.addEventListener("submit", async (event) => {
-            event.preventDefault(); // prevent form submission
+  if (loginForm) {
+    // add event listener to the login form submission
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault(); // prevent form submission
 
-            // get form data
-            const formData = new FormData(loginForm);
-            const username = formData.get("username") as string;
-            const password = formData.get("password") as string;
+      // get form data
+      const formData = new FormData(loginForm);
+      const username = formData.get("username") as string;
+      const password = formData.get("password") as string;
 
-            console.log("Username:", username);
-            console.log("Password:", password);
+      console.log("Username:", username);
+      console.log("Password:", password);
 
-            try {
-                // send login request to the server
-                const response = await fetch(`/api/login`, {
-                    credentials: "include",
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ username, password }),
-                });
-
-                // check if login was successful
-                if (!response.ok) {
-                    throw new Error("Failed to log in");
-                }
-
-                // redirect to lobby upon successful login
-                const data = await response.json();
-                console.log("[login.ts] login successful - message:", data.message);
-                window.location.href = "/unogame/lobby";
-            } catch (error) {
-                console.error("Login failed:", error.message);
-                const messageElement =
-                    appDiv?.querySelector<HTMLDivElement>("#message");
-                if (messageElement) {
-                    messageElement.textContent = "Login failed. Please try again.";
-                }
-            }
+      try {
+        // send login request to the server
+        const response = await fetch(`/api/login`, {
+          credentials: "include",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
         });
-    }
-}
+
+        // check if login was successful
+        if (!response.ok) {
+          throw new Error("Failed to log in");
+        }
+
+        // redirect to lobby upon successful login
+        const data = await response.json();
+        console.log("[login.ts] login successful - message:", data.message);
+        window.location.href = "/lobby";
+      } catch (error) {
+        console.error("Login failed:", error.message);
+        const messageElement =
+          appDiv?.querySelector<HTMLDivElement>("#message");
+        if (messageElement) {
+          messageElement.textContent = "Login failed. Please try again.";
+        }
+      }
+    });
+  }
+};
 
 export default renderLoginPage;
