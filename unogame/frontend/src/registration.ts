@@ -1,14 +1,18 @@
 export function validateForm(form: HTMLFormElement) {
-  const name = (form.elements.namedItem("name") as HTMLInputElement)?.value;
-  const username = (form.elements.namedItem("username") as HTMLInputElement)
-    ?.value;
-  const password = (form.elements.namedItem("password1") as HTMLInputElement)
-    ?.value;
+  const nameInput = form.querySelector<HTMLInputElement>("#name");
+  const usernameInput = form.querySelector<HTMLInputElement>("#username");
+  const passwordInput = form.querySelector<HTMLInputElement>("#password1");
 
-  console.log("[registration.ts] User entered:");
-  console.log("[registration.ts] Name:", name);
-  console.log("[registration.ts] Username:", username);
-  console.log("[registration.ts] Password:", password);
+  if (nameInput && usernameInput && passwordInput) {
+    const name = nameInput.value;
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+
+    console.log("[registration.ts] User entered:");
+    console.log("[registration.ts] Name:", name);
+    console.log("[registration.ts] Username:", username);
+    console.log("[registration.ts] Password:", password);
+  }
 }
 
 function storeFormData(form: HTMLFormElement) {

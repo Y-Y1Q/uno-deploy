@@ -63,6 +63,19 @@ function attachValidationHandlers() {
       if (passwordInput) {
         validateForm(form); // console logs the form data
         try {
+          const formData = {
+            fullname: form.querySelector<HTMLInputElement>("#name")?.value,
+            username: form.querySelector<HTMLInputElement>("#username")?.value,
+            password: form.querySelector<HTMLInputElement>("#password1")?.value,
+          };
+
+          // filter out null or undefined values
+          const filteredFormData = Object.fromEntries(
+            Object.entries(formData).filter(
+              ([_, value]) => value !== null && value !== undefined
+            )
+          );
+
           // send signup request to the server
           const response = await fetch(`/api/signup`, {
             credentials: "include",
@@ -70,11 +83,7 @@ function attachValidationHandlers() {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              name: form.elements.namedItem("name")?.value,
-              username: form.elements.namedItem("username")?.value,
-              password: form.elements.namedItem("password1")?.value,
-            }),
+            body: JSON.stringify(filteredFormData),
           });
 
           // check if signup was successful
