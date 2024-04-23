@@ -1,20 +1,23 @@
 import { getUser } from "../../db/users";
 
-// Pre-condition: the sender is in the wait room of a game (according to FE wireframe)
-// Input: username - can be fetch from /lobby/get-players
+// DELETE COMMENT LATER 
+// Pre-condition: the sender is in the wait-room of a game (according to FE wireframe)
+// request body: username - can fetch from /lobby/players
 // send invite message to a user
-// sample url /game/:id/wait  or something similar
 const sendInvitation = async (req, res) => {
   const { id: roomId } = req.params; //   params - someurl/:id  (placeholder)
-  const { username: toUser } = req.body;
-  const { username: fromUser } = req.session.user;
+  const { username: toUser } = req.body;  // in FE, sender should choose from a players list
+  const { username: fromUser } = req.session.user; // sender 
+  const { id: fromUserId } = req.session.user;
   const { id: toUserId } = await getUser(toUser);
 
-  const msg = `${fromUser} invite you to join ${roomId}.`;
+
+  
+  if ( fromUserId !== toUserId){
+
+  const msg = `${fromUser} invite you to join ${roomId}.`; 
 
   const io = req.app.get("io");
-
-  console.log(`${fromUser} inv ${toUser} to join ${roomId}`);
 
   // send inv message to the toUser's lobby
 
@@ -25,7 +28,10 @@ const sendInvitation = async (req, res) => {
     message: msg,
   });
 
-  res.sendStatus(200);
+  }
+  
+
+  return res.sendStatus(200);
 };
 
 export { sendInvitation };
