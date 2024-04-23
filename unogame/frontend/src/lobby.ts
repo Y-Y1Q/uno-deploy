@@ -178,8 +178,9 @@ const logout = async () => {
 
     // check if logout was successful
     if (response.ok) {
-      // redirect to the login page upon successful logout
-      window.location.href = "/login";
+      // redirect to the mainn page upon successful logout
+      window.location.href = "/";
+      console.log("[Lobby.ts] Logged out successfully");
     } else {
       throw new Error("Failed to log out");
     }
