@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "/unogame/",
+  base: "/",
   server: {
     proxy: {
       //  proxy configuration for redirecting requests to the backend
