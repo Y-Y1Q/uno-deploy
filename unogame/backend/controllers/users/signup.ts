@@ -28,6 +28,13 @@ const signUp = async (req, res) => {
 
     await UsersDB.addUser(username, hash, fullname);
 
+    const newUser = await UsersDB.addUser(username, hash, fullname);
+
+    req.session.user = {
+      id: newUser.id,
+      username: newUser.username,
+    };
+
     return res
       .status(HttpCode.Created)
       .json({ message: username + " created" });
