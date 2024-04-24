@@ -60,20 +60,18 @@ const renderLobbyPage = () => {
                     </div>
                 </div>
 
-                <div class="w-1/3 border border-blue-500 p-4">
+                <div class="w-1/3 border border-blue-500 p-4 flex flex-col">
                 <h2 class="text-lg font-bold mb-4">CHAT BOX CONTAINER</h2>
-                <div class="h-64 border border-gray-300 p-4 mb-4">
-                    <div class="chatbox" id="chatbox">
+                <div class="flex-grow border border-gray-300 p-4 mb-4 flex flex-col">
+                  <div class="chatbox flex-grow h-64 overflow-y-auto" id="chatbox">
                     <!-- Chat messages will be added here -->
-                      </div>
-                          <form id="chatForm">
-                              <input type="text" id="chatMessage" placeholder="Type your message" required name="chatMessage" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors duration-300 bottom-0">
-                              <input type="submit" value="Send" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">
-                          </form>
-                        </div>
-          
+                  </div>
+                  <form id="chatForm" class="flex">
+                    <input type="text" id="chatMessage" placeholder="Type your message" required name="chatMessage" class="flex-grow border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors duration-300">
+                    <input type="submit" value="Send" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">
+                  </form>
                 </div>
-            </div>
+              </div>
         `;
 
         const chatForm = document.querySelector('#chatForm');
