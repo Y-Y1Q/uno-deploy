@@ -75,15 +75,6 @@ const renderLobbyPage = () => {
                                     <option value="4">4</option>
                                 </select>
                             </div>
-                            <div class="mb-4">
-                                <select id="playerChoice" name="playerChoice" class="w-full p-2 border border-gray-300 rounded">
-                                    <option value="" disabled selected>Select Players</option>
-                                    <option value="P.Diddy">P.Diddy</option>
-                                    <option value="6ix9ine">6ix9ine</option>
-                                    <option value="Kanye West">Kanye West</option>
-                                    <option value="Chris Brown">Chris Brown</option>
-                                </select>
-                            </div>
                             <div>
                                 <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="confirmSelectionButton">Confirm Selection</button>
                                 <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton">Go Back</button>
@@ -112,6 +103,15 @@ const renderLobbyPage = () => {
                                 <p> 1/2 players joined</p>
                                 <p> You are in the room</p>
                                 <p> Waiting for other players to join</p>
+                            </div>
+                            <div class="mb-4">
+                                <select id="playerChoice" name="playerChoice" class="w-full p-2 border border-gray-300 rounded">
+                                    <option value="" disabled selected>Invite Players</option>
+                                    <option value="P.Diddy">P.Diddy</option>
+                                    <option value="6ix9ine">6ix9ine</option>
+                                    <option value="Kanye West">Kanye West</option>
+                                    <option value="Chris Brown">Chris Brown</option>
+                                </select>
                             </div>
                             <div>
                                 <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="playGameButton">Play Game</button>
