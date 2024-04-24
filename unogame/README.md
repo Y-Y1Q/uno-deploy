@@ -1,7 +1,5 @@
 # Getting Started with Frontend
 
-Install PostgreSQL 16.2
-
 ## Build and start frontend server
 
 `cd unogame/frontend`: change directory to frontend folder from repo root
