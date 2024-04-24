@@ -1,7 +1,27 @@
-import renderUnoGamePage from './unoGame';
+import io from 'socket.io-client';
+import renderUnoGamePage from "./unoGame";
 
 const renderLobbyPage = () => {
   const appDiv = document.querySelector<HTMLDivElement>('#app');
+
+  const socket = io("http://localhost:3333", { withCredentials: true });
+
+  // Listen for 'message' events from the server specifically for the lobby
+  socket.on('chat:message:0', (data) => {
+    const chatbox = document.querySelector('#chatbox');
+    if (chatbox) {
+      const newMessage = document.createElement('div');
+      newMessage.classList.add('flex', 'justify-start', 'mb-2');
+
+      const messageBubble = document.createElement('div');
+      messageBubble.classList.add('bg-green-200', 'text-green-700', 'rounded', 'py-2', 'px-4');
+      messageBubble.innerHTML = `<p>${data.message}</p><p class="text-left font-bold">${data.from}</p>`;
+
+      newMessage.appendChild(messageBubble);
+      chatbox.appendChild(newMessage);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+  });
 
   if (appDiv) {
     appDiv.innerHTML = `
@@ -42,12 +62,72 @@ const renderLobbyPage = () => {
                     </div>
                 </div>
 
-                <div class="w-1/3 border border-blue-500 p-4">
-                    <h2 class="text-lg font-bold mb-4">CHAT BOX CONTAINER</h2>
-                    <!-- Chat box content goes here -->
+                <div class="w-1/3 border border-blue-500 p-4 flex flex-col">
+                <h2 class="text-lg font-bold mb-4">CHAT BOX CONTAINER</h2>
+                <div class="flex-grow border border-gray-300 p-4 mb-4 flex flex-col">
+                  <div class="chatbox flex-grow h-64 overflow-y-auto" id="chatbox">
+
+                  <!-- Simulated messages -->
+                  
+                  <div class="flex justify-end mb-2">
+                    <div class="bg-blue-200 text-blue-700 rounded py-2 px-4">
+                      <p>Hello, anyone there?</p>
+                      <p class="text-right font-bold">6ix9ine</p>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-end mb-2">
+                  <div class="bg-blue-200 text-blue-700 rounded py-2 px-4">
+                    <p>I'm here</p>
+                    <p class="text-right font-bold">Donald Trump</p>
+                  </div>
                 </div>
-            </div>
+
+                <div class="flex justify-end mb-2">
+                <div class="bg-blue-200 text-blue-700 rounded py-2 px-4">
+                  <p>I'm here too</p>
+                  <p class="text-right font-bold">Kanye West</p>
+                </div>
+              </div>
+
+              <!-- New Chat messages will be added here -->
+                  
+                  </div>
+                  <form id="chatForm" class="flex">
+                    <input type="text" id="chatMessage" placeholder="Type your message" required name="chatMessage" class="flex-grow border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors duration-300">
+                    <input type="submit" value="Send" class="bg-blue-500 text-white px-4 py-2 rounded ml-2">
+                  </form>
+                </div>
+              </div>
         `;
+
+    const chatForm = document.querySelector('#chatForm');
+    if (chatForm) {
+      chatForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const chatMessageInput = chatForm.querySelector('#chatMessage');
+        if (chatMessageInput) {
+          const chatMessageInput = chatForm.querySelector('#chatMessage') as HTMLInputElement;
+          const chatMessage = chatMessageInput.value;
+          try {
+            const response = await fetch('/api/lobby/chat', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              body: JSON.stringify({ message: chatMessage }),
+            });
+            if (!response.ok) {
+              throw new Error('Failed to send message');
+            }
+          } catch (error) {
+            console.error('Error sending message:', error);
+          }
+          chatMessageInput.value = '';
+        }
+      });
+    }
 
     const lobbyContainer =
       appDiv.querySelector<HTMLDivElement>('#lobbyContainer');
@@ -154,6 +234,7 @@ const renderLobbyPage = () => {
             });
           }
         }
+
 
         // redirection to the game page
         if (target.id === 'playGameButton') {
