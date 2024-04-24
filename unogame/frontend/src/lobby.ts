@@ -1,7 +1,26 @@
-import renderUnoGamePage from './unoGame';
+import io from 'socket.io-client';
+import renderUnoGamePage from "./unoGame";
 
 const renderLobbyPage = () => {
   const appDiv = document.querySelector<HTMLDivElement>('#app');
+
+  const socket = io("http://localhost:3333", { withCredentials: true });
+
+  // Join the lobby immediately after connecting
+  socket.emit('joinLobby');
+
+  // Listen for 'message' events from the server specifically for the lobby
+  socket.on('chat:message:0', (data) => {
+    const chatbox = document.querySelector('#chatbox');
+    if (chatbox) {
+      const newMessage = document.createElement('div');
+      newMessage.classList.add('chat-message');
+      // Assume that data structure contains { hash, from, timestamp, message }
+      newMessage.innerHTML = `<span class="font-bold">${data.from}:</span> ${data.message}`;
+      chatbox.appendChild(newMessage);
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
+  });
 
   if (appDiv) {
     appDiv.innerHTML = `
@@ -43,11 +62,57 @@ const renderLobbyPage = () => {
                 </div>
 
                 <div class="w-1/3 border border-blue-500 p-4">
-                    <h2 class="text-lg font-bold mb-4">CHAT BOX CONTAINER</h2>
-                    <!-- Chat box content goes here -->
+                <h2 class="text-lg font-bold mb-4">CHAT BOX CONTAINER</h2>
+                <div class="h-64 border border-gray-300 p-4 mb-4">
+                    <div class="chatbox" id="chatbox">
+                    <!-- Chat messages will be added here -->
+                            <div class="chat-message">
+                                <span class="font-bold">User:</span> Hello, anyone here?
+                            </div>
+                            <div class="chat-message">
+                                <span class="font-bold">User1:</span> I'm here
+                            </div>
+                            <div class="chat-message">
+                                <span class="font-bold">User3:</span> I'm here too
+                            </div>
+                      </div>
+                          <form id="chatForm">
+                              <input type="text" id="chatMessage" placeholder="Type your message" required name="chatMessage" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors duration-300 bottom-0">
+                              <input type="submit" value="Send" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">
+                          </form>
+                        </div>
+          
                 </div>
             </div>
         `;
+
+        const chatForm = document.querySelector('#chatForm');
+if (chatForm) {
+  chatForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const chatMessageInput = chatForm.querySelector('#chatMessage');
+    if (chatMessageInput) {
+      const chatMessageInput = chatForm.querySelector('#chatMessage') as HTMLInputElement;
+      const chatMessage = chatMessageInput.value;
+      try {
+        const response = await fetch('/api/lobby/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({ message: chatMessage }),
+        });
+        if (!response.ok) {
+          throw new Error('Failed to send message');
+        }
+      } catch (error) {
+        console.error('Error sending message:', error);
+      }
+      chatMessageInput.value = '';
+    }
+  });
+}
 
     const lobbyContainer =
       appDiv.querySelector<HTMLDivElement>('#lobbyContainer');
@@ -154,6 +219,7 @@ const renderLobbyPage = () => {
             });
           }
         }
+        
 
         // redirection to the game page
         if (target.id === 'playGameButton') {
