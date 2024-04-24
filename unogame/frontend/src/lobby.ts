@@ -6,9 +6,6 @@ const renderLobbyPage = () => {
 
   const socket = io("http://localhost:3333", { withCredentials: true });
 
-  // Join the lobby after connecting
-  socket.emit('joinLobby');
-
   // Listen for 'message' events from the server specifically for the lobby
   socket.on('chat:message:0', (data) => {
     const chatbox = document.querySelector('#chatbox');

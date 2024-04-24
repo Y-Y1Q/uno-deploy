@@ -99,7 +99,6 @@ function attachValidationHandlers() {
             console.error('Signup failed:', error.message);
         }
       }
-      //window.location.href = '/login';  // redirect to login page
     });
   }
 
