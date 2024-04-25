@@ -1,5 +1,5 @@
 import { createAvatar } from '@dicebear/core';
-import { identicon } from '@dicebear/collection';
+import { bottts } from '@dicebear/collection';
 
 const chatController = (req, res) => {
   let { id: roomId } = req.params; //   params - someurl/:id  (placeholder)
@@ -13,8 +13,8 @@ const chatController = (req, res) => {
 
   console.log({ username, message, roomId });
 
-  // Create identicon style avatar
-  const avatar = createAvatar(identicon, {
+  // Create bottts style avatar based on username
+  const avatar = createAvatar(bottts, {
     seed: `${username}`,
     size: 32
   });
