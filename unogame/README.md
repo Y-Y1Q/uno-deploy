@@ -15,3 +15,5 @@
 `npm run format`: utilizes Prettier to format code within the ./src directory, **run this before a commit**
 
 Port: 5173 or defined locally
+
+Read more about the progress [here](https://docs.google.com/document/d/1Q7dy5t1PLPO-GSkX-l9Odzt26guablaQ6HB8vQvXcro/edit#heading=h.354dsx7n9cz3)
