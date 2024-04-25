@@ -28,11 +28,13 @@ const logIn = async (req, res) => {
       req.session.user = {
         id: user.id,
         username: user.username,
+        fullName: user.fullName,
       };
 
-      return res
-        .status(HttpCode.OK)
-        .json({ message: username + " is logged in" });
+      return res.status(HttpCode.OK).json({
+        message: username + " is logged in",
+        fullName: user.fullName,
+      });
     } else {
       return res
         .status(HttpCode.Forbidden)
