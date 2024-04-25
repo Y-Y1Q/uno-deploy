@@ -1,10 +1,18 @@
 import express from "express";
 import * as Chat from "../controllers/ctrl_chat";
+import * as Session from "../middleware/session";
 
 const router = express.Router();
 
+
+
 router.get("/", (req, res) => {
-  res.render("test_lobby");
+
+  // will get Type error if using req.session.user directly
+  // alternative solution: Typescript Declaration Merging
+  const {username: currentUser, id: currentUserId } = Session.getCurrentUser(req);
+  
+  res.render("test_lobby", { currentUser, currentUserId } );
 });
 
 router.post("/chat", Chat.sendMessage);

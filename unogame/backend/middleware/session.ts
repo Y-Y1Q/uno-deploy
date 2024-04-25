@@ -35,4 +35,11 @@ const logToConsole = (req, res, next) => {
   next();
 };
 
-export { config, setToLocal, logToConsole };
+// the following getter will have user object
+// { isAuthenticated } in check_auth.ts will check it first in express routes
+
+const getCurrentUser = (req) => {
+  return req.session.user;
+}
+
+export { config, setToLocal, logToConsole, getCurrentUser, };
