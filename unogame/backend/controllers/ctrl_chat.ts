@@ -1,4 +1,5 @@
-import createHash from "create-hash";
+import { createAvatar } from '@dicebear/core';
+import { bottts } from '@dicebear/collection';
 
 const chatController = (req, res) => {
   let { id: roomId } = req.params; //   params - someurl/:id  (placeholder)
@@ -12,8 +13,17 @@ const chatController = (req, res) => {
 
   console.log({ username, message, roomId });
 
+  // Create bottts style avatar based on username
+  const avatar = createAvatar(bottts, {
+    seed: `${username}`,
+    size: 32
+  });
+
+  const svg = avatar.toString();
+  // console.log("test avatar:" + svg);
+
   io.emit(`chat:message:${roomId}`, {
-    hash: createHash("sha256").update(username).digest("hex"), // may use this to get some random profile img from img website
+    avatar: svg, 
     from: username,
     timestamp: Date.now(),
     message,

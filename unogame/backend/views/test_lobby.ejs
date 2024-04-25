@@ -168,9 +168,9 @@
       });
 
       // Listening chat event from lobby (roomId - 0)
-      socket.on(`chat:message:0`, ({ from, timestamp, message }) => {
+      socket.on(`chat:message:0`, ({avatar, from, timestamp, message }) => {
         const li = document.createElement("li");
-        li.textContent = from + ": " + message;
+        li.innerHTML = `${avatar}${from}: ${message}`;
         document.querySelector("ul").appendChild(li);
       });
     </script>

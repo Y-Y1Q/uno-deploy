@@ -102,13 +102,12 @@ According to FE waitroom wireframe. For actual implemention, get player list -> 
     // Listening chat event from specific room
     socket.on(
       `chat:message:${roomId}`,
-      ({ from, timestamp, message }) => {
+      ({avatar, from, timestamp, message }) => {
 
-        const li = document.createElement('li')
-      
-          li.textContent = from + ": " + message;
-
-        document.querySelector('ul').appendChild(li)
+        const li = document.createElement("li");
+        li.innerHTML = `${avatar}${from}: ${message}`;
+        document.querySelector("ul").appendChild(li);
+        
       },
     );
   </script>
