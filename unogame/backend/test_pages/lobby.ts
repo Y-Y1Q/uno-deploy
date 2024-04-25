@@ -1,5 +1,5 @@
 import express from "express";
-import { chatController } from "../controllers/ctrl_chat";
+import * as Chat from "../controllers/ctrl_chat";
 
 const router = express.Router();
 
@@ -7,6 +7,6 @@ router.get("/", (req, res) => {
   res.render("test_lobby");
 });
 
-router.post("/chat", chatController);
+router.post("/chat", Chat.sendMessage);
 
 export default router;

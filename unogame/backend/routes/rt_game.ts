@@ -1,13 +1,13 @@
 import express from "express";
 import { isUserInGame } from "../middleware/check_auth";
-import { chatController } from "../controllers/ctrl_chat";
 import * as Games from "../controllers/ctrl_games";
-import { sendInvitation } from "../controllers/ctrl_lobby";
+import * as Chat from "../controllers/ctrl_chat"
+
 
 const router = express.Router();
 
-router.post("/:id/chat", isUserInGame, chatController);
-router.post("/:id/inv", isUserInGame, sendInvitation);
+router.post("/:id/chat", isUserInGame, Chat.sendMessage);
+router.post("/:id/inv", isUserInGame, Chat.sendInvitation);
 
 router.get("/get-games/:name?", Games.getGames);
 router.post("/create", Games.createGame);
