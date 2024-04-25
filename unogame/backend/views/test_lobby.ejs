@@ -170,7 +170,13 @@
       // Listening chat event from lobby (roomId - 0)
       socket.on(`chat:message:0`, ({avatar, from, timestamp, message }) => {
         const li = document.createElement("li");
-        li.innerHTML = `${avatar}${from}: ${message}`;
+        if (from === "ADMIN")
+        {
+          li.innerHTML = `${message}`;
+        }else{
+          li.innerHTML = `${avatar}${from}: ${message}`;
+        }
+        
         document.querySelector("ul").appendChild(li);
       });
     </script>

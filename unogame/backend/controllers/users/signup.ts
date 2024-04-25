@@ -8,6 +8,12 @@ const signUp = async (req, res) => {
   console.log(req.body);
   const { username, password, fullname } = req.body;
 
+  if (checkName(username) || checkName(fullname)){
+    return res.status(HttpCode.BadRequest).json({
+      error: "Invalid username/fullname to use"
+    });
+  }
+
   if (req.session.user !== undefined) {
     return res.status(HttpCode.BadRequest).json({
       error: "You are already logged in as: " + req.session.user.username,
@@ -43,5 +49,10 @@ const signUp = async (req, res) => {
       .json({ error: "Internal server error" });
   }
 };
+
+
+function checkName(str: string): boolean {
+    return str.toUpperCase() === "ADMIN";
+}
 
 export { signUp };
