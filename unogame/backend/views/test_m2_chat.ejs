@@ -63,12 +63,11 @@
       const li = document.createElement("li");
       if (from !== "<%= currentUser %>") {
         li.classList.add("right-align");
-      }
-      
-      if (from === "ADMIN") {
-        li.innerHTML = `${message}`;
+        li.innerHTML = `${from}${avatar} <br> ${message} <br> `;
+      } else if (from === "ADMIN") {
+        li.innerHTML = `<br> <br>  ${message} <br> <br> `;
       } else {
-        li.innerHTML = `${avatar}${from}: ${message}`;
+        li.innerHTML = `${avatar}${from} <br> ${message} <br>  `;
       }
       
       document.querySelector("ul").appendChild(li);
