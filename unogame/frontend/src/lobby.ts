@@ -1,10 +1,10 @@
 import io from 'socket.io-client';
-import renderUnoGamePage from "./unoGame";
+import renderUnoGamePage from './unoGame';
 
 const renderLobbyPage = () => {
   const appDiv = document.querySelector<HTMLDivElement>('#app');
 
-  const socket = io("http://localhost:3333", { withCredentials: true });
+  const socket = io('http://localhost:3333', { withCredentials: true });
 
   // Listen for 'message' events from the server specifically for the lobby
   socket.on('chat:message:0', (data) => {
@@ -14,7 +14,13 @@ const renderLobbyPage = () => {
       newMessage.classList.add('flex', 'justify-start', 'mb-2');
 
       const messageBubble = document.createElement('div');
-      messageBubble.classList.add('bg-green-200', 'text-green-700', 'rounded', 'py-2', 'px-4');
+      messageBubble.classList.add(
+        'bg-green-200',
+        'text-green-700',
+        'rounded',
+        'py-2',
+        'px-4',
+      );
       messageBubble.innerHTML = `<p>${data.message}</p><p class="text-left font-bold">${data.from}</p>`;
 
       newMessage.appendChild(messageBubble);
@@ -107,7 +113,9 @@ const renderLobbyPage = () => {
         event.preventDefault();
         const chatMessageInput = chatForm.querySelector('#chatMessage');
         if (chatMessageInput) {
-          const chatMessageInput = chatForm.querySelector('#chatMessage') as HTMLInputElement;
+          const chatMessageInput = chatForm.querySelector(
+            '#chatMessage',
+          ) as HTMLInputElement;
           const chatMessage = chatMessageInput.value;
           try {
             const response = await fetch('/api/lobby/chat', {
@@ -134,11 +142,16 @@ const renderLobbyPage = () => {
 
     // retrieve the username from local storage
     const storedUsername = localStorage.getItem('username');
+    console.log('[lobby.ts] Stored username:', storedUsername);
     if (storedUsername) {
       const welcomeMessage =
         lobbyContainer?.querySelector<HTMLHeadingElement>('h3');
       if (welcomeMessage) {
+        console.log('Welcome message element found in local storage');
         welcomeMessage.textContent = `Welcome ${storedUsername}`;
+      } else {
+        console.log('Welcome message element not found in local storage');
+        console.error('Username element not found in local storage');
       }
     }
 
@@ -244,7 +257,6 @@ const renderLobbyPage = () => {
             });
           }
         }
-
 
         // redirection to the game page
         if (target.id === 'playGameButton') {

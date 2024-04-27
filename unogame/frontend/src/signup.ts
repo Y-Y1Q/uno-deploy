@@ -98,6 +98,7 @@ function attachValidationHandlers() {
         } catch (error) {
           console.error('Signup failed:', (error as Error).message);
         }
+      }
     });
   }
 
