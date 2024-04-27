@@ -61,10 +61,13 @@ const renderLoginPage = () => {
           throw new Error('Failed to log in');
         }
 
-        // redirect to lobby upon successful login
-        const data = await response.json();
-        console.log('[login.ts] login successful - message:', data.message);
-        window.location.href = '/lobby';
+        if (response.ok) {
+          const data = await response.json();
+          const { username } = data;
+          localStorage.setItem('username', username); //store the username in localStorage
+          console.log('[login.ts] login successful - message:', data.message);
+          window.location.href = '/lobby'; // redirect to lobby upon successful login
+        }
       } catch (error) {
         console.error('Login failed:', error.message);
         const messageElement =

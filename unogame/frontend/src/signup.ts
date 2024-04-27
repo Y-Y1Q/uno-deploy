@@ -95,10 +95,9 @@ function attachValidationHandlers() {
           const data = await response.json();
           console.log('[signup.ts] login successful - message:', data.message);
           window.location.href = '/lobby';
-        } catch (error: any) {
-            console.error('Signup failed:', error.message);
+        } catch (error) {
+          console.error('Signup failed:', (error as Error).message);
         }
-      }
     });
   }
 

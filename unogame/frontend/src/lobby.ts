@@ -132,6 +132,16 @@ const renderLobbyPage = () => {
     const lobbyContainer =
       appDiv.querySelector<HTMLDivElement>('#lobbyContainer');
 
+    // retrieve the username from local storage
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      const welcomeMessage =
+        lobbyContainer?.querySelector<HTMLHeadingElement>('h3');
+      if (welcomeMessage) {
+        welcomeMessage.textContent = `Welcome ${storedUsername}`;
+      }
+    }
+
     if (lobbyContainer) {
       lobbyContainer.addEventListener('click', (event) => {
         const target = event.target as HTMLElement;
@@ -141,7 +151,7 @@ const renderLobbyPage = () => {
                         <h2 class="text-lg font-bold mb-4">LOBBY</h2>
                         <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
                             <div class="mb-4">
-                                <h3 class="text-xl font-bold">Welcome Donald Trump</h3>
+                                <h3 class="text-xl font-bold">${storedUsername ? `Welcome ${storedUsername}` : 'Welcome Guest'}</h3>
                             </div>
                             <div class="mb-4">
                                 <input class="w-full p-2 border border-gray-300 rounded" placeholder="Room Name"></input>
@@ -174,7 +184,7 @@ const renderLobbyPage = () => {
                         <h2 class="text-lg font-bold mb-4">WAITING ROOM</h2>
                         <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
                             <div class="mb-4">
-                                <h3 class="text-xl font-bold">Welcome Donald Trump</h3>
+                                <h3 class="text-xl font-bold">${storedUsername ? `Welcome ${storedUsername}` : 'Welcome Guest'}</h3>
                             </div>
                             <div class="mb-4">
                                 r.kelly room
