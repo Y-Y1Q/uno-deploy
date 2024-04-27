@@ -15,6 +15,15 @@ router.get("/", (req, res) => {
   res.render("test_lobby", { currentUser, currentUserId } );
 });
 
+router.get("/m2-chat", (req, res) => {
+
+  // will get Type error if using req.session.user directly
+  // alternative solution: Typescript Declaration Merging
+  const {username: currentUser, id: currentUserId } = Session.getCurrentUser(req);
+  
+  res.render("test_m2_chat", { currentUser, currentUserId } );
+});
+
 router.post("/chat", Chat.sendMessage);
 
 export default router;
