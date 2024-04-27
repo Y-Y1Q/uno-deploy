@@ -34,6 +34,7 @@ const logIn = async (req, res) => {
       return res.status(HttpCode.OK).json({
         message: username + " is logged in",
         fullName: user.fullName,
+        username: user.username,
       });
     } else {
       return res
