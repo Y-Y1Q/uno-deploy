@@ -10,8 +10,6 @@
 
 `npm run dev`: starts Vite development server for live development
 
-`npm run start`: launches a server to preview the production build of the frontend application locally
-
 `npm run format`: utilizes Prettier to format code within the ./src directory, **run this before a commit**
 
 Port: 5173 or defined locally

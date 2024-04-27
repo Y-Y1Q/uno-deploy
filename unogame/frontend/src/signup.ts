@@ -96,7 +96,7 @@ function attachValidationHandlers() {
           console.log('[signup.ts] login successful - message:', data.message);
           window.location.href = '/lobby';
         } catch (error) {
-          console.error('Signup failed:', error.message);
+          console.error('Signup failed:', (error as Error).message);
         }
       }
       //window.location.href = '/login';  // redirect to login page
