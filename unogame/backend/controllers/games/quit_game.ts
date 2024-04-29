@@ -5,7 +5,14 @@ const quitGame = async (req, res) => {
   const { id: gameId } = req.params;
   const { id: userId } = req.session.user;
 
-  // TODO: delete room after everyone quit?
+  // TODO: check if game is started
+  if (await GamesDB.getGameStarted(gameId)) {
+    return res.status(HttpCode.BadRequest).json({
+      error:
+        "game is started, TODO: keep the user as AI? " +
+        "Deleting the user from game will break a lot of parts",
+    });
+  }
 
   await GamesDB.quitGame(gameId, userId)
     .then(() => {
