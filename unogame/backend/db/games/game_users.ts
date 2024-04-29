@@ -14,11 +14,30 @@ const quitGame = async (gameId, userId) => {
   ]);
 };
 
-const getUsersInGame = async (gameid) => {
-  const ret = await db.any(
-    "SELECT user_id FROM game_users WHERE game_id=$1",
-    [gameid]
+const deleteGame = async (gameId) => {
+  await db.none("DELETE FROM games WHERE id=$1", [gameId]);
+};
+
+const setCreatorInGame = async (gameId, userId) => {
+  await db.none(
+    "UPDATE game_users SET is_creator=TRUE WHERE game_id=$1 AND user_id=$2",
+    [gameId, userId]
   );
+};
+
+const isCreatorInGame = async (gameId, userId) => {
+  const ret = await db.one(
+    "SELECT is_creator FROM game_users WHERE game_id=$1 AND user_id=$2",
+    [gameId, userId]
+  );
+
+  return ret.is_creator;
+};
+
+const getUsersInGame = async (gameid) => {
+  const ret = await db.any("SELECT user_id FROM game_users WHERE game_id=$1", [
+    gameid,
+  ]);
 
   return ret.map((row) => row.user_id);
 };
@@ -36,4 +55,12 @@ const getGamesJoined = async (userId) => {
   return ret;
 };
 
-export { joinGame, quitGame, getUsersInGame, getGamesJoined };
+export {
+  joinGame,
+  quitGame,
+  getUsersInGame,
+  getGamesJoined,
+  setCreatorInGame,
+  deleteGame,
+  isCreatorInGame,
+};

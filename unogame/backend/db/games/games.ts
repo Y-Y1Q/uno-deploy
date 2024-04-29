@@ -15,7 +15,7 @@ const getGamesByName = async (roomName) => {
   return ret;
 };
 
-const createGame = async (roomName) => {
+const createGame = async (roomName, userId) => {
   const ret = await db.one(
     "INSERT INTO games (room_name) VALUES ($1) RETURNING id",
     [roomName]
@@ -29,7 +29,6 @@ const startGame = async (gameId) => {
 };
 
 const endGame = async (gameId) => {
-  await deleteCards(gameId);
   await db.none("UPDATE games SET started=FALSE WHERE id=$1", [gameId]);
 };
 

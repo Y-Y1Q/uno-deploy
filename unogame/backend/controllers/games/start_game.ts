@@ -4,17 +4,27 @@ import { drawCards } from "./gameplay";
 
 const startGame = async (req, res) => {
   const { id: gameId } = req.params;
+  const { id: userId } = req.session.user;
 
   // clean before every game without explcitly calling ending it
-  GamesDB.endGame(gameId);
+  // this should happen checking, now is only for test
+  await GamesDB.endGame(gameId);
+  await GamesDB.deleteCards(gameId);
+
+  if (!(await GamesDB.isCreatorInGame(gameId, userId))) {
+    return res.status(HttpCode.BadRequest).json({
+      error:
+        "The current user with userId=" +
+        userId +
+        " is not the creator of this room!",
+    });
+  }
 
   if (await GamesDB.getGameStarted(gameId)) {
     return res
       .status(HttpCode.BadRequest)
       .json({ error: "The game is already started" });
   }
-
-  // TODO: check if the user is creator
 
   await GamesDB.startGame(gameId)
     .then(async () => {

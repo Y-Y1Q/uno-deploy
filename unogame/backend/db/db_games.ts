@@ -11,8 +11,11 @@ import {
 import {
   joinGame,
   quitGame,
+  setCreatorInGame,
   getUsersInGame,
   getGamesJoined,
+  deleteGame,
+  isCreatorInGame,
 } from "./games/game_users";
 
 import { drawCards, deleteCards, getUserCards } from "./games/game_cards";
@@ -26,6 +29,9 @@ export {
   getGameStarted,
   joinGame,
   quitGame,
+  setCreatorInGame,
+  deleteGame,
+  isCreatorInGame,
   getUsersInGame,
   drawCards,
   deleteCards,

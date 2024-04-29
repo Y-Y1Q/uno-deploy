@@ -20,10 +20,6 @@ exports.up = pgm => {
             notNull: true,
             default: 4
         },
-        active_players: {
-            type: "int",
-            default: 0
-        },
         started: {
             type: "boolean",
             default: false

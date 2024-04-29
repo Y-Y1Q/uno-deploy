@@ -16,10 +16,7 @@ exports.up = pgm => {
             references: "users(id)",
             onDelete: "cascade"
         },
-        turn_order: {
-            type: "int",
-        },
-        ready: {
+        is_creator: {
             type: "bool",
             default: false
         }
