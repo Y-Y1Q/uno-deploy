@@ -11,10 +11,7 @@ import {
 import {
   joinGame,
   quitGame,
-  checkUserInGame,
-  getUserReady,
-  getAllUsersReady,
-  toggleReady,
+  getUsersInGame,
   getGamesJoined,
 } from "./games/game_users";
 
@@ -29,10 +26,7 @@ export {
   getGameStarted,
   joinGame,
   quitGame,
-  checkUserInGame,
-  getUserReady,
-  getAllUsersReady,
-  toggleReady,
+  getUsersInGame,
   drawCards,
   deleteCards,
   getUserCards,

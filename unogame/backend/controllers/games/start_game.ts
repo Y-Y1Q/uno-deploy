@@ -14,26 +14,13 @@ const startGame = async (req, res) => {
       .json({ error: "The game is already started" });
   }
 
-  // TODO: check if the user is owner??? how
-
-  const readyStates = await GamesDB.getAllUsersReady(gameId);
-  if (!readyStates.every((row) => row.ready === true)) {
-    return res.status(HttpCode.BadRequest).json({
-      error: "Not all users are ready",
-    });
-  } else if (readyStates.length <= 1) {
-    console.log(
-      "*WARNING* Only 1 user is present, this will become error in final stage"
-    );
-    // return res.status(HttpCode.BadRequest).json({
-    //   error: "Only 1 user is present",
-    // });
-  }
+  // TODO: check if the user is creator
 
   await GamesDB.startGame(gameId)
     .then(async () => {
-      for (const row of readyStates) {
-        await drawCards(gameId, row.id, 10); // initialize draw count here
+      const users = await GamesDB.getUsersInGame(gameId);
+      for (const uid of users) {
+        await drawCards(gameId, uid, 10); // initialize draw count here
       }
 
       return res
