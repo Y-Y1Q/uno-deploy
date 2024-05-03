@@ -6,6 +6,8 @@ import {
   endGame,
   getGameStarted,
   getGamesCanJoin,
+  getGameStatus,
+  setLastCard,
 } from "./games/games";
 
 import {
@@ -18,7 +20,13 @@ import {
   isCreatorInGame,
 } from "./games/game_users";
 
-import { drawCards, deleteCards, getUserCards } from "./games/game_cards";
+import {
+  drawCards,
+  deleteAllCards,
+  getUserCards,
+  deleteOneCard,
+  userHasCard,
+} from "./games/game_cards";
 
 export {
   getGames,
@@ -34,8 +42,12 @@ export {
   isCreatorInGame,
   getUsersInGame,
   drawCards,
-  deleteCards,
+  deleteAllCards,
   getUserCards,
+  deleteOneCard,
+  userHasCard,
   getGamesJoined,
   getGamesCanJoin,
+  getGameStatus,
+  setLastCard,
 };

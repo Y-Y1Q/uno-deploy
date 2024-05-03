@@ -1,33 +1,10 @@
 import io from 'socket.io-client';
 import renderUnoGamePage from './unoGame';
 
-const renderLobbyPage = () => {
+const renderLobbyPage = async () => {
   const appDiv = document.querySelector<HTMLDivElement>('#app');
 
   const socket = io('http://localhost:3333', { withCredentials: true });
-
-  // Listen for 'message' events from the server specifically for the lobby
-  socket.on('chat:message:0', (data) => {
-    const chatbox = document.querySelector('#chatbox');
-    if (chatbox) {
-      const newMessage = document.createElement('div');
-      newMessage.classList.add('flex', 'justify-start', 'mb-2');
-
-      const messageBubble = document.createElement('div');
-      messageBubble.classList.add(
-        'bg-green-200',
-        'text-green-700',
-        'rounded',
-        'py-2',
-        'px-4',
-      );
-      messageBubble.innerHTML = `<p>${data.message}</p><p class="text-left font-bold">${data.from}</p>`;
-
-      newMessage.appendChild(messageBubble);
-      chatbox.appendChild(newMessage);
-      chatbox.scrollTop = chatbox.scrollHeight;
-    }
-  });
 
   if (appDiv) {
     appDiv.innerHTML = `
@@ -107,6 +84,32 @@ const renderLobbyPage = () => {
               </div>
         `;
 
+    // listen for 'message' events from the server specifically for the lobby
+    socket.on('chat:message:0', (data) => {
+      const chatbox = document.querySelector('#chatbox');
+      if (chatbox) {
+        const newMessage = document.createElement('div');
+        newMessage.classList.add('flex', 'justify-start', 'mb-2');
+
+        const messageBubble = document.createElement('div');
+        messageBubble.classList.add(
+          'bg-green-200',
+          'text-green-700',
+          'rounded',
+          'py-2',
+          'px-4',
+        );
+        messageBubble.innerHTML = `<p>${data.message}</p><p class="text-left font-bold">${data.from}</p>`;
+
+        newMessage.appendChild(messageBubble);
+        chatbox.appendChild(newMessage);
+        chatbox.scrollTop = chatbox.scrollHeight;
+      }
+    });
+
+    // adding a delay to ensure the DOM is fully loaded might help in certain cases
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
     const chatForm = document.querySelector('#chatForm');
     if (chatForm) {
       chatForm.addEventListener('submit', async (event) => {
@@ -126,6 +129,7 @@ const renderLobbyPage = () => {
               credentials: 'include',
               body: JSON.stringify({ message: chatMessage }),
             });
+
             if (!response.ok) {
               throw new Error('Failed to send message');
             }
@@ -142,21 +146,29 @@ const renderLobbyPage = () => {
 
     // retrieve the username from local storage
     const storedUsername = localStorage.getItem('username');
-    console.log('[lobby.ts] Stored username:', storedUsername);
+    console.log('[lobby.ts] Stored username in local storage:', storedUsername);
+    // check if the stored username exists
     if (storedUsername) {
       const welcomeMessage =
+        // find the welcome message element in the lobby container
         lobbyContainer?.querySelector<HTMLHeadingElement>('h3');
+      // check if the welcome message element exists
       if (welcomeMessage) {
-        console.log('Welcome message element found in local storage');
+        console.log(
+          '[lobby.ts] Welcome message element found in local storage',
+        );
+        // update the welcome message with the stored username
         welcomeMessage.textContent = `Welcome ${storedUsername}`;
       } else {
-        console.log('Welcome message element not found in local storage');
-        console.error('Username element not found in local storage');
+        console.log(
+          '[lobby.ts] Welcome message element not found in local storage',
+        );
+        console.error('[lobby.ts] Username element not found in local storage');
       }
     }
 
     if (lobbyContainer) {
-      lobbyContainer.addEventListener('click', (event) => {
+      lobbyContainer.addEventListener('click', async (event) => {
         const target = event.target as HTMLElement;
 
         if (target.id === 'startGameButton') {
@@ -167,7 +179,7 @@ const renderLobbyPage = () => {
                                 <h3 class="text-xl font-bold">${storedUsername ? `Welcome ${storedUsername}` : 'Welcome Guest'}</h3>
                             </div>
                             <div class="mb-4">
-                                <input class="w-full p-2 border border-gray-300 rounded" placeholder="Room Name"></input>
+                                <input class="w-full p-2 border border-gray-300 rounded" id="roomNameInput" placeholder="Room Name"></input>
                             </div>
                             <div class="mb-4">
                                 <select id="playerCount" name="playerCount" class="w-full p-2 border border-gray-300 rounded">
@@ -179,11 +191,56 @@ const renderLobbyPage = () => {
                                 </select>
                             </div>
                             <div>
-                                <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="confirmSelectionButton">Confirm Selection</button>
+                                <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" name="confirmButton" id="confirmSelectionButton">Confirm Selection</button>
                                 <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton">Go Back</button>
                             </div>
                         </div>
                     `;
+
+          const confirmButton = lobbyContainer.querySelector<HTMLButtonElement>(
+            '#confirmSelectionButton',
+          );
+          console.log('[lobby.ts] Confirm Button:', confirmButton);
+
+          if (confirmButton) {
+            confirmButton.addEventListener('click', async () => {
+              console.log('[lobby.ts] Confirm Selection Button clicked');
+              const roomNameInput =
+                lobbyContainer.querySelector<HTMLInputElement>(
+                  '#roomNameInput',
+                );
+              // const playerCountSelect =
+              //   lobbyContainer.querySelector<HTMLSelectElement>('#playerCount');
+
+              if (roomNameInput && roomNameInput.value.trim() !== '') {
+                const roomName = roomNameInput.value.trim();
+
+                console.log('[lobby.ts] Room Name:', roomName);
+                // console.log('[lobby.ts] Player Count:', playerCount);
+
+                try {
+                  const response = await fetch('/api/game/create', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ roomName }),
+                  });
+
+                  if (response.ok) {
+                    console.log('[lobby.ts] Game room created successfully');
+                  } else {
+                    throw new Error('[lobby.ts] Failed to create game room');
+                  }
+                } catch (error) {
+                  console.error('[lobby.ts] Error creating game room:', error);
+                }
+              } else {
+                console.error('[lobby.ts] Room name is required');
+              }
+            });
+          }
 
           const goBackButton =
             lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
@@ -193,36 +250,55 @@ const renderLobbyPage = () => {
             });
           }
         } else if (target.id === 'confirmSelectionButton') {
-          lobbyContainer.innerHTML = `
-                        <h2 class="text-lg font-bold mb-4">WAITING ROOM</h2>
-                        <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
-                            <div class="mb-4">
-                                <h3 class="text-xl font-bold">${storedUsername ? `Welcome ${storedUsername}` : 'Welcome Guest'}</h3>
-                            </div>
-                            <div class="mb-4">
-                                r.kelly room
-                            </div>
-                            <div class="mb-4">
-                                <p> 1/2 players joined</p>
-                                <p> You are in the room</p>
-                                <p> Waiting for other players to join</p>
-                            </div>
-                            <div class="mb-4">
-                                <select id="playerChoice" name="playerChoice" class="w-full p-2 border border-gray-300 rounded">
-                                    <option value="" disabled selected>Invite Players</option>
-                                    <option value="P.Diddy">P.Diddy</option>
-                                    <option value="6ix9ine">6ix9ine</option>
-                                    <option value="Kanye West">Kanye West</option>
-                                    <option value="Chris Brown">Chris Brown</option>
-                                </select>
-                            </div>
-                            <div>
-                                <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="playGameButton">Play Game</button>
-                                <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton">Go Back</button>
-                            </div>
-                        </div>
-                    `;
+          // fetch list of players from the server
+          try {
+            const response = await fetch('/api/lobby/players', {
+              method: 'POST',
+              credentials: 'include',
+            });
 
+            // check if the response is successful
+            if (!response.ok) {
+              throw new Error('[lobby.ts] Failed to retrieve list of players');
+            }
+
+            // parse the list of players from the response
+            const playerList = await response.json();
+            console.log('[lobby.ts] List of players:', playerList);
+
+            // update the lobbyContainer with the waiting room UI and the list of players
+            lobbyContainer.innerHTML = `
+              <h2 class="text-lg font-bold mb-4">WAITING ROOM</h2>
+              <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
+                <div class="mb-4">
+                  <h3 class="text-xl font-bold">${storedUsername ? `Welcome ${storedUsername}` : 'Welcome Guest'}</h3>
+                </div>
+                <div class="mb-4">
+                  r.kelly room
+                </div>
+                <div class="mb-4">
+                  <p> 1/2 players joined</p>
+                  <p> You are in the room</p>
+                  <p> Waiting for other players to join</p>
+                </div>
+                <div class="mb-4">
+                <select id="playerChoice" name="playerChoice" class="w-full p-2 border border-gray-300 rounded">
+                  <option value="" disabled selected>Invite Players</option>
+                   ${playerList.map((player: any) => `<option value="${player.id}">${player.username}</option>`).join('')}
+                  </select>
+                </div>
+                <div>
+                  <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="playGameButton">Play Game</button>
+                  <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton">Go Back</button>
+                </div>
+              </div>
+            `;
+          } catch (error) {
+            console.error(
+              '[lobby.ts] Failed to retrieve list of players:',
+              error,
+            );
+          }
           const goBackButton =
             lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
           if (goBackButton) {
@@ -271,6 +347,24 @@ const renderLobbyPage = () => {
   }
 };
 
+// const initializeLobbyPage = (playerList: string[]) => {
+//   console.log('initializeLobbyPage function is called');
+//   console.log('[lobby.ts] List of players:', playerList);
+//   // update select element with player list
+//   const playerChoiceSelect = document.getElementById(
+//     'playerChoice',
+//   ) as HTMLSelectElement;
+//   console.log('[lobby.ts] playerChoiceSelect:', playerChoiceSelect);
+//   if (playerChoiceSelect) {
+//     console.log('[lobby.ts] Player choice select element found');
+//     playerChoiceSelect.innerHTML = ''; // clear existing options
+//     playerChoiceSelect.add(new Option('Invite Players', '', true, true)); // add default option
+//     playerList.forEach((player: string) => {
+//       playerChoiceSelect.add(new Option(player, player));
+//     });
+//   }
+// };
+
 const logout = async () => {
   try {
     // send logout request to the server
@@ -285,7 +379,7 @@ const logout = async () => {
       window.location.href = '/';
       console.log('[Lobby.ts] Logged out successfully');
     } else {
-      throw new Error('Failed to log out');
+      throw new Error('[lobby.ts] Failed to log out');
     }
   } catch (error) {
     console.error('[lobby.ts] Logout failed:', error);

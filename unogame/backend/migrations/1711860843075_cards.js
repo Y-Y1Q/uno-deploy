@@ -12,6 +12,7 @@ exports.up = pgm => {
     const cardValues = [];
 
 // create a set of 108 Uno cards in database
+// note: 4 colors, 15 types
 for (let color = 0; color < 4; color++) {
 
     cardValues.push({ color, type: 0 }); // Number 0
@@ -22,6 +23,7 @@ for (let color = 0; color < 4; color++) {
         cardValues.push({ color, type }); 
     }
 
+    // the colors of wild cards is ignored
     cardValues.push({ color, type: 13 }); // Wild
     cardValues.push({ color, type: 14 }); // Wild Draw 4
 }

@@ -5,7 +5,7 @@ const createGame = async (req, res) => {
   const { roomName } = req.body;
   const { id: userId } = req.session.user;
 
-  await GamesDB.createGame(roomName, userId)
+  await GamesDB.createGame(roomName)
     .then(async (gameId) => {
       try {
         await GamesDB.joinGame(gameId, userId);
