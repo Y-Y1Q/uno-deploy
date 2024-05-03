@@ -30,7 +30,7 @@ const quitGame = async (req, res) => {
       });
     })
     .catch((err) => {
-      return res.status(HttpCode.BadRequest).json({ error: err });
+      return res.status(HttpCode.InternalServerError).json({ error: err });
     });
 };
 

@@ -19,6 +19,8 @@ const joinGame = async (req, res) => {
       .json({ error: "The game is already started" });
   }
 
+  // TODO check how many players inside
+
   await GamesDB.joinGame(gameId, userId)
     .then(() => {
       return res
@@ -26,7 +28,7 @@ const joinGame = async (req, res) => {
         .json({ message: "userId=" + userId + " gameId=" + gameId + " JOIN" });
     })
     .catch((err) => {
-      return res.status(HttpCode.BadRequest).json({ error: err.detail });
+      return res.status(HttpCode.InternalServerError).json({ error: err.detail });
     });
 };
 
