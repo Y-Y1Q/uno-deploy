@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
   // alternative solution: Typescript Declaration Merging
   const {username: currentUser, id: currentUserId } = Session.getCurrentUser(req);
   
-  res.render("test_lobby", { currentUser, currentUserId } );
+  res.render("lobby", { currentUser, currentUserId } );
 });
 
 router.get("/m2-chat", (req, res) => {

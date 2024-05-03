@@ -87,7 +87,7 @@ app.use("/game", isAuthenticated, Routes.game);
 app.use("/test", TestRoutes.root);
 app.use("/login", TestRoutes.login);
 app.use("/register", TestRoutes.signup);
-app.use("/lobby2", TestRoutes.lobby2);
+app.use("/lobby", TestRoutes.lobby);
 app.use("/test/lobby", isAuthenticated, TestRoutes.lobby);
 app.use("/test/game", isAuthenticated, TestRoutes.game);
 app.use("/test/time", isAuthenticated, TestRoutes.logTime);

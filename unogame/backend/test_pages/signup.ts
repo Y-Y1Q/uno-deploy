@@ -15,13 +15,13 @@ router.post('/', async (req, res) => {
         if (user) {
             // Set user info in session
             req.session.user = { id: user.id, username: user.username };
-            res.redirect('/lobby'); // Redirect to lobby upon successful login
+            res.redirect('/login');
         } else {
-            res.render('signup', { title: 'Login to Your Account', message: 'Invalid credentials' });
+            res.render('signup', { title: 'Sign up now', message: 'Invalid credentials' });
         }
     } catch (error) {
         console.error('signup Error:', error);
-        res.render('signup', { title: 'Login to Your Account', message: 'Login failed. Please try again.' });
+        res.render('signup', { title: 'Create an Account', message: 'Sign up failed. Please try again.' });
     }
 });
 
