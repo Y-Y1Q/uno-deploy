@@ -147,13 +147,17 @@ const renderLobbyPage = async () => {
     // retrieve the username from local storage
     const storedUsername = localStorage.getItem('username');
     console.log('[lobby.ts] Stored username in local storage:', storedUsername);
+    // check if the stored username exists
     if (storedUsername) {
       const welcomeMessage =
+        // find the welcome message element in the lobby container
         lobbyContainer?.querySelector<HTMLHeadingElement>('h3');
+      // check if the welcome message element exists
       if (welcomeMessage) {
         console.log(
           '[lobby.ts] Welcome message element found in local storage',
         );
+        // update the welcome message with the stored username
         welcomeMessage.textContent = `Welcome ${storedUsername}`;
       } else {
         console.log(
@@ -162,44 +166,6 @@ const renderLobbyPage = async () => {
         console.error('[lobby.ts] Username element not found in local storage');
       }
     }
-
-    // // retrieve list of players
-    // if (appDiv) {
-    //   console.log('[lobby.ts] appDiv:', appDiv);
-    //   try {
-    //     // await new Promise((resolve) => setTimeout(resolve, 10000));
-
-    //     const response = await fetch('/api/lobby/players', {
-    //       method: 'POST',
-    //       credentials: 'include',
-    //     });
-
-    //     if (!response.ok) {
-    //       throw new Error('[lobby.ts] Failed to retrieve list of players');
-    //     }
-
-    //     const playerList = await response.json();
-    //     console.log('[lobby.ts] List of players:', playerList);
-
-    //     // Call the function to update the player choice select element
-    //     // initializeLobbyPage(playerList);
-
-    //     // update select element with player list
-    //     const playerChoiceSelect =
-    //       document.querySelector<HTMLSelectElement>('#playerChoice');
-    //     console.log('[lobby.ts] playerChoiceSelect:', playerChoiceSelect);
-    //     if (playerChoiceSelect) {
-    //       console.log('[lobby.ts] Player choice select element found');
-    //       playerChoiceSelect.innerHTML = ''; // clear existing options
-    //       playerChoiceSelect.add(new Option('Invite Players', '', true, true)); // add default option
-    //       playerList.forEach((player: string) => {
-    //         playerChoiceSelect.add(new Option(player, player));
-    //       });
-    //     }
-    //   } catch (error) {
-    //     console.error('[lobby.ts] Failed to retrieve list of players:', error);
-    //   }
-    // }
 
     if (lobbyContainer) {
       lobbyContainer.addEventListener('click', async (event) => {
@@ -239,19 +205,23 @@ const renderLobbyPage = async () => {
             });
           }
         } else if (target.id === 'confirmSelectionButton') {
+          // fetch list of players from the server
           try {
             const response = await fetch('/api/lobby/players', {
               method: 'POST',
               credentials: 'include',
             });
 
+            // check if the response is successful
             if (!response.ok) {
               throw new Error('[lobby.ts] Failed to retrieve list of players');
             }
 
+            // parse the list of players from the response
             const playerList = await response.json();
             console.log('[lobby.ts] List of players:', playerList);
 
+            // update the lobbyContainer with the waiting room UI and the list of players
             lobbyContainer.innerHTML = `
               <h2 class="text-lg font-bold mb-4">WAITING ROOM</h2>
               <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
@@ -268,9 +238,9 @@ const renderLobbyPage = async () => {
                 </div>
                 <div class="mb-4">
                 <select id="playerChoice" name="playerChoice" class="w-full p-2 border border-gray-300 rounded">
-                <option value="" disabled selected>Invite Players</option>
-                ${playerList.map((player: any) => `<option value="${player.id}">${player.username}</option>`).join('')}
-              </select>
+                  <option value="" disabled selected>Invite Players</option>
+                   ${playerList.map((player: any) => `<option value="${player.id}">${player.username}</option>`).join('')}
+                  </select>
                 </div>
                 <div>
                   <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="playGameButton">Play Game</button>
