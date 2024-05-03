@@ -88,7 +88,7 @@ function attachValidationHandlers() {
 
           // check if signup was successful
           if (!response.ok) {
-            throw new Error('Failed to sign up');
+            throw new Error('[signup.ts] Failed to sign up');
           }
 
           // redirect to lobby upon successful signup
@@ -96,7 +96,7 @@ function attachValidationHandlers() {
           console.log('[signup.ts] login successful - message:', data.message);
           window.location.href = '/lobby';
         } catch (error) {
-          console.error('Signup failed:', (error as Error).message);
+          console.error('[signup.ts] Signup failed:', (error as Error).message);
         }
       }
     });
