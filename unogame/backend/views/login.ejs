@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login and Signup</title>
+    <title>Login Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.1/dist/tailwind.min.css" rel="stylesheet">
 </head>
-
-<body>
-    <p><a href="http://localhost:3333/test/lobby">Test lobby page</a></p>
-
-
-     <form id="loginForm" action="/login" method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+<body class="bg-gray-200 flex justify-center items-center h-screen">
+    <div class="w-full max-w-xs">
+        <form action="/login" method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
                     Username
@@ -30,20 +27,6 @@
                 </button>
             </div>
         </form>
-
-    <br><br>
-
-    <form id="signupForm" action="/signup" method="post">
-        <br><br>
-        TEST SIGNUP<br>
-        Username: <input name="username"><br>
-        Fullname: <input name="fullname"><br>
-        Password: <input name="password" type="password"><br>
-        <button type="submit">signup</button>
-    </form>
-
-    <script>
-    </script>
+    </div>
 </body>
-
 </html>

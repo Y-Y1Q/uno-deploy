@@ -77,12 +77,16 @@ app.use((req, res, next) => {
   next();
 });
 
+//app.use("/login", Routes.login);
+
 app.use(Routes.user);
 app.use("/lobby", isAuthenticated, Routes.lobby);
 app.use("/game", isAuthenticated, Routes.game);
 
 // test routes
 app.use("/test", TestRoutes.root);
+app.use("/login", TestRoutes.login);
+app.use("/register", TestRoutes.signup);
 app.use("/test/lobby", isAuthenticated, TestRoutes.lobby);
 app.use("/test/game", isAuthenticated, TestRoutes.game);
 app.use("/test/time", isAuthenticated, TestRoutes.logTime);
