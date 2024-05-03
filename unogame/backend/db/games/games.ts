@@ -1,5 +1,4 @@
 import { db } from "../db_connection";
-import { deleteCards } from "./game_cards";
 
 const getGames = async () => {
   const ret = await db.any("SELECT * FROM games");
@@ -15,9 +14,9 @@ const getGamesByName = async (roomName) => {
   return ret;
 };
 
-const createGame = async (roomName, userId) => {
+const createGame = async (roomName) => {
   const ret = await db.one(
-    "INSERT INTO games (room_name) VALUES ($1) RETURNING id",
+    "INSERT INTO games (room_name, last_card) VALUES ($1,1) RETURNING id",
     [roomName]
   );
 
@@ -57,6 +56,24 @@ const getGamesCanJoin = async (userId) => {
   return ret;
 };
 
+const getGameStatus = async (gameId) => {
+  const ret = await db.one(
+    "SELECT max_players,current_turn,current_penalty,last_card FROM games WHERE id=$1",
+    [gameId]
+  );
+
+  return {
+    count: ret.max_players,
+    turn: ret.current_turn,
+    penalty: ret.current_penalty,
+    last_card: ret.last_card,
+  };
+};
+
+const setLastCard = async (gameId, cardId) => {
+  await db.none("UPDATE games SET last_card=$2 WHERE id=$1", [gameId, cardId]);
+};
+
 export {
   getGames,
   getGamesByName,
@@ -65,4 +82,6 @@ export {
   getGameStarted,
   endGame,
   getGamesCanJoin,
+  getGameStatus,
+  setLastCard,
 };

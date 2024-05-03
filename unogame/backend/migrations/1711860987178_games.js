@@ -22,16 +22,29 @@ exports.up = pgm => {
         },
         started: {
             type: "boolean",
+            notNull: true,
             default: false
+        },
+        is_clockwise: {
+            type: "boolean",
+            notNull: true,
+            default: true
         },
         current_turn: {
             type: "int",
             notNull: true,
-            default: 1
+            default: 0
         },
-        turn_clockwise: {
-            type: "boolean",
-            default: true
+        current_penalty: {
+            type: "int",
+            notNull: true,
+            default: 0
+        },
+        last_card: {
+            type: "int",
+            notNull: true,
+            references: "cards(id)",
+            onDelete: "cascade"
         }
     });
 };
