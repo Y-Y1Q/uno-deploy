@@ -179,7 +179,7 @@ const renderLobbyPage = async () => {
                                 <h3 class="text-xl font-bold">${storedUsername ? `Welcome ${storedUsername}` : 'Welcome Guest'}</h3>
                             </div>
                             <div class="mb-4">
-                                <input class="w-full p-2 border border-gray-300 rounded" placeholder="Room Name"></input>
+                                <input class="w-full p-2 border border-gray-300 rounded" id="roomNameInput" placeholder="Room Name"></input>
                             </div>
                             <div class="mb-4">
                                 <select id="playerCount" name="playerCount" class="w-full p-2 border border-gray-300 rounded">
@@ -191,11 +191,56 @@ const renderLobbyPage = async () => {
                                 </select>
                             </div>
                             <div>
-                                <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="confirmSelectionButton">Confirm Selection</button>
+                                <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" name="confirmButton" id="confirmSelectionButton">Confirm Selection</button>
                                 <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton">Go Back</button>
                             </div>
                         </div>
                     `;
+
+          const confirmButton = lobbyContainer.querySelector<HTMLButtonElement>(
+            '#confirmSelectionButton',
+          );
+          console.log('[lobby.ts] Confirm Button:', confirmButton);
+
+          if (confirmButton) {
+            confirmButton.addEventListener('click', async () => {
+              console.log('[lobby.ts] Confirm Selection Button clicked');
+              const roomNameInput =
+                lobbyContainer.querySelector<HTMLInputElement>(
+                  '#roomNameInput',
+                );
+              // const playerCountSelect =
+              //   lobbyContainer.querySelector<HTMLSelectElement>('#playerCount');
+
+              if (roomNameInput && roomNameInput.value.trim() !== '') {
+                const roomName = roomNameInput.value.trim();
+
+                console.log('[lobby.ts] Room Name:', roomName);
+                // console.log('[lobby.ts] Player Count:', playerCount);
+
+                try {
+                  const response = await fetch('/api/game/create', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ roomName }),
+                  });
+
+                  if (response.ok) {
+                    console.log('[lobby.ts] Game room created successfully');
+                  } else {
+                    throw new Error('[lobby.ts] Failed to create game room');
+                  }
+                } catch (error) {
+                  console.error('[lobby.ts] Error creating game room:', error);
+                }
+              } else {
+                console.error('[lobby.ts] Room name is required');
+              }
+            });
+          }
 
           const goBackButton =
             lobbyContainer.querySelector<HTMLButtonElement>('#goBackButton');
