@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+try {  
+	if (response.ok) {
+   		console.log('[lobby.ts] Game room created successfully');
+	 } else {
+   		throw new Error('[lobby.ts] Failed to create game room');
+ 		}
+} catch (error) {
+  console.error('[lobby.ts] Error creating game room:', error);
+}
