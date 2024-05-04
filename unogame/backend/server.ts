@@ -77,7 +77,14 @@ app.use((req, res, next) => {
   next();
 });
 
+
+// POST signup, login, logout
 app.use(Routes.user);
+
+// GET website
+app.use(Routes.website);
+
+// API for lobby and game
 app.use("/lobby", isAuthenticated, Routes.lobby);
 app.use("/game", isAuthenticated, Routes.game);
 

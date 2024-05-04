@@ -2,6 +2,18 @@ import expressSession from "express-session";
 import pgSession from "connect-pg-simple";
 import { db } from "../db/db_connection";
 
+// extend the SessionData to include 'user' type
+// this will allow us to access user data in session
+declare module 'express-session' {
+  interface SessionData {
+    user: {
+      id: number;
+      username: string;
+      fullName: string;
+    };
+  }
+}
+
 // create a session store using connect-pg-simple with PostgreSQL
 const sessionStore = pgSession(expressSession);
 
