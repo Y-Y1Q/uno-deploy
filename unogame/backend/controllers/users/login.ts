@@ -31,11 +31,14 @@ const logIn = async (req, res) => {
         fullName: user.fullName,
       };
 
-      return res.status(HttpCode.OK).json({
-        message: username + " is logged in",
-        fullName: user.fullName,
-        username: user.username,
-      });
+      return res.redirect("/lobby");
+
+      // return res.status(HttpCode.OK).json({
+      //   message: username + " is logged in",
+      //   fullName: user.fullName,
+      //   username: user.username,
+      // });
+
     } else {
       return res
         .status(HttpCode.Forbidden)
