@@ -78,9 +78,14 @@ app.use((req, res, next) => {
   next();
 });
 
-//app.use("/login", Routes.login);
 
+// POST signup, login, logout
 app.use(Routes.user);
+
+// GET website
+app.use(Routes.website);
+
+// API for lobby and game
 app.use("/lobby", isAuthenticated, Routes.lobby);
 app.use("/game", isAuthenticated, Routes.game);
 
@@ -92,11 +97,11 @@ app.use("/test/time", isAuthenticated, TestRoutes.logTime);
 
 // *NEW* routes for our migrated pages!
 // HOW EXCITING!
-app.use("/main", updatedRoutes.landing);
-app.use("/login", updatedRoutes.login);
-app.use("/register", updatedRoutes.signup);
-app.use("/lobby", updatedRoutes.lobby);
-app.use("/unogame", updatedRoutes.unogame); // under construction atm
+// app.use("/main", updatedRoutes.landing);
+// app.use("/login", updatedRoutes.login);
+// app.use("/register", updatedRoutes.signup);
+// app.use("/lobby", updatedRoutes.lobby);
+// app.use("/unogame", updatedRoutes.unogame); // under construction atm
 
 httpServer.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

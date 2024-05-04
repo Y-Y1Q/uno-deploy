@@ -6,7 +6,7 @@ const logOut = (req, res) => {
     // res
     //   .status(HttpCode.OK)
     //   .json({ message: "You have successfully logged out." });
-    return res.redirect("/main");
+    return res.redirect("/");
     
   } catch (err) {
     console.log(err);
