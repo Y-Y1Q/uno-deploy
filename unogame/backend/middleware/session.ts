@@ -6,10 +6,10 @@ import { db } from "../db/db_connection";
 // this will allow us to access user data in session
 declare module 'express-session' {
   interface SessionData {
-    user?: {
+    user: {
       id: number;
       username: string;
-      fullName?: string;
+      fullName: string;
     };
   }
 }
