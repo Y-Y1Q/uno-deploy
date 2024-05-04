@@ -7,6 +7,7 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import * as Routes from "./routes";
 import * as TestRoutes from "./test_pages/test_routes";
+import * as updatedRoutes from "./pages_v2/updated_routes";
 import * as Session from "./middleware/session";
 import { requestTime } from "./middleware/timestamp";
 import { isAuthenticated } from "./middleware/check_auth";
@@ -84,13 +85,16 @@ app.use("/lobby", isAuthenticated, Routes.lobby);
 app.use("/game", isAuthenticated, Routes.game);
 
 // test routes
-app.use("/test", TestRoutes.root);
-app.use("/login", TestRoutes.login);
-app.use("/register", TestRoutes.signup);
-app.use("/lobby", TestRoutes.lobby);
 app.use("/test/lobby", isAuthenticated, TestRoutes.lobby);
 app.use("/test/game", isAuthenticated, TestRoutes.game);
 app.use("/test/time", isAuthenticated, TestRoutes.logTime);
+
+// *NEW* routes for our migrated pages!
+// HOW EXCITING!
+app.use("/login", updatedRoutes.login);
+app.use("/register", updatedRoutes.signup);
+app.use("/lobby", updatedRoutes.lobby);
+app.use("/unogame", updatedRoutes.unogame); // under construction atm
 
 httpServer.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
