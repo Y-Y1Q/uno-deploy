@@ -85,12 +85,14 @@ app.use("/lobby", isAuthenticated, Routes.lobby);
 app.use("/game", isAuthenticated, Routes.game);
 
 // test routes
+app.use("/test", TestRoutes.root);
 app.use("/test/lobby", isAuthenticated, TestRoutes.lobby);
 app.use("/test/game", isAuthenticated, TestRoutes.game);
 app.use("/test/time", isAuthenticated, TestRoutes.logTime);
 
 // *NEW* routes for our migrated pages!
 // HOW EXCITING!
+app.use("/main", updatedRoutes.landing);
 app.use("/login", updatedRoutes.login);
 app.use("/register", updatedRoutes.signup);
 app.use("/lobby", updatedRoutes.lobby);

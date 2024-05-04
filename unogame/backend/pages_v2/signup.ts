@@ -13,11 +13,10 @@ router.post('/', async (req, res) => {
     try {
         const user = await UserCtrl.signUp(fullname, username);
         if (user) {
-            // Set user info in session
             req.session.user = { id: user.id, username: user.username };
-            res.redirect('/login');
+            res.redirect('/login'); // THIS NEEDS TO REDIRECT TO THE LOGIN PAGE
         } else {
-            res.render('signup', { title: 'Sign up now', message: 'Invalid credentials' });
+            res.render('signup', { title: 'Sign up Now', message: 'Invalid credentials' });
         }
     } catch (error) {
         console.error('signup Error:', error);
