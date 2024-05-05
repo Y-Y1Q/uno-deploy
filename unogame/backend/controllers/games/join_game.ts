@@ -28,7 +28,9 @@ const joinGame = async (req, res) => {
         .json({ message: "userId=" + userId + " gameId=" + gameId + " JOIN" });
     })
     .catch((err) => {
-      return res.status(HttpCode.InternalServerError).json({ error: err.detail });
+      return res
+        .status(HttpCode.InternalServerError)
+        .json({ error: err.detail });
     });
 };
 

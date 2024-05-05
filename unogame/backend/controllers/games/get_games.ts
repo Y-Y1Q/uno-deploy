@@ -9,7 +9,9 @@ const getGames = async (req, res) => {
       return res.status(HttpCode.OK).json({ results: data });
     })
     .catch((err) => {
-      return res.status(HttpCode.InternalServerError).json({ error: err.detail });
+      return res
+        .status(HttpCode.InternalServerError)
+        .json({ error: err.detail });
     });
 };
 

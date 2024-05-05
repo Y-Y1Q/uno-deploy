@@ -12,7 +12,9 @@ const getUserCards = async (req, res) => {
       });
     })
     .catch((err) => {
-      return res.status(HttpCode.InternalServerError).json({ error: err.detail });
+      return res
+        .status(HttpCode.InternalServerError)
+        .json({ error: err.detail });
     });
 };
 

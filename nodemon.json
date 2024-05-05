@@ -1,4 +1,4 @@
 {
-    "ext": "js,ejs",
-    "ignore": ["./unogame/static/dist"]
-  }
+  "ext": "js,ejs",
+  "ignore": ["./unogame/static/dist"]
+}

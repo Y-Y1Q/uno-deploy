@@ -1,6 +1,7 @@
 import express from "express";
-import * as Lobby from "../controllers/ctrl_lobby";
+
 import * as Chat from "../controllers/ctrl_chat";
+import * as Lobby from "../controllers/ctrl_lobby";
 
 const router = express.Router();
 

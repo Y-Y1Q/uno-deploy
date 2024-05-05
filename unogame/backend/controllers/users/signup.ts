@@ -1,6 +1,7 @@
+import bcrypt from "bcryptjs";
+
 import * as UsersDB from "../../db/db_users";
 import HttpCode from "../../utilities/http_code";
-import bcrypt from "bcryptjs";
 
 const SALT_ROUNDS = 10;
 
@@ -8,9 +9,9 @@ const signUp = async (req, res) => {
   console.log(req.body);
   const { username, password, fullname } = req.body;
 
-  if (checkName(username) || checkName(fullname)){
+  if (checkName(username) || checkName(fullname)) {
     return res.status(HttpCode.BadRequest).json({
-      error: "Invalid username/fullname to use"
+      error: "Invalid username/fullname to use",
     });
   }
 
@@ -52,9 +53,8 @@ const signUp = async (req, res) => {
   }
 };
 
-
 function checkName(str: string): boolean {
-    return str.toUpperCase() === "ADMIN";
+  return str.toUpperCase() === "ADMIN";
 }
 
 export { signUp };

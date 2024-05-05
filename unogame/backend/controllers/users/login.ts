@@ -1,6 +1,7 @@
+import bcrypt from "bcryptjs";
+
 import * as UsersDB from "../../db/db_users";
 import HttpCode from "../../utilities/http_code";
-import bcrypt from "bcryptjs";
 
 const logIn = async (req, res) => {
   const { username, password } = req.body;
@@ -38,7 +39,6 @@ const logIn = async (req, res) => {
       //   fullName: user.fullName,
       //   username: user.username,
       // });
-
     } else {
       return res
         .status(HttpCode.Forbidden)

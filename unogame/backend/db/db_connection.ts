@@ -1,5 +1,5 @@
-import pgp from "pg-promise";
 import dotenv from "dotenv";
+import pgp from "pg-promise";
 
 if (process.env.NODE_ENV === "development") {
   dotenv.config();

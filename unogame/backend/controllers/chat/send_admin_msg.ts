@@ -1,4 +1,4 @@
-// TODO 
+// TODO
 
 // Additional chat features
 // send message to all users in a lobby, when a game is created
