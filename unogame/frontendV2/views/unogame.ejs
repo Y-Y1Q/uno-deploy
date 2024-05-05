@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <!-- BE route will render EJS with gameId, 0 for lobby, others for game-->
+  <input type="hidden" name="game-id" id="game-id" value="<%= gameId %>" />
+
+  <input
+    type="hidden"
+    name="current-user-id"
+    id="current-user-id"
+    value="<%= user.id %>"
+  />
+  <input
+    type="hidden"
+    name="current-user-name"
+    id="current-user-name"
+    value="<%= user.username %>"
+  />
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UNO Game</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/dist/index.js" defer></script>
+    <%- include("./layout/favicons") %>
+  </head>
+  <body>
+    <div class="container mx-auto px-4">
+      <div class="flex">
+        <!-- UNO Game Interface -->
+        <div class="w-1/3 border border-red-500 p-4">
+          <h2 class="text-lg font-bold mb-4 text-red-500">UNO GAME</h2>
+          <div class="flex">
+            <div class="w-full border border-red-500 p-4">
+              UNO GAME INTERFACE
+              <!-- Game interface and controls -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Leaderboard and Controls -->
+        <div class="w-1/3 border border-red-500 p-4" id="lobbyContainer">
+          <div class="leaderboard bg-gray-200 p-4 rounded">
+            <h3 class="text-lg font-bold mb-2">LEADERBOARD INTERFACE</h3>
+            <p class="text-base mb-2">STATUS - PLAY</p>
+            <button
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2"
+              id="abandonButton"
+            >
+              Abandon
+            </button>
+            <button
+              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              id="drawButton"
+            >
+              Draw
+            </button>
+            <button
+              class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+              id="sayUnoButton"
+            >
+              SAY UNO!
+            </button>
+          </div>
+        </div>
+
+        <!-- Chat Box Container -->
+        <div class="w-1/3 border border-blue-500 p-4">
+          <h2 class="text-lg font-bold mb-4">CHAT BOX CONTAINER</h2>
+          <!-- Chat box content will be dynamically loaded here -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const lobbyContainer = document.getElementById("lobbyContainer");
+        lobbyContainer.addEventListener("click", (event) => {
+          const target = event.target;
+
+          if (target.id === "abandonButton") {
+            // Handle abandon game logic
+            console.log("Game abandoned");
+          } else if (target.id === "drawButton") {
+            // Handle draw card logic
+            console.log("Draw card");
+          } else if (target.id === "sayUnoButton") {
+            // Handle say UNO logic
+            console.log("UNO!");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
