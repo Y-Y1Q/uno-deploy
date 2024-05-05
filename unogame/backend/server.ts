@@ -21,7 +21,7 @@ app.use(requestTime);
 const UNOGAME_PATH = path.dirname(path.dirname(__dirname));
 const STATIC_PATH = path.join(UNOGAME_PATH, "static");
 const VIEW_PATH = path.join(UNOGAME_PATH, "frontendV2", "views");
-console.log(STATIC_PATH);
+//console.log(STATIC_PATH);
 
 configure.liveReload(app, STATIC_PATH);
 configure.views(app, VIEW_PATH, STATIC_PATH);

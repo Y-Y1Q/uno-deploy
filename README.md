@@ -1,13 +1,16 @@
-# Documentation
+# Team C - UNO
+
+## Documentation
 
 TODO
 
-# Build and Start
+## Build and Start
 
 [**Install PostgreSQL**](https://docs.google.com/document/d/1pbvpEM3iX-QS22NNep6ATKgohM8zu4Pu18dmw13JgrY/edit#heading=h.g7uvmg38lm4t)
 
 Clone the repository to your local machine.
-Navigate to the project directory `Team-C-unogame-csc667\`in your terminal
+
+Navigate to the project directory `Team-C-unogame-csc667/`in your terminal
 
 `npm install` install dependencies
 
@@ -23,7 +26,7 @@ Navigate to the project directory `Team-C-unogame-csc667\`in your terminal
 
 Port: 3333 or defined in .env
 
-# Database Management
+## Database Management
 
 `npm run db:create your_migration_name` create a new migration file with the name you give it
 

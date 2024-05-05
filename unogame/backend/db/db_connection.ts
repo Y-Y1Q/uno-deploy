@@ -1,9 +1,7 @@
 import dotenv from "dotenv";
 import pgp from "pg-promise";
 
-if (process.env.NODE_ENV === "development") {
-  dotenv.config();
-}
+dotenv.config();
 
 if (process.env.DATABASE_URL === undefined) {
   process.env.DATABASE_URL = "YOU_FORGOT_TO_SETUP_YOUR_ENVIRONMENT";
