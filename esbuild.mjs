@@ -11,7 +11,7 @@ const FRONTEND_PATH = path.join(ROOT_PATH, "unogame", "frontendV2");
 const BACKEND_PATH = path.join(ROOT_PATH, "unogame", "backend");
 const OUT_PATH = path.join(ROOT_PATH, "unogame", "static", "dist");
 
-console.log(ROOT_PATH);
+// console.log(ROOT_PATH);
 
 const isDev = process.env.NODE_ENV === "development";
 
