@@ -49,7 +49,7 @@
         event.preventDefault();
         const message = messageInput.value.trim();
         if (message !== "") {
-          fetch(`/lobby/chat`, {
+          fetch(`/test/chat`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message }),
@@ -60,7 +60,7 @@
       });
 
       // Listening chat event from lobby (roomId - 0)
-      socket.on(`chat:message:0`, ({ avatar, from, timestamp, message }) => {
+      socket.on(`chat-0`, ({ avatar, from, timestamp, message }) => {
         const li = document.createElement("li");
         if (from !== "<%= currentUser %>") {
           li.classList.add("right-align");

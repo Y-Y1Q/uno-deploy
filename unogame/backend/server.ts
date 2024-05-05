@@ -13,7 +13,6 @@ import * as Session from "./middleware/session";
 import { handleSocketConnection } from "./middleware/socket_connect";
 import { requestTime } from "./middleware/timestamp";
 import * as Routes from "./routes";
-import * as TestRoutes from "./test_pages/test_routes";
 
 const app = express();
 const httpServer = createServer(app);
@@ -69,10 +68,7 @@ app.use("/lobby", isAuthenticated, Routes.lobby);
 app.use("/game", isAuthenticated, Routes.game);
 
 // test routes
-app.use("/test", TestRoutes.root);
-app.use("/test/lobby", isAuthenticated, TestRoutes.lobby);
-app.use("/test/game", isAuthenticated, TestRoutes.game);
-app.use("/test/time", isAuthenticated, TestRoutes.logTime);
+app.use(Routes.test);
 
 const PORT = process.env.PORT || 3333;
 httpServer.listen(PORT, () => {

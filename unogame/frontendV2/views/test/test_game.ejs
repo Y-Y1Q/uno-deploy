@@ -51,7 +51,7 @@
       Sender in this game page, and receiver in lobby page <br />
       Refer to FE waitroom wireframe for actual implemention<br />
       Get player list -> click that player's name -> send invitation<br /><br />
-      <form action="/test/game/<%= id %>/inv" method="post">
+      <form action="/test/<%= id %>/inv" method="post">
         To user: <input name="username" /><br />
         <button type="submit">send inv</button>
       </form>
@@ -97,7 +97,7 @@
         event.preventDefault();
         const message = messageInput.value.trim();
         if (message !== "") {
-          fetch(`/test/game/${roomId}/chat`, {
+          fetch(`/test/${roomId}/chat`, {
             method: "post",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message }),
@@ -108,14 +108,11 @@
       });
 
       // Listening chat event from specific room
-      socket.on(
-        `chat:message:${roomId}`,
-        ({ avatar, from, timestamp, message }) => {
-          const li = document.createElement("li");
-          li.innerHTML = `${avatar}${from}: ${message}`;
-          document.querySelector("ul").appendChild(li);
-        }
-      );
+      socket.on(`chat-${roomId}`, ({ avatar, from, timestamp, message }) => {
+        const li = document.createElement("li");
+        li.innerHTML = `${avatar}${from}: ${message}`;
+        document.querySelector("ul").appendChild(li);
+      });
     </script>
   </body>
 </html>
