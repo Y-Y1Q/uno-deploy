@@ -20,6 +20,7 @@
     "@dicebear/core": "^8.0.1",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
     "connect-pg-simple": "^9.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/connect-flash": "^0.0.40",
     "@types/connect-pg-simple": "^7.0.3",
     "@types/cookie-parser": "^1.4.7",
     "@types/express": "^4.17.21",
