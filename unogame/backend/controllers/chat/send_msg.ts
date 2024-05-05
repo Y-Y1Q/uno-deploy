@@ -1,5 +1,7 @@
-import { createAvatar } from '@dicebear/core';
-import { funEmoji } from '@dicebear/collection';
+import { funEmoji } from "@dicebear/collection";
+import { createAvatar } from "@dicebear/core";
+
+import { SOCKET_EVENT } from "../../../constants/socket_event";
 
 const sendMessage = (req, res) => {
   let { id: roomId } = req.params; //   params - someurl/:id  (placeholder)
@@ -13,19 +15,26 @@ const sendMessage = (req, res) => {
 
   console.log({ username, message, roomId });
 
-  // Create bottts style avatar based on username
+  // Create funEmoji style avatar based on username
   const avatar = createAvatar(funEmoji, {
     seed: `${username}`,
     radius: 30,
     size: 32,
-    backgroundColor: ["b6e3f4","c0aede","d1d4f9","ffdfbf","71cf62","fcbc34"]
+    backgroundColor: [
+      "b6e3f4",
+      "c0aede",
+      "d1d4f9",
+      "ffdfbf",
+      "71cf62",
+      "fcbc34",
+    ],
   });
 
   const svg = avatar.toString();
   // console.log("test avatar:" + svg);
 
-  io.emit(`chat:message:${roomId}`, {
-    avatar: svg, 
+  io.emit(SOCKET_EVENT.CHAT(0), {
+    avatar: svg,
     from: username,
     timestamp: Date.now(),
     message,
@@ -34,4 +43,4 @@ const sendMessage = (req, res) => {
   res.sendStatus(200);
 };
 
-export { sendMessage }
+export { sendMessage };
