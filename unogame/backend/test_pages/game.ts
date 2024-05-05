@@ -13,7 +13,7 @@ router.get("/:id", (req, res) => {
   const { username: currentUser, id: currentUserId } =
     Session.getCurrentUser(req);
 
-  res.render("test_game", { id, currentUser, currentUserId });
+  res.render("test/test_game", { id, currentUser, currentUserId });
 });
 
 router.post("/:id/chat", Chat.sendMessage);

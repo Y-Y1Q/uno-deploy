@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
   const { username: currentUser, id: currentUserId } =
     Session.getCurrentUser(req);
 
-  res.render("test_lobby", { currentUser, currentUserId });
+  res.render("test/test_lobby", { currentUser, currentUserId });
 });
 
 router.get("/m2-chat", (req, res) => {
@@ -20,7 +20,7 @@ router.get("/m2-chat", (req, res) => {
   const { username: currentUser, id: currentUserId } =
     Session.getCurrentUser(req);
 
-  res.render("test_m2_chat", { currentUser, currentUserId });
+  res.render("test/test_m2_chat", { currentUser, currentUserId });
 });
 
 router.post("/chat", Chat.sendMessage);
