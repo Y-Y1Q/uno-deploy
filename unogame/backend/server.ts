@@ -53,8 +53,11 @@ io.engine.use(Session.config);
 app.set("io", io);
 io.on("connection", handleSocketConnection);
 
-// POST signup, login, logout
-app.use(Routes.user);
+// POST /signup /login /logout
+app.use(Routes.auth);
+
+// POST /chat/:id  /send-inv/:id
+app.use(Routes.chat);
 
 // GET website
 app.use(Routes.website);

@@ -1,6 +1,5 @@
 import express from "express";
 
-import * as Chat from "../controllers/ctrl_chat";
 import * as UserDB from "../db/db_users";
 import { isAuthenticated } from "../middleware/check_auth";
 import * as Session from "../middleware/session";
@@ -58,9 +57,5 @@ router.get("/game/:id/wait", isAuthenticated, async (req, res) => {
 
   res.render("waitroom", { gameId, user, playersList });
 });
-
-// For testing chat in the unogame.ejs waitroom.ejs without authentication
-// will delete later, after lobby.ejs is updated with game list
-router.post("/chat/:id", Chat.sendMessage);
 
 export default router;
