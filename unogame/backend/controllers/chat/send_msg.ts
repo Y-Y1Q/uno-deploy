@@ -33,7 +33,7 @@ const sendMessage = (req, res) => {
   const svg = avatar.toString();
   // console.log("test avatar:" + svg);
 
-  io.emit(SOCKET_EVENT.CHAT(0), {
+  io.emit(SOCKET_EVENT.CHAT(roomId), {
     avatar: svg,
     from: username,
     timestamp: Date.now(),

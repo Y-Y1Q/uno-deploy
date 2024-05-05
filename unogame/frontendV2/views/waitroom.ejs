@@ -1,5 +1,7 @@
 <!doctype html>
 <html lang="en">
+  <!-- value from BE route-->
+
   <!-- BE route will render EJS with gameId, 0 for lobby, others for game-->
   <input type="hidden" name="game-id" id="game-id" value="<%= gameId %>" />
 
@@ -15,6 +17,7 @@
     id="current-user-name"
     value="<%= user.username %>"
   />
+  <!-- value from BE route-->
 
   <head>
     <meta charset="UTF-8" />
@@ -166,52 +169,5 @@
         </div>
       </div>
     </div>
-
-    <script type="module">
-      import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
-
-      const socket = io();
-
-      document.addEventListener("DOMContentLoaded", function () {
-        const messagesContainer = document.getElementById("messages");
-
-        const messageForm = document.getElementById("chatForm");
-        const messageInput = document.getElementById("chatMessage");
-
-        messageForm.addEventListener("submit", function (event) {
-          event.preventDefault();
-          const message = messageInput.value.trim();
-          if (message !== "") {
-            fetch(`/chat/<%= gameId %>`, {
-              method: "post",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ message }),
-            });
-          }
-          messageInput.value = "";
-        });
-
-        const chatbox = document.getElementById("chatbox");
-
-        socket.on("chat:message:<%= gameId %>", function (data) {
-          const newMessage = document.createElement("div");
-          newMessage.classList.add("flex", "justify-start", "mb-2");
-
-          const messageBubble = document.createElement("div");
-          messageBubble.classList.add(
-            "bg-green-200",
-            "text-green-700",
-            "rounded",
-            "py-2",
-            "px-4"
-          );
-          messageBubble.innerHTML = `<p>${data.message}</p><p class="text-left font-bold">${data.from}</p>`;
-
-          newMessage.appendChild(messageBubble);
-          chatbox.appendChild(newMessage);
-          chatbox.scrollTop = chatbox.scrollHeight;
-        });
-      });
-    </script>
   </body>
 </html>

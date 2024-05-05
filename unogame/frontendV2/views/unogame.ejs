@@ -15,7 +15,7 @@
     id="current-user-name"
     value="<%= user.username %>"
   />
-
+  <!-- value from BE route-->
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -71,25 +71,5 @@
         </div>
       </div>
     </div>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const lobbyContainer = document.getElementById("lobbyContainer");
-        lobbyContainer.addEventListener("click", (event) => {
-          const target = event.target;
-
-          if (target.id === "abandonButton") {
-            // Handle abandon game logic
-            console.log("Game abandoned");
-          } else if (target.id === "drawButton") {
-            // Handle draw card logic
-            console.log("Draw card");
-          } else if (target.id === "sayUnoButton") {
-            // Handle say UNO logic
-            console.log("UNO!");
-          }
-        });
-      });
-    </script>
   </body>
 </html>
