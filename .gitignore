@@ -1,0 +1,19 @@
+# Ignore logs and local environment variables
+*.log
+.env
+
+# Ignore editor directories and files
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+
+# Ignore dependencies and bundled files
+node_modules/
+unogame/static/dist/
+unogame/static/css/
