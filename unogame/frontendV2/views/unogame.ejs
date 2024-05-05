@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <!-- BE route will render EJS with gameId, 0 for lobby, others for game-->
+  <!-- values render from BE route-->
   <input type="hidden" name="game-id" id="game-id" value="<%= gameId %>" />
 
   <input
@@ -15,7 +15,7 @@
     id="current-user-name"
     value="<%= user.username %>"
   />
-  <!-- value from BE route-->
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

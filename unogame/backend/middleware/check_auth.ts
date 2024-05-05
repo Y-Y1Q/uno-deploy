@@ -13,9 +13,13 @@ const isAuthenticated = (req, res, next) => {
     next();
   } else {
     // if session doesn't exist, send forbidden status with error message
-    return res
-      .status(HttpCode.Forbidden)
-      .json({ error: "You are not allowed to access this page" });
+
+    req.flash("error", "You are not allowed to access this page");
+    return res.redirect("/");
+
+    // return res
+    //   .status(HttpCode.Forbidden)
+    //   .json({ error: "You are not allowed to access this page" });
   }
 };
 

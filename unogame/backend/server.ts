@@ -1,3 +1,4 @@
+import flash from "connect-flash";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
@@ -36,6 +37,7 @@ app.use(Session.config);
 if (process.env.NODE_ENV === "development") {
   app.use(Session.logToConsole);
 }
+app.use(flash());
 
 // handle cross origin request
 const corsOptions = {

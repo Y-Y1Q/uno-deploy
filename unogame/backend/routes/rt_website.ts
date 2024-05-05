@@ -7,22 +7,26 @@ import * as Session from "../middleware/session";
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.render("landing");
+  const errorMsg = req.flash("error");
+  res.render("landing", { errorMsg });
 });
 
 router.get("/login", (req, res) => {
-  res.render("login");
+  const errorMsg = req.flash("error");
+  res.render("login", { errorMsg });
 });
 
 router.get("/signup", (req, res) => {
-  res.render("signup");
+  const errorMsg = req.flash("error");
+  res.render("signup", { errorMsg });
 });
 
 router.get("/lobby", isAuthenticated, (req, res) => {
   const user = Session.getCurrentUser(req);
   const gameId = 0;
+  const errorMsg = req.flash("error");
 
-  res.render("lobby", { user, gameId });
+  res.render("lobby", { user, gameId, errorMsg });
 });
 
 router.get("/game/:id", isAuthenticated, (req, res) => {

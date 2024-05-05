@@ -1,5 +1,11 @@
 <!doctype html>
 <html lang="en">
+  <% if(errorMsg && errorMsg.length > 0) { %>
+  <script>
+    alert("<%= errorMsg %>");
+  </script>
+  <% } %>
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
