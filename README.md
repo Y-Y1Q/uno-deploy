@@ -11,17 +11,17 @@ Navigate to the project directory `Team-C-unogame-csc667\`in your terminal
 
 `npm install` install dependencies
 
+`npm run dev` build & start in development mode, watching all source files for changes, then rebuild & restart
+
+`npm run start` start the server
+
 `npm run build` build the project
-
-`npm run dev` build the project in development mode, watching all source files for changes and rebuilding
-
-`npm run start` start the server in development mode, watching server file for changes and restarting
 
 `npm run format` format code
 
 `npm run prepare` install Husky pre-commit hooks
 
-Port: 3333 or defined locally
+Port: 3333 or defined in .env
 
 # Database Management
 
