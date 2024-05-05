@@ -10,16 +10,18 @@ import * as configure from "./config";
 import { isAuthenticated } from "./middleware/check_auth";
 import * as Session from "./middleware/session";
 import { handleSocketConnection } from "./middleware/socket_connect";
+import { requestTime } from "./middleware/timestamp";
 import * as Routes from "./routes";
 import * as TestRoutes from "./test_pages/test_routes";
 
 const app = express();
 const httpServer = createServer(app);
+app.use(requestTime);
 
 const UNOGAME_PATH = path.dirname(path.dirname(__dirname));
 const STATIC_PATH = path.join(UNOGAME_PATH, "static");
 const VIEW_PATH = path.join(UNOGAME_PATH, "frontendV2", "views");
-// console.log(STATIC_PATH);
+console.log(STATIC_PATH);
 
 configure.liveReload(app, STATIC_PATH);
 configure.views(app, VIEW_PATH, STATIC_PATH);
