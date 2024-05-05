@@ -1,10 +1,15 @@
-import HttpCode from "../utilities/http_code";
 import { getUsersInGame } from "../db/db_games";
+import HttpCode from "../utilities/http_code";
 
 // * CHECK IF THE USER IS AUTHENTICATED
 const isAuthenticated = (req, res, next) => {
   // check if the user session exists
-  if (req.session.user !== undefined) {
+  if (req.session.user !== undefined && req.session.user.id !== undefined) {
+    // if user session exists, set user info to local storage
+    res.locals.user = {
+      ...req.session.user,
+    };
+
     next();
   } else {
     // if session doesn't exist, send forbidden status with error message

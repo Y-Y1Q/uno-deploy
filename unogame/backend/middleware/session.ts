@@ -1,10 +1,11 @@
-import expressSession from "express-session";
 import pgSession from "connect-pg-simple";
+import expressSession from "express-session";
+
 import { db } from "../db/db_connection";
 
 // extend the SessionData to include 'user' type
 // this will allow us to access user data in session
-declare module 'express-session' {
+declare module "express-session" {
   interface SessionData {
     user: {
       id: number;
@@ -32,13 +33,6 @@ const config = expressSession({
   }, // 1 day
 });
 
-// to set session user data to locals for easy access in views
-const setToLocal = (req, res, next) => {
-  res.locals.user = req.session.user;
-
-  next();
-};
-
 // to log session data to console
 const logToConsole = (req, res, next) => {
   if (req.session.user !== undefined) {
@@ -49,9 +43,8 @@ const logToConsole = (req, res, next) => {
 
 // the following getter will have user object
 // { isAuthenticated } in check_auth.ts will check it first in express routes
-
 const getCurrentUser = (req) => {
   return req.session.user;
-}
+};
 
-export { config, setToLocal, logToConsole, getCurrentUser, };
+export { config, logToConsole, getCurrentUser };
