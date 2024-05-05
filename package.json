@@ -1,0 +1,85 @@
+{
+  "name": "team-c-uno",
+  "version": "1.0.0",
+  "description": "CSC 667 Term Project",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "NODE_ENV=development nodemon ./static/dist/server.js",
+    "build": "node esbuild.js",
+    "dev": "concurrently -c \"green,blue\" \"npm:dev:build\" \"npm:dev:build-css\"",
+    "dev:build": "NODE_ENV=development node esbuild.js -- --watch",
+    "dev:build-css": "NODE_ENV=development tailwindcss -i ./unogame/frontendV2/css/style.css -o ./unogame/static/css/style.css --watch",
+    "format": "prettier . --write",
+    "db:create": "node-pg-migrate create -- ",
+    "db:migrate": "node-pg-migrate up",
+    "db:rollback": "node-pg-migrate down",
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dicebear/collection": "^8.0.1",
+    "@dicebear/core": "^8.0.1",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^2.4.3",
+    "connect-pg-simple": "^9.0.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.9",
+    "express": "^4.18.3",
+    "express-session": "^1.18.0",
+    "morgan": "^1.10.0",
+    "node-pg-migrate": "^6.2.2",
+    "pg": "^8.11.3",
+    "pg-promise": "^11.5.4",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/connect-pg-simple": "^7.0.3",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.0",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^20.12.5",
+    "concurrently": "^8.2.2",
+    "connect-livereload": "^0.6.1",
+    "esbuild": "^0.20.2",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "livereload": "^0.9.3",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
+    "prettier-plugin-ejs": "^1.0.3",
+    "prettier-plugin-sort-json": "^4.0.0",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.2"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "semi": true,
+    "plugins": [
+      "prettier-plugin-ejs",
+      "prettier-plugin-sort-json",
+      "@trivago/prettier-plugin-sort-imports"
+    ],
+    "importOrderSeparation": true,
+    "importOrder": [
+      "^[./]"
+    ],
+    "importOrderSortSpecifiers": true
+  },
+  "lint-staged": {
+    "*.--write": "prettier --write",
+    "*.{ts,js,css,md}": "prettier --write"
+  }
+}
