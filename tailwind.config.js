@@ -1,8 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-    content: ["./unogame/frontendV2/views/*.ejs"],
-    theme: {
-        extend: {},
+  content: ["./unogame/frontendV2/views/*.ejs"],
+  theme: {
+    extend: {},
+  },
+  plugins: [
+    {
+      tailwindcss: {},
+      autoprefixer: {},
     },
-    plugins: [require("@tailwindcss/forms")],
+  ],
 };
