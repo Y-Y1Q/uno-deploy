@@ -73,6 +73,6 @@ app.use(Routes.test);
 const PORT = process.env.PORT || 3333;
 httpServer.listen(PORT, () => {
   console.log(
-    `[${process.env.NODE_ENV ?? "production"}] Server started on http://localhost:${PORT}/`
+    `[${process.env.NODE_ENV ?? "production"}] Server started on \x1b[32m\x1b[1m http://localhost:${PORT}/`
   );
 });

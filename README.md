@@ -2,6 +2,10 @@
 
 ## Documentation
 
+[**Frontend** ](https://docs.google.com/document/d/1Q7dy5t1PLPO-GSkX-l9Odzt26guablaQ6HB8vQvXcro/edit#heading=h.354dsx7n9cz3)
+
+[**Backend**](https://docs.google.com/document/d/1pxNN8a4l0q5tSuLNxI1-U5J-zbsd-e8ZlxAAiAJqDFo/edit?usp=sharing)
+
 TODO
 
 ## Build and Start
