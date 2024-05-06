@@ -18,7 +18,7 @@ const app = express();
 const httpServer = createServer(app);
 app.use(requestTime);
 
-const UNOGAME_PATH = path.dirname(path.dirname(__dirname));
+const UNOGAME_PATH = path.dirname(path.dirname(import.meta.dirname));
 const STATIC_PATH = path.join(UNOGAME_PATH, "static");
 const VIEW_PATH = path.join(UNOGAME_PATH, "frontendV2", "views");
 //console.log(STATIC_PATH);

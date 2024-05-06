@@ -4,13 +4,9 @@ import postCssPlugin from "esbuild-style-plugin";
 import * as fs from "fs";
 import * as path from "path";
 import tailwindcss from "tailwindcss";
-import { fileURLToPath } from "url";
 
-const ROOT_PATH = path.dirname(fileURLToPath(import.meta.url));
-const FRONTEND_PATH = path.join(ROOT_PATH, "unogame", "frontendV2");
-const BACKEND_PATH = path.join(ROOT_PATH, "unogame", "backend");
+const ROOT_PATH = import.meta.dirname;
 const OUT_PATH = path.join(ROOT_PATH, "unogame", "static", "dist");
-
 // console.log(ROOT_PATH);
 
 const isDev = process.env.NODE_ENV === "development";
@@ -19,21 +15,25 @@ if (fs.existsSync(OUT_PATH)) {
   fs.rmSync(OUT_PATH, { recursive: true, force: true });
 }
 
-const FE_CONFIG = {
-  entryPoints: [path.join(FRONTEND_PATH, "index.ts")],
+const CONFIG = {
   bundle: true,
-  outdir: path.join(OUT_PATH),
+  format: "esm",
+  outdir: OUT_PATH,
   minify: !isDev,
   sourcemap: isDev,
   logLevel: "info",
 };
 
+const FE_CONFIG = {
+  ...CONFIG,
+  entryPoints: [path.join(ROOT_PATH, "unogame", "frontendV2", "index.ts")],
+};
+
 const CSS_CONFIG = {
-  entryPoints: [path.join(FRONTEND_PATH, "css", "style.css")],
-  bundle: true,
-  outdir: path.join(OUT_PATH),
-  minify: !isDev,
-  sourcemap: isDev,
+  ...CONFIG,
+  entryPoints: [
+    path.join(ROOT_PATH, "unogame", "frontendV2", "css", "style.css"),
+  ],
   plugins: [
     postCssPlugin({
       postcss: {
@@ -44,14 +44,10 @@ const CSS_CONFIG = {
 };
 
 const BE_CONFIG = {
-  entryPoints: [path.join(BACKEND_PATH, "server.ts")],
-  bundle: true,
-  outdir: path.join(OUT_PATH),
-  minify: !isDev,
-  sourcemap: isDev,
-  logLevel: "info",
+  ...CONFIG,
+  entryPoints: [path.join(ROOT_PATH, "unogame", "backend", "server.ts")],
   platform: "node",
-  external: ["livereload-js", "@resvg/resvg-js", "sharp", "exiftool-vendored"],
+  packages: "external",
 };
 
 if (isDev) {
