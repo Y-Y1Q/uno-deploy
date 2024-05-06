@@ -53,12 +53,15 @@ const BE_CONFIG = {
 if (isDev) {
   async function watch() {
     let ctxBE = await esbuild.context(BE_CONFIG);
+    console.log("Building BE");
     await ctxBE.watch();
 
     let ctxCSS = await esbuild.context(CSS_CONFIG);
+    console.log("Building CSS");
     await ctxCSS.watch();
 
     let ctxFE = await esbuild.context(FE_CONFIG);
+    console.log("Building FE");
     await ctxFE.watch();
 
     console.log("Watching...");

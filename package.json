@@ -7,7 +7,7 @@
     "start": "node ./unogame/static/dist/server.js",
     "build": "node esbuild.js",
     "dev": "concurrently --names \"BUILD,SERVER\" -c \"blue,green\" \"npm:dev:build\"  \"npm:dev:server\"",
-    "dev:build": "NODE_ENV=development node esbuild.js -- --watch",
+    "dev:build": "NODE_ENV=development node esbuild.js --watch",
     "dev:server": "wait-on -d 1000 ./unogame/static/dist/server.js && NODE_ENV=development nodemon ./unogame/static/dist/server.js",
     "format": "prettier . --write",
     "db:create": "node-pg-migrate -m \"./unogame/backend/db/migrations\" create -- ",

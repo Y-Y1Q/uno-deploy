@@ -13,7 +13,8 @@ try {
   db = pgp()(process.env.DATABASE_URL);
 
   console.log(
-    `Connected to db with connection string [${process.env.DATABASE_URL}]`
+    "Connected to DB with URL:  " +
+      `\x1b[32m\x1b[1m${process.env.DATABASE_URL} \x1b[0m`
   );
 } catch (error) {
   console.log("Unable to connect to database");
