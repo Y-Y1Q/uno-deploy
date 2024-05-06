@@ -1,5 +1,5 @@
+import HttpCode from "../../../constants/http_code";
 import * as UserDB from "../../db/db_users";
-import HttpCode from "../../utilities/http_code";
 
 // delete comment later
 // get players list with id, username, fullname

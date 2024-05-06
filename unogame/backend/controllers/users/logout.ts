@@ -1,4 +1,4 @@
-import HttpCode from "../../utilities/http_code";
+import HttpCode from "../../../constants/http_code";
 
 const logOut = (req, res) => {
   try {

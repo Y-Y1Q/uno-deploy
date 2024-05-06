@@ -1,4 +1,4 @@
-// auto increment
+// auto increment from 10
 
 enum CardType {
   SKIP = 10,

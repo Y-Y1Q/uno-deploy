@@ -1,3 +1,5 @@
+// auto increment from 0
+
 enum CardColor {
   RED,
   GREEN,

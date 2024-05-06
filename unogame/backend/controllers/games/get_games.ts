@@ -1,5 +1,5 @@
+import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
-import HttpCode from "../../utilities/http_code";
 
 const getGames = async (req, res) => {
   const { name } = req.params;

@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 
+import HttpCode from "../../../constants/http_code";
 import * as UsersDB from "../../db/db_users";
-import HttpCode from "../../utilities/http_code";
 
 const SALT_ROUNDS = 10;
 

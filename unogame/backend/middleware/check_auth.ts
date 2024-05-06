@@ -1,5 +1,5 @@
+import HttpCode from "../../constants/http_code";
 import { getUsersInGame } from "../db/db_games";
-import HttpCode from "../utilities/http_code";
 
 // * CHECK IF THE USER IS AUTHENTICATED
 const isAuthenticated = (req, res, next) => {
