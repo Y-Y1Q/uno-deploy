@@ -73,14 +73,6 @@ app.use(Routes.test);
 const PORT = process.env.PORT || 3333;
 httpServer.listen(PORT, () => {
   console.log(
-    `Server started on port ${PORT}, in the ${process.env.NODE_ENV ?? "production"} environment`
+    `[${process.env.NODE_ENV ?? "production"}] Server started on http://localhost:${PORT}/`
   );
-});
-
-// log request URL's origin
-app.use((req, res, next) => {
-  console.log(
-    `[server.ts] Incoming request -  METHOD:${req.method} ORIGIN:${req.headers.origin} URL:${req.url}`
-  );
-  next();
 });
