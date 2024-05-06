@@ -13,11 +13,11 @@ export function someFunc(socket: Socket) {
   if (something) {
 
     // BE route will render EJS page with some values  
-    // 0 - lobby
-    // 1,2,3...  - game id
+    // 0 - lobby.ejs
+    // 1,2,3...  - unogame.ejs
     const gameId = ( document.getElementById("game-id") as HTMLInputElement | null)?.value;
 
-    // listening from someEvent related to gameId
+    // listening from someEvent related to gameId, some socket events dont use gameId
     // socket event list is in /unogame/constants/socket_event.ts
     socket.on(SOCKET_EVENT.someEvent(gameId), function (data) {
         // do something with data

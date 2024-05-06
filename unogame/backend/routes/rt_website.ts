@@ -35,10 +35,10 @@ router.get("/game/:id", isAuthenticated, (req, res) => {
 
     1. update unogame.ejs
 
-    2. lobby.ejs is updated with game list that allow user to join
+    2. update lobby.ejs with game list that allow user to join
        if game is not started, redirect user to /game/:id/wait
 
-    3. add isUserInGame check later  
+    3. add isUserInGame & other checks later  
     */
   const user = Session.getCurrentUser(req);
   const { id: gameId } = req.params;
