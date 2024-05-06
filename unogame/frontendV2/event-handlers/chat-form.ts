@@ -1,15 +1,18 @@
 const messageForm = document.getElementById("chatForm") as HTMLFormElement;
 
-export default function () {
+export function chatFormHandler() {
   if (messageForm) {
     const messageInput = document.getElementById(
       "chatMessage"
     ) as HTMLInputElement;
+
     const gameId = (
       document.getElementById("game-id") as HTMLInputElement | null
     )?.value;
+
     messageForm.addEventListener("submit", async (event) => {
       event.preventDefault();
+
       const message = messageInput.value.trim();
       if (message !== "") {
         fetch(`/chat/${gameId}`, {
@@ -18,6 +21,7 @@ export default function () {
           body: JSON.stringify({ message }),
         });
       }
+
       messageInput.value = "";
     });
   }

@@ -4,7 +4,7 @@ import { SOCKET_EVENT } from "../../constants/socket_event";
 
 const chatbox = document.getElementById("chatbox") as HTMLDivElement;
 
-export default function (socket: Socket) {
+export function chatMessageHandler(socket: Socket) {
   if (chatbox) {
     const gameId = (
       document.getElementById("game-id") as HTMLInputElement | null

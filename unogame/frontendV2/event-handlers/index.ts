@@ -1,4 +1,4 @@
-import { default as chatFormHandler } from "./chat-form";
+import { chatFormHandler } from "./chat-form";
 
 export default [chatFormHandler];
 
@@ -7,11 +7,10 @@ export default [chatFormHandler];
 
 const someForm = document.getElementById("someFormId") as HTMLFormElement;
 
-export default function (){
+export function someFunc() {
   if (someForm) {
-        do something
-    }
+    //do something
   }
-
+}
 
 */
