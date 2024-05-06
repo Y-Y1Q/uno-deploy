@@ -9,9 +9,9 @@
     "dev:build": "NODE_ENV=development node esbuild.mjs -- --watch",
     "dev:server": "wait-on ./unogame/static/dist/server.js && NODE_ENV=development nodemon ./unogame/static/dist/server.js",
     "format": "prettier . --write",
-    "db:create": "node-pg-migrate create -- ",
-    "db:migrate": "node-pg-migrate up",
-    "db:rollback": "node-pg-migrate down",
+    "db:create": "node-pg-migrate -m \"./unogame/backend/db/migrations\" create -- ",
+    "db:migrate": "node-pg-migrate -m \"./unogame/backend/db/migrations\" up",
+    "db:rollback": "node-pg-migrate -m \"./unogame/backend/db/migrations\" down",
     "prepare": "husky install"
   },
   "keywords": [],
