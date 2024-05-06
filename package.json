@@ -90,9 +90,7 @@
   "nodemonConfig": {
     "ext": "ts,js,ejs",
     "ignore": [
-      "./unogame/static/dist/*.map",
-      "./unogame/static/dist/index*",
-      "./unogame/static/dist/style*"
+      "./unogame/static/dist/*.map"
     ]
   }
 }
