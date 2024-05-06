@@ -56,20 +56,20 @@ const BE_CONFIG = {
 
 if (isDev) {
   async function watch() {
-    let ctxFE = await esbuild.context(FE_CONFIG);
-    await ctxFE.watch();
+    let ctxBE = await esbuild.context(BE_CONFIG);
+    await ctxBE.watch();
 
     let ctxCSS = await esbuild.context(CSS_CONFIG);
     await ctxCSS.watch();
 
-    let ctxBE = await esbuild.context(BE_CONFIG);
-    await ctxBE.watch();
+    let ctxFE = await esbuild.context(FE_CONFIG);
+    await ctxFE.watch();
 
     console.log("Watching...");
   }
   watch();
 } else {
-  await esbuild.build(FE_CONFIG);
-  await esbuild.build(CSS_CONFIG);
   await esbuild.build(BE_CONFIG);
+  await esbuild.build(CSS_CONFIG);
+  await esbuild.build(FE_CONFIG);
 }
