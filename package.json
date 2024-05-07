@@ -10,6 +10,7 @@
     "dev:build": "NODE_ENV=development node esbuild.js --watch",
     "dev:server": "wait-on -d 1000 ./unogame/static/dist/server.js && NODE_ENV=development nodemon ./unogame/static/dist/server.js",
     "format": "prettier . --write",
+    "db": "tsx ./unogame/backend/db/reset.ts && npm run db:migrate",
     "db:create": "node-pg-migrate -m \"./unogame/backend/db/migrations\" create -j=cjs -- ",
     "db:migrate": "node-pg-migrate -m \"./unogame/backend/db/migrations\" up",
     "db:rollback": "node-pg-migrate -m \"./unogame/backend/db/migrations\" down",
@@ -62,6 +63,7 @@
     "prettier-plugin-ejs": "^1.0.3",
     "prettier-plugin-sort-json": "^4.0.0",
     "tailwindcss": "^3.4.3",
+    "tsx": "^4.9.3",
     "typescript": "^5.4.2",
     "wait-on": "^7.2.0"
   },
