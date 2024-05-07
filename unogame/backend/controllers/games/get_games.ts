@@ -1,5 +1,5 @@
+import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
-import HttpCode from "../../utilities/http_code";
 
 const getGames = async (req, res) => {
   const { name } = req.params;
@@ -9,7 +9,9 @@ const getGames = async (req, res) => {
       return res.status(HttpCode.OK).json({ results: data });
     })
     .catch((err) => {
-      return res.status(HttpCode.InternalServerError).json({ error: err.detail });
+      return res
+        .status(HttpCode.InternalServerError)
+        .json({ error: err.detail });
     });
 };
 

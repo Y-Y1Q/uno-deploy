@@ -1,4 +1,4 @@
-import HttpCode from "../../utilities/http_code";
+import HttpCode from "../../../constants/http_code";
 
 const logOut = (req, res) => {
   try {
@@ -7,7 +7,6 @@ const logOut = (req, res) => {
     //   .status(HttpCode.OK)
     //   .json({ message: "You have successfully logged out." });
     return res.redirect("/");
-    
   } catch (err) {
     console.log(err);
     res.status(HttpCode.InternalServerError).json({ error: "Logout failed" });

@@ -1,0 +1,98 @@
+{
+  "name": "team-c-uno",
+  "version": "1.0.0",
+  "description": "CSC 667 Term Project",
+  "type": "module",
+  "scripts": {
+    "start": "node ./unogame/static/dist/server.js",
+    "build": "node esbuild.js",
+    "dev": "concurrently --names \"BUILD,SERVER\" -c \"blue,green\" \"npm:dev:build\"  \"npm:dev:server\"",
+    "dev:build": "NODE_ENV=development node esbuild.js --watch",
+    "dev:server": "wait-on -d 1000 ./unogame/static/dist/server.js && NODE_ENV=development nodemon ./unogame/static/dist/server.js",
+    "format": "prettier . --write",
+    "db": "tsx ./unogame/backend/db/reset.ts && npm run db:migrate",
+    "db:create": "node-pg-migrate -m \"./unogame/backend/db/migrations\" create -j=cjs -- ",
+    "db:migrate": "node-pg-migrate -m \"./unogame/backend/db/migrations\" up",
+    "db:rollback": "node-pg-migrate -m \"./unogame/backend/db/migrations\" down",
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dicebear/collection": "^8.0.1",
+    "@dicebear/core": "^8.0.1",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "connect-pg-simple": "^9.0.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.9",
+    "express": "^4.18.3",
+    "express-session": "^1.18.0",
+    "morgan": "^1.10.0",
+    "node-pg-migrate": "^6.2.2",
+    "pg": "^8.11.3",
+    "pg-promise": "^11.5.4",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/connect-flash": "^0.0.40",
+    "@types/connect-pg-simple": "^7.0.3",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.0",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^20.12.5",
+    "autoprefixer": "^10.4.19",
+    "concurrently": "^8.2.2",
+    "connect-livereload": "^0.6.1",
+    "esbuild": "^0.20.2",
+    "esbuild-style-plugin": "^1.6.3",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "livereload": "^0.9.3",
+    "nodemon": "^3.1.0",
+    "postcss": "^8.4.38",
+    "prettier": "^3.2.5",
+    "prettier-plugin-ejs": "^1.0.3",
+    "prettier-plugin-sort-json": "^4.0.0",
+    "tailwindcss": "^3.4.3",
+    "tsx": "^4.9.3",
+    "typescript": "^5.4.2",
+    "wait-on": "^7.2.0"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "semi": true,
+    "plugins": [
+      "prettier-plugin-ejs",
+      "prettier-plugin-sort-json",
+      "@trivago/prettier-plugin-sort-imports"
+    ],
+    "importOrderSeparation": true,
+    "importOrder": [
+      "^[./]"
+    ],
+    "importOrderSortSpecifiers": true
+  },
+  "lint-staged": {
+    "*.--write": "prettier --write",
+    "*.{ts,js,ejs,css,md}": "prettier --write"
+  },
+  "nodemonConfig": {
+    "ext": "ts,js,ejs",
+    "ignore": [
+      "./unogame/static/dist/*.map"
+    ]
+  }
+}

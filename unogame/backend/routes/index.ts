@@ -1,6 +1,8 @@
+import auth from "./rt_auth";
+import chat from "./rt_chat";
 import game from "./rt_game";
 import lobby from "./rt_lobby";
-import user from "./rt_user";
-import website from "./rt_website"
+import test from "./rt_test";
+import website from "./rt_website";
 
-export { game, lobby, user, website };
+export { game, lobby, auth, website, chat, test };

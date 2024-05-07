@@ -1,57 +1,42 @@
-import path from "path";
-import express from "express";
-import morgan from "morgan";
+import flash from "connect-flash";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { Server } from "socket.io";
+import express from "express";
 import { createServer } from "http";
-import * as Routes from "./routes";
-import * as TestRoutes from "./test_pages/test_routes";
-import * as Session from "./middleware/session";
-import { requestTime } from "./middleware/timestamp";
+import morgan from "morgan";
+import path from "path";
+import { Server } from "socket.io";
+
+import * as configure from "./config";
 import { isAuthenticated } from "./middleware/check_auth";
+import * as Session from "./middleware/session";
 import { handleSocketConnection } from "./middleware/socket_connect";
-import { setUpDevelopmentEnvironment } from "./utilities/setup_development_environment";
+import { requestTime } from "./middleware/timestamp";
+import * as Routes from "./routes";
 
 const app = express();
 const httpServer = createServer(app);
+app.use(requestTime);
 
-if (process.env.NODE_ENV === "development") {
-  require("dotenv").config();
+const UNOGAME_PATH = path.dirname(path.dirname(import.meta.dirname));
+const STATIC_PATH = path.join(UNOGAME_PATH, "static");
+const VIEW_PATH = path.join(UNOGAME_PATH, "frontendV2", "views");
+//console.log(STATIC_PATH);
 
-  setUpDevelopmentEnvironment();
-
-  app.use(
-    require("connect-livereload")({
-      port: 35729,
-    })
-  );
-
-  app.use(requestTime);
-}
-
-const PORT = process.env.PORT || 3333;
-
-const BACKEND_PATH = path.dirname(__dirname);
-const STATIC_PATH = path.join(BACKEND_PATH, "static");
-const VIEW_PATH = path.join(BACKEND_PATH, "views");
-// console.log(VIEW_PATH);
+configure.liveReload(app, STATIC_PATH);
+configure.views(app, VIEW_PATH, STATIC_PATH);
 
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.set("views", VIEW_PATH);
-app.set("view engine", "ejs");
-app.use(express.static(STATIC_PATH));
-
 // Setup express session
 app.use(Session.config);
-app.use(Session.setToLocal);
 if (process.env.NODE_ENV === "development") {
   app.use(Session.logToConsole);
 }
+app.use(flash());
 
 // handle cross origin request
 const corsOptions = {
@@ -69,17 +54,11 @@ io.engine.use(Session.config);
 app.set("io", io);
 io.on("connection", handleSocketConnection);
 
-// log request URL's origin
-app.use((req, res, next) => {
-  console.log(
-    `[server.ts] Incoming request -  METHOD:${req.method} ORIGIN:${req.headers.origin} URL:${req.url}`
-  );
-  next();
-});
+// POST /signup /login /logout
+app.use(Routes.auth);
 
-
-// POST signup, login, logout
-app.use(Routes.user);
+// POST /chat/:id  /send-inv/:id
+app.use(Routes.chat);
 
 // GET website
 app.use(Routes.website);
@@ -89,11 +68,12 @@ app.use("/lobby", isAuthenticated, Routes.lobby);
 app.use("/game", isAuthenticated, Routes.game);
 
 // test routes
-app.use("/test", TestRoutes.root);
-app.use("/test/lobby", isAuthenticated, TestRoutes.lobby);
-app.use("/test/game", isAuthenticated, TestRoutes.game);
-app.use("/test/time", isAuthenticated, TestRoutes.logTime);
+app.use(Routes.test);
 
+const PORT = process.env.PORT || 3333;
 httpServer.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  console.log(
+    `In ${process.env.NODE_ENV ?? "production"} mode, ` +
+      `server started on: \x1b[32m\x1b[1m http://localhost:${PORT}/ \x1b[0m`
+  );
 });

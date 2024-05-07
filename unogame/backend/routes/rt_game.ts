@@ -1,7 +1,8 @@
 import express from "express";
-import { isUserInGame } from "../middleware/check_auth";
-import * as Games from "../controllers/ctrl_games";
+
 import * as Chat from "../controllers/ctrl_chat";
+import * as Games from "../controllers/ctrl_games";
+import { isUserInGame } from "../middleware/check_auth";
 
 const router = express.Router();
 

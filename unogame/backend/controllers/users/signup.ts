@@ -1,6 +1,7 @@
-import * as UsersDB from "../../db/db_users";
-import HttpCode from "../../utilities/http_code";
 import bcrypt from "bcryptjs";
+
+import HttpCode from "../../../constants/http_code";
+import * as UsersDB from "../../db/db_users";
 
 const SALT_ROUNDS = 10;
 
@@ -8,42 +9,35 @@ const signUp = async (req, res) => {
   console.log(req.body);
   const { username, password, fullname } = req.body;
 
-  if (checkName(username) || checkName(fullname)){
-    return res.status(HttpCode.BadRequest).json({
-      error: "Invalid username/fullname to use"
-    });
+  // Redirect to lobby if user is already logged in
+  if (req.session.user !== undefined) {
+    req.flash(
+      "error",
+      "You are already logged in as: " + req.session.user.username
+    );
+    return res.redirect("/lobby");
   }
 
-  if (req.session.user !== undefined) {
-    return res.status(HttpCode.BadRequest).json({
-      error: "You are already logged in as: " + req.session.user.username,
-    });
+  // name "admin" is not allowed, ignoring case
+  if (checkName(username) || checkName(fullname)) {
+    req.flash("error", "Invalid username/fullname to use");
+    return res.redirect("/signup");
   }
 
   try {
     const userExists = await UsersDB.foundUser(username);
 
     if (userExists) {
-      return res
-        .status(HttpCode.BadRequest)
-        .json({ error: username + " is taken" });
+      req.flash("error", username + " is taken");
+      return res.redirect("/signup");
     }
 
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     const hash = await bcrypt.hash(password, salt);
 
-    const newUser = await UsersDB.addUser(username, hash, fullname);
+    await UsersDB.addUser(username, hash, fullname);
 
     return res.redirect("/login");
-
-    // req.session.user = {
-    //   id: newUser.id,
-    //   username: newUser.username,
-    // };
-
-    // return res
-    //   .status(HttpCode.Created)
-    //   .json({ message: username + " created" });
   } catch (error) {
     console.log(error);
     return res
@@ -52,9 +46,8 @@ const signUp = async (req, res) => {
   }
 };
 
-
 function checkName(str: string): boolean {
-    return str.toUpperCase() === "ADMIN";
+  return str.toUpperCase() === "ADMIN";
 }
 
 export { signUp };

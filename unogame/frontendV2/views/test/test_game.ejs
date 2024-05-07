@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <!-- If FE is on different port, fetch the room info to get id-->
+  <input type="hidden" name="room-id" id="room-id" value="<%= id %>" />
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      ul.no-bullets {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .split {
+        height: 100%;
+        width: 50%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        overflow-x: auto;
+        overflow-y: auto;
+        padding-left: 20px;
+        padding-top: 20px;
+      }
+
+      .left {
+        width: 75%;
+        left: 0;
+      }
+
+      .right {
+        width: 28%;
+        right: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="split left">
+      <p><a href="http://localhost:3333/test">Test lobby page</a></p>
+
+      <br />
+      Testing chat with roomId (param in the URL)<br />
+      This page doesn't check if the user is actually in the "game_users" table
+      of DB or game exist<br />
+
+      <h3>TEST Sending invitation</h3>
+      Should use two browsers, or private windows to test. <br />
+      Sender in this game page, and receiver in lobby page <br />
+      Refer to FE waitroom wireframe for actual implemention<br />
+      Get player list -> click that player's name -> send invitation<br /><br />
+      <form action="/test/<%= id %>/inv" method="post">
+        To user: <input name="username" /><br />
+        <button type="submit">send inv</button>
+      </form>
+      <br />
+    </div>
+
+    <div class="split right">
+      <h3>Test Chat</h3>
+      <b>In Room: </b>
+      <%= id %><br />
+      <b>Current User: </b>
+      <%= currentUser %>
+      <br />
+      <b>Current UserId: </b>
+      <%= currentUserId %>
+      <br /><br />
+
+      <div id="messages"></div>
+      <form id="message-form">
+        <input
+          type="text"
+          id="message-input"
+          placeholder="Enter your message"
+        />
+        <button type="submit">Send</button>
+      </form>
+
+      <ul class="no-bullets"></ul>
+    </div>
+
+    <script type="module">
+      import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
+
+      const socket = io();
+
+      const messagesContainer = document.getElementById("messages");
+      const messageForm = document.getElementById("message-form");
+      const messageInput = document.getElementById("message-input");
+
+      const roomId = document.getElementById("room-id").value;
+
+      messageForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const message = messageInput.value.trim();
+        if (message !== "") {
+          fetch(`/test/${roomId}/chat`, {
+            method: "post",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message }),
+          });
+        }
+
+        messageInput.value = "";
+      });
+
+      // Listening chat event from specific room
+      socket.on(`chat-${roomId}`, ({ avatar, from, timestamp, message }) => {
+        const li = document.createElement("li");
+        li.innerHTML = `${avatar}${from}: ${message}`;
+        document.querySelector("ul").appendChild(li);
+      });
+    </script>
+  </body>
+</html>

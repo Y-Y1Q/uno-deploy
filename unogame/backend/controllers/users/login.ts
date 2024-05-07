@@ -1,24 +1,26 @@
-import * as UsersDB from "../../db/db_users";
-import HttpCode from "../../utilities/http_code";
 import bcrypt from "bcryptjs";
+
+import HttpCode from "../../../constants/http_code";
+import * as UsersDB from "../../db/db_users";
 
 const logIn = async (req, res) => {
   const { username, password } = req.body;
 
-  // check if user is already logged in
+  // Redirect to lobby if user is already logged in
   if (req.session.user !== undefined) {
-    return res.status(HttpCode.BadRequest).json({
-      error: "You are already logged in as: " + req.session.user.username,
-    });
+    req.flash(
+      "error",
+      "You are already logged in as: " + req.session.user.username
+    );
+    return res.redirect("/lobby");
   }
 
   try {
     const userExists = await UsersDB.foundUser(username);
 
     if (!userExists) {
-      return res
-        .status(HttpCode.BadRequest)
-        .json({ error: username + " does not exist" });
+      req.flash("error", username + " does not exist");
+      return res.redirect("/login");
     }
 
     const user = await UsersDB.getUser(username);
@@ -32,17 +34,9 @@ const logIn = async (req, res) => {
       };
 
       return res.redirect("/lobby");
-
-      // return res.status(HttpCode.OK).json({
-      //   message: username + " is logged in",
-      //   fullName: user.fullName,
-      //   username: user.username,
-      // });
-
     } else {
-      return res
-        .status(HttpCode.Forbidden)
-        .json({ error: "Invalid username/password" });
+      req.flash("error", "Invalid username/password");
+      return res.redirect("/login");
     }
   } catch (error) {
     console.log(error);
