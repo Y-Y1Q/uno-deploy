@@ -3,21 +3,6 @@ import * as GamesDB from "../../db/db_games";
 
 const startGame = async (req, res) => {
   const { id: gameId } = req.params;
-  const { id: userId } = req.session.user;
-
-  // clean before every game without explcitly calling ending it
-  // this should happen checking, now is only for test
-  await GamesDB.endGame(gameId);
-  await GamesDB.deleteAllCards(gameId);
-
-  if (!(await GamesDB.isCreatorInGame(gameId, userId))) {
-    return res.status(HttpCode.BadRequest).json({
-      error:
-        "The current user with userId=" +
-        userId +
-        " is not the creator of this room!",
-    });
-  }
 
   if (await GamesDB.getGameStarted(gameId)) {
     return res
@@ -29,6 +14,7 @@ const startGame = async (req, res) => {
 
   await GamesDB.startGame(gameId)
     .then(async () => {
+      await GamesDB.deleteAllCards(gameId);
       const users = await GamesDB.getUsersInGame(gameId);
       for (const uid of users) {
         await GamesDB.drawCards(gameId, uid, 10); // initialize draw count here

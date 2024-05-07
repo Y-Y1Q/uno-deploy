@@ -44,6 +44,11 @@
       <h3>TEST Creating Games</h3>
       <form action="/game/create" method="post">
         Room Name: <input name="roomName" />
+        <select name="maxPlayer">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
         <button type="submit">submit</button>
       </form>
       <br /><br /><br />
@@ -97,8 +102,14 @@
       </form>
       <br />
 
-      <h3>TEST Starting Game (it will reset previous game for now)</h3>
+      <h3>TEST Starting Game</h3>
       <form action="/game/1/start" method="post">
+        <button type="submit">submit</button>
+      </form>
+      <br />
+
+      <h3>TEST Ending Game</h3>
+      <form action="/game/1/end" method="post">
         <button type="submit">submit</button>
       </form>
       <br />

@@ -1,4 +1,5 @@
 import { createGame } from "./games/create_game";
+import { endGame } from "./games/end_game";
 import { getGameCurrentStatus, playGame } from "./games/gameplay";
 import { getGames } from "./games/get_games";
 import { getUserCards } from "./games/get_user_cards";
@@ -15,4 +16,5 @@ export {
   getUserCards,
   getGameCurrentStatus,
   playGame,
+  endGame,
 };
