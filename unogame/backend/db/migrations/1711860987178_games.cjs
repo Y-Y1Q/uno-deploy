@@ -18,7 +18,6 @@ exports.up = (pgm) => {
     max_players: {
       type: "int",
       notNull: true,
-      default: 4,
     },
     started: {
       type: "boolean",
@@ -45,6 +44,7 @@ exports.up = (pgm) => {
       notNull: true,
       references: "cards(id)",
       onDelete: "cascade",
+      default: 1
     },
   });
 };

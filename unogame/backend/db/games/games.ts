@@ -14,10 +14,10 @@ const getGamesByName = async (roomName) => {
   return ret;
 };
 
-const createGame = async (roomName) => {
+const createGame = async (roomName, maxPlayer) => {
   const ret = await db.one(
-    "INSERT INTO games (room_name, last_card) VALUES ($1,1) RETURNING id",
-    [roomName]
+    "INSERT INTO games (room_name, max_players) VALUES ($1,$2) RETURNING id",
+    [roomName, maxPlayer]
   );
 
   return ret.id;

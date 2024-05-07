@@ -2,10 +2,20 @@ import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
 
 const createGame = async (req, res) => {
-  const { roomName } = req.body;
+  const { roomName, maxPlayer } = req.body;
   const { id: userId } = req.session.user;
 
-  await GamesDB.createGame(roomName)
+  const playerCount = parseInt(maxPlayer);
+  if (Number.isNaN(playerCount)) {
+    return res.status(HttpCode.BadRequest).json({
+      message:
+        "maxPlayer" +
+        String(maxPlayer) +
+        " is invalid, its value should be 2/3/4",
+    });
+  }
+
+  await GamesDB.createGame(roomName, maxPlayer)
     .then(async (gameId) => {
       try {
         await GamesDB.joinGame(gameId, userId);
