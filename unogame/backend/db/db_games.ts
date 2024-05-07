@@ -17,7 +17,6 @@ import {
 import {
   createGame,
   endGame,
-  getGameStarted,
   getGameStatus,
   getGames,
   getGamesByName,
@@ -32,7 +31,6 @@ export {
   createGame,
   startGame,
   endGame,
-  getGameStarted,
   joinGame,
   quitGame,
   setCreatorInGame,

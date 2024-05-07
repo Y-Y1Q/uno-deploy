@@ -4,7 +4,8 @@ import * as GamesDB from "../../db/db_games";
 const endGame = async (req, res) => {
   const { id: gameId } = req.params;
 
-  if (!(await GamesDB.getGameStarted(gameId))) {
+  const gameStatus = await GamesDB.getGameStatus(gameId);
+  if (!gameStatus.started) {
     return res
       .status(HttpCode.BadRequest)
       .json({ error: "The game is already ended" });

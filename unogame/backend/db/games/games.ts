@@ -31,12 +31,6 @@ const endGame = async (gameId) => {
   await db.none("UPDATE games SET started=FALSE WHERE id=$1", [gameId]);
 };
 
-const getGameStarted = async (gameId) => {
-  const ret = await db.one("SELECT started FROM games WHERE id=$1", [gameId]);
-
-  return ret.started;
-};
-
 const getGamesCanJoin = async (userId) => {
   const ret = await db.manyOrNone(
     `SELECT games.id, games.room_name, games.max_players, COUNT(game_users.user_id) AS player_count
@@ -58,11 +52,12 @@ const getGamesCanJoin = async (userId) => {
 
 const getGameStatus = async (gameId) => {
   const ret = await db.one(
-    "SELECT max_players,current_turn,current_penalty,last_card FROM games WHERE id=$1",
+    "SELECT started,max_players,current_turn,current_penalty,last_card FROM games WHERE id=$1",
     [gameId]
   );
 
   return {
+    started: ret.started,
     count: ret.max_players,
     turn: ret.current_turn,
     penalty: ret.current_penalty,
@@ -79,7 +74,6 @@ export {
   getGamesByName,
   createGame,
   startGame,
-  getGameStarted,
   endGame,
   getGamesCanJoin,
   getGameStatus,

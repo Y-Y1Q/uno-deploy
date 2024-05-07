@@ -13,7 +13,8 @@ const joinGame = async (req, res) => {
     });
   }
 
-  if (await GamesDB.getGameStarted(gameId)) {
+  const gameStatus = await GamesDB.getGameStatus(gameId);
+  if (gameStatus.started) {
     return res
       .status(HttpCode.BadRequest)
       .json({ error: "The game is already started" });
