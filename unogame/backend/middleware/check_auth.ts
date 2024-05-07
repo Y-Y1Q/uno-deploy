@@ -1,5 +1,5 @@
 import HttpCode from "../../constants/http_code";
-import { getUsersInGame } from "../db/db_games";
+import * as GamesDB from "../db/db_games";
 
 // * CHECK IF THE USER IS AUTHENTICATED
 const isAuthenticated = (req, res, next) => {
@@ -26,7 +26,7 @@ const isUserInGame = async (req, res, next) => {
   const { id: gameId } = req.params; // extract game ID from request parameters
   const { id: userId } = req.session.user; // extract user ID from session
 
-  const users = await getUsersInGame(gameId);
+  const users = await GamesDB.getUsersInGame(gameId);
   if (users.includes(Number(userId))) {
     next();
   } else {
@@ -35,5 +35,21 @@ const isUserInGame = async (req, res, next) => {
     return res.redirect("/lobby");
   }
 };
+const isCreatorInGame = async (req, res, next) => {
+  const { id: gameId } = req.params; // extract game ID from request parameters
+  const { id: userId } = req.session.user; // extract user ID from session
 
-export { isAuthenticated, isUserInGame };
+  const isCreator = await GamesDB.isCreatorInGame(gameId, userId);
+  if (isCreator) {
+    next();
+  } else {
+    return res.status(HttpCode.BadRequest).json({
+      error:
+        "The current user with userId=" +
+        userId +
+        " is not the creator of this room!",
+    });
+  }
+};
+
+export { isAuthenticated, isUserInGame, isCreatorInGame };
