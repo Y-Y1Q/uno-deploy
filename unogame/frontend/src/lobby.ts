@@ -313,12 +313,25 @@ const renderLobbyPage = async () => {
                             <div class="mb-4">
                                 <h3 class="text-xl font-bold">Welcome Donald Trump</h3>
                             </div>
-                            <div class="mb-4">
-                                r.kelly room
+                            <div class="flex justify-between w-full border-b border-red-500">
+                              <div class="w-1/2 px-2 mb-4">
+                                <h4 class="text-lg font-bold mb-2 border-b border-blue-500">Available Rooms</h4>
+                                <ul>
+                                    <li class="py-1">Gas Chamber</li>
+                                    <li class="py-1">The War Room</li>
+                                    <li class="py-1">Red Room</li>
+                                </ul>
+                              </div>
+                                <div class="w-1/2 px-2 mb-4">
+                                  <h4 class="text-lg font-bold mb-2 border-b border-green-500">Current rooms</h4>
+                                    <ul class="border-none">
+                                      <li class="py-1">The Green Room</li>
+                                      <li class="py-1">The Chamber of Secrets</li>
+                                      <li class="py-1">Confederate Legacy Room</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="mb-4">
-                                kanye west room
-                            </div>
+                            
                             <div>
                                 <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton">Go Back</button>
                             </div>
