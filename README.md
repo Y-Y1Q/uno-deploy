@@ -32,17 +32,18 @@ Port: 3333 or defined in .env
 
 ## Database Management
 
+`npm run db` reset & update database schema ( will delete all data )
+
 `npm run db:create your_migration_name` create a new migration file with the name you give it
 
-`npm run db:migrate` update database schema
+`npm run db:migrate` update database schema, runs all `up` migrations from the current state
 
-`npm run db:rollback` revert database schema (alternative option below)
+`npm run db:rollback` revert database schema, runs a single `down` migration (alternative option: `npm run db`)
 
-To change tables in database (will delete all values stored):
-
-- modify the table migration file directly
-- open pgAdmin: right click the 667uno database, and select Query Tool
-- run the following command to delete all old tables, then `npm run db:migrate` to add updated tables
+~~To change tables in database (will delete all data):~~
+~~- modify the table migration file directly~~
+~~- open pgAdmin: right click the 667uno database, and select Query Tool~~
+~~- run the following command to delete all old tables, then `npm run db:migrate` to add updated tables~~
 
 ```
 DROP SCHEMA public CASCADE;
