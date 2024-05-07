@@ -2,11 +2,27 @@
 
 exports.shorthands = undefined;
 
+const Color = {
+  [0]: 'Red',
+  [1]: 'Green',
+  [2]: 'Blue',
+  [3]: 'Yellow',
+};
+
+const Type = {
+  [10]: 'Skip',
+  [11]: 'Reverse',
+  [12]: 'Draw',
+  [13]: 'Wild',
+  [14]: 'Wild_Draw',
+};
+
 exports.up = (pgm) => {
   pgm.createTable("cards", {
     id: "id",
     color: { type: "int" },
     type: { type: "int" },
+    name: { type: "varchar(20)" }
   });
 
   const cardValues = [];
@@ -14,23 +30,33 @@ exports.up = (pgm) => {
   // create a set of 108 Uno cards in database
   // note: 4 colors, 15 types
   for (let color = 0; color < 4; color++) {
-    cardValues.push({ color, type: 0 }); // Number 0
+    let name = "";
 
-    // Number 1 - 9, skip, reverse, draw 2 will have two sets in each color
+    // Number 0
+    cardValues.push({ color, type: 0, name: `${Color[color]}_0` });
+
+    // Number 1 - 9, Skip, Reverse, Draw 2 have two sets in each color
     for (let type = 1; type <= 12; type++) {
-      cardValues.push({ color, type });
-      cardValues.push({ color, type });
+      if (type < 10) {
+        // 1 - 9
+        cardValues.push({ color, type, name: `${Color[color]}_${type}` });
+        cardValues.push({ color, type, name: `${Color[color]}_${type}` });
+      } else {
+        // Skip, Reverse, Draw 2
+        cardValues.push({ color, type, name: `${Color[color]}_${Type[type]}` });
+        cardValues.push({ color, type, name: `${Color[color]}_${Type[type]}` });
+      }
     }
 
-    // the colors of wild cards is ignored
-    cardValues.push({ color, type: 13 }); // Wild
-    cardValues.push({ color, type: 14 }); // Wild Draw 4
+    // Check card type directly for wild card, ignore card color
+    cardValues.push({ color, type: 13, name: `${Type[13]}` }); // Wild
+    cardValues.push({ color, type: 14, name: `${Type[14]}` }); // Wild Draw 4
   }
 
   pgm.sql(`
-    INSERT INTO cards (color, type)
-    VALUES ${cardValues.map(({ color, type }) => `(${color}, ${type})`).join(",")}
-  `);
+  INSERT INTO cards (color, type, name)
+  VALUES ${cardValues.map(({ color, type, name }) => `(${color}, ${type}, '${name}')`).join(",")}
+`);
 };
 
 exports.down = (pgm) => {
