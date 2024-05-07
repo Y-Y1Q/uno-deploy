@@ -315,7 +315,7 @@ const renderLobbyPage = async () => {
                             </div>
                             <div class="flex justify-between w-full border-b border-red-500">
                               <div class="w-1/2 px-2 mb-4">
-                                <h4 class="text-lg font-bold mb-2 border-b border-blue-500">Available Rooms</h4>
+                                <h4 class="text-lg font-bold mb-2 border-b border-yellow-500">Available Rooms</h4>
                                 <ul>
                                     <li class="py-1">Gas Chamber</li>
                                     <li class="py-1">The War Room</li>
