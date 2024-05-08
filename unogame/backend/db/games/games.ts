@@ -52,21 +52,27 @@ const getGamesCanJoin = async (userId) => {
 
 const getGameStatus = async (gameId) => {
   const ret = await db.one(
-    "SELECT started,max_players,current_turn,current_penalty,last_card FROM games WHERE id=$1",
+    "SELECT max_players,started,is_clockwise,last_user,last_card,current_turn,current_penalty FROM games WHERE id=$1",
     [gameId]
   );
 
   return {
+    player_count: ret.max_players,
     started: ret.started,
-    count: ret.max_players,
+    is_clockwise: ret.is_clockwise,
+    last_user: ret.last_user,
+    last_card: ret.last_card,
     turn: ret.current_turn,
     penalty: ret.current_penalty,
-    last_card: ret.last_card,
   };
 };
 
-const setLastCard = async (gameId, cardId) => {
-  await db.none("UPDATE games SET last_card=$2 WHERE id=$1", [gameId, cardId]);
+const setLastUserAndCard = async (gameId, userId, cardId) => {
+  await db.none("UPDATE games SET last_user=$2,last_card=$3 WHERE id=$1", [
+    gameId,
+    userId,
+    cardId,
+  ]);
 };
 
 export {
@@ -77,5 +83,5 @@ export {
   endGame,
   getGamesCanJoin,
   getGameStatus,
-  setLastCard,
+  setLastUserAndCard as setLastCard,
 };

@@ -7,20 +7,22 @@ const joinGame = async (req, res) => {
 
   const users = await GamesDB.getUsersInGame(gameId);
   if (users.includes(Number(userId))) {
-    return res.status(HttpCode.BadRequest).json({
-      error:
+    return res.status(HttpCode.OK).json({
+      message:
         "You already joined, TODO redirect into game??? This should not be error",
     });
   }
 
   const gameStatus = await GamesDB.getGameStatus(gameId);
-  if (gameStatus.started) {
-    return res
-      .status(HttpCode.BadRequest)
-      .json({ error: "The game is already started" });
+  if (users.length >= gameStatus.player_count) {
+    return res.status(HttpCode.Forbidden).json({
+      error:
+        "Gameroom with gameId=" +
+        String(gameId) +
+        " is full with player count of" +
+        users.length,
+    });
   }
-
-  // TODO check how many players inside
 
   await GamesDB.joinGame(gameId, userId)
     .then(() => {

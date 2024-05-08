@@ -20,8 +20,6 @@ const isAuthenticated = (req, res, next) => {
 };
 
 // * CHECK IF THE USER IS IN THE GAME
-// TODO: add additional check
-//  if game is not started, redirect to game wait page
 const isUserInGame = async (req, res, next) => {
   const { id: gameId } = req.params; // extract game ID from request parameters
   const { id: userId } = req.session.user; // extract user ID from session
@@ -35,6 +33,8 @@ const isUserInGame = async (req, res, next) => {
     return res.redirect("/lobby");
   }
 };
+
+// * CHECK IF THE USER IS IN THE CREATOR OF THE GAME
 const isCreatorInGame = async (req, res, next) => {
   const { id: gameId } = req.params; // extract game ID from request parameters
   const { id: userId } = req.session.user; // extract user ID from session
@@ -52,4 +52,38 @@ const isCreatorInGame = async (req, res, next) => {
   }
 };
 
-export { isAuthenticated, isUserInGame, isCreatorInGame };
+// * CHECK IF THE GAME IS ENDED
+const isGameEnded = async (req, res, next) => {
+  const { id: gameId } = req.params; // extract game ID from request parameters
+
+  const gameStatus = await GamesDB.getGameStatus(gameId);
+  if (gameStatus.started) {
+    return res.status(HttpCode.BadRequest).json({
+      error: "The game with gameId=" + String(gameId) + " is already started",
+    });
+  } else {
+    next();
+  }
+};
+
+// * CHECK IF THE GAME IS STARTED
+const isGameStarted = async (req, res, next) => {
+  const { id: gameId } = req.params; // extract game ID from request parameters
+
+  const gameStatus = await GamesDB.getGameStatus(gameId);
+  if (gameStatus.started) {
+    next();
+  } else {
+    return res.status(HttpCode.BadRequest).json({
+      error: "The game with gameId=" + String(gameId) + " is already ended",
+    });
+  }
+};
+
+export {
+  isAuthenticated,
+  isUserInGame,
+  isCreatorInGame,
+  isGameEnded,
+  isGameStarted,
+};

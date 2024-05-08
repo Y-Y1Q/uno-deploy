@@ -5,16 +5,11 @@ const startGame = async (req, res) => {
   const { id: gameId } = req.params;
 
   const gameStatus = await GamesDB.getGameStatus(gameId);
-  if (gameStatus.started) {
-    return res
-      .status(HttpCode.BadRequest)
-      .json({ error: "The game is already started" });
-  }
-
   const users = await GamesDB.getUsersInGame(gameId);
-  if (users.length != gameStatus.count) {
+  if (users.length != gameStatus.player_count) {
     return res.status(HttpCode.Forbidden).json({
-      message: "Not enough players: " + users.length + " / " + gameStatus.count,
+      message:
+        "Not enough players: " + users.length + " / " + gameStatus.player_count,
     });
   }
 
@@ -24,7 +19,11 @@ const startGame = async (req, res) => {
       for (const uid of users) {
         await GamesDB.drawCards(gameId, uid, 10); // initialize draw count here
       }
-      await GamesDB.setLastCard(gameId, Math.floor(Math.random() * 108) + 1);
+      await GamesDB.setLastCard(
+        gameId,
+        null,
+        Math.floor(Math.random() * 108) + 1
+      );
 
       return res
         .status(HttpCode.OK)

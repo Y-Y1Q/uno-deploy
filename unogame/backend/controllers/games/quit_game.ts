@@ -5,15 +5,6 @@ const quitGame = async (req, res) => {
   const { id: gameId } = req.params;
   const { id: userId } = req.session.user;
 
-  const gameStatus = await GamesDB.getGameStatus(gameId);
-  if (gameStatus.started) {
-    return res.status(HttpCode.BadRequest).json({
-      error:
-        "game is started, TODO: keep the user as AI? " +
-        "Deleting the user from game will break a lot of parts",
-    });
-  }
-
   if (await GamesDB.isCreatorInGame(gameId, userId)) {
     return res.status(HttpCode.BadRequest).json({
       error:
