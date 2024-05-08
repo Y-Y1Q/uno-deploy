@@ -11,6 +11,7 @@ const endGame = async (req, res) => {
       .json({ error: "The game is already ended" });
   }
 
+  await GamesDB.deleteAllCards(gameId);
   await GamesDB.endGame(gameId)
     .then(() => {
       return res
