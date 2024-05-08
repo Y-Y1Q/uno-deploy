@@ -4,6 +4,7 @@ exports.shorthands = undefined;
 
 exports.up = (pgm) => {
   pgm.createTable("game_cards", {
+    id: "id",
     game_id: {
       type: "int",
       notNull: true,

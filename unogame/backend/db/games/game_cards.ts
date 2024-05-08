@@ -20,11 +20,12 @@ const deleteAllCards = async (gameId) => {
 };
 
 const getUserCards = async (gameId, userId) => {
-  return await db.any(
-    "SELECT id,color,type FROM cards JOIN game_cards ON " +
-      "cards.id=game_cards.card_id AND game_id=$1 AND user_id=$2",
+  const ret = await db.any(
+    "SELECT card_id FROM game_cards WHERE game_id=$1 AND user_id=$2",
     [gameId, userId]
   );
+
+  return ret.map((row) => row.card_id);
 };
 
 const deleteOneCard = async (gameId, userId, cardId) => {

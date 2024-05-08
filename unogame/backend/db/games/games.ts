@@ -83,5 +83,5 @@ export {
   endGame,
   getGamesCanJoin,
   getGameStatus,
-  setLastUserAndCard as setLastCard,
+  setLastUserAndCard,
 };

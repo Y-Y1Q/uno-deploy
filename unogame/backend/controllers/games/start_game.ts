@@ -19,7 +19,7 @@ const startGame = async (req, res) => {
       for (const uid of users) {
         await GamesDB.drawCards(gameId, uid, 10); // initialize draw count here
       }
-      await GamesDB.setLastCard(
+      await GamesDB.setLastUserAndCard(
         gameId,
         null,
         Math.floor(Math.random() * 108) + 1

@@ -21,7 +21,7 @@ import {
   getGames,
   getGamesByName,
   getGamesCanJoin,
-  setLastCard,
+  setLastUserAndCard,
   startGame,
 } from "./games/games";
 
@@ -45,5 +45,5 @@ export {
   getGamesJoined,
   getGamesCanJoin,
   getGameStatus,
-  setLastCard,
+  setLastUserAndCard,
 };

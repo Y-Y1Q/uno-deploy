@@ -32,7 +32,6 @@ router.post(
   isGameStarted,
   Games.endGame
 );
-router.post("/:id/get-cards", isUserInGame, isGameStarted, Games.getUserCards);
 router.post("/:id/get-status", isUserInGame, Games.getGameCurrentStatus);
 router.post("/:id/play", isUserInGame, isGameStarted, Games.playGame);
 

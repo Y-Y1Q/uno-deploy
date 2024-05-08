@@ -29,6 +29,19 @@ exports.up = (pgm) => {
       notNull: true,
       default: true,
     },
+    last_user: {
+      type: "int",
+      references: "users(id)",
+      onDelete: "cascade",
+      default: null
+    },
+    last_card: {
+      type: "int",
+      notNull: true,
+      references: "cards(id)",
+      onDelete: "cascade",
+      default: 1
+    },
     current_turn: {
       type: "int",
       notNull: true,
@@ -38,13 +51,6 @@ exports.up = (pgm) => {
       type: "int",
       notNull: true,
       default: 0,
-    },
-    last_card: {
-      type: "int",
-      notNull: true,
-      references: "cards(id)",
-      onDelete: "cascade",
-      default: 1
     },
   });
 };
