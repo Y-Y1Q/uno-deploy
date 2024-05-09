@@ -5,7 +5,7 @@ export default [chatMessageHandler];
 //Socket handler template
 /*
 import { Socket } from "socket.io-client";
-import { SOCKET_EVENT } from "../../constants/socket_event";
+import { SocketEvent } from "../../constants/SocketEvent";
 
 const something = document.getElementById("someId") as someHTMLElement
 
@@ -18,8 +18,8 @@ export function someFunc(socket: Socket) {
     const gameId = ( document.getElementById("game-id") as HTMLInputElement | null)?.value;
 
     // listening from someEvent related to gameId, some socket events dont use gameId
-    // socket event list is in /unogame/constants/socket_event.ts
-    socket.on(SOCKET_EVENT.someEvent(gameId), function (data) {
+    // socket event list is in /unogame/constants/SocketEvent.ts
+    socket.on(SocketEvent.someEvent(gameId), function (data) {
         // do something with data
     });
   }

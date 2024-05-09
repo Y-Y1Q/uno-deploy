@@ -1,4 +1,4 @@
-export const SOCKET_EVENT = {
+export const SocketEvent = {
   // listen for chat msg in a room (0 for lobby, 1,2,3... for other room)
   CHAT: (gameId: any) => `chat-${gameId}`,
 

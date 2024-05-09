@@ -1,32 +1,15 @@
 <!doctype html>
 <html lang="en">
-  <!-- values render from BE route-->
-  <input type="hidden" name="game-id" id="game-id" value="<%= gameId %>" />
-
-  <input
-    type="hidden"
-    name="current-user-id"
-    id="current-user-id"
-    value="<%= user.id %>"
-  />
-  <input
-    type="hidden"
-    name="current-user-name"
-    id="current-user-name"
-    value="<%= user.username %>"
-  />
+  <%- include("./layout/server-var") %>
 
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include("./layout/header") %>
     <title>UNO Game</title>
-    <link rel="stylesheet" href="/dist/style.css" />
-    <script src="/dist/index.js" defer></script>
-    <%- include("./layout/favicons") %>
   </head>
 
-  <body>
-    <%- include("./layout/nav-bar") %>
+  <%- include("./layout/nav-bar") %>
+
+  <body class="bg-gray-200 flex flex-col items-center justify-center h-screen">
     <div class="container mx-auto px-4">
       <div class="flex">
         <!-- UNO Game Interface -->
@@ -77,11 +60,7 @@
           </div>
         </div>
 
-        <!-- Chat Box Container -->
-        <div class="w-1/3 border border-blue-500 p-4">
-          <h2 class="text-lg font-bold mb-4">CHAT BOX CONTAINER</h2>
-          <!-- Chat box content will be dynamically loaded here -->
-        </div>
+        <%- include("./layout/chat-box") %>
       </div>
     </div>
 
@@ -97,61 +76,61 @@
       let currentNumber = ""; // current number of the game
 
       const cardImages = [
-        "static/cards/Back.png",
-        "static/cards/Blue_0.png",
-        "static/cards/Blue_1.png",
-        "static/cards/Blue_2.png",
-        "static/cards/Blue_3.png",
-        "static/cards/Blue_4.png",
-        "static/cards/Blue_5.png",
-        "static/cards/Blue_6.png",
-        "static/cards/Blue_7.png",
-        "static/cards/Blue_8.png",
-        "static/cards/Blue_9.png",
-        "static/cards/Blue_Draw.png",
-        "static/cards/Blue_Reverse.png",
-        "static/cards/Blue_Skip.png",
-        "static/cards/Red_0.png",
-        "static/cards/Red_1.png",
-        "static/cards/Red_2.png",
-        "static/cards/Red_3.png",
-        "static/cards/Red_4.png",
-        "static/cards/Red_5.png",
-        "static/cards/Red_6.png",
-        "static/cards/Red_7.png",
-        "static/cards/Red_8.png",
-        "static/cards/Red_9.png",
-        "static/cards/Red_Draw.png",
-        "static/cards/Red_Reverse.png",
-        "static/cards/Red_Skip.png",
-        "static/cards/Green_0.png",
-        "static/cards/Green_1.png",
-        "static/cards/Green_2.png",
-        "static/cards/Green_3.png",
-        "static/cards/Green_4.png",
-        "static/cards/Green_5.png",
-        "static/cards/Green_6.png",
-        "static/cards/Green_7.png",
-        "static/cards/Green_8.png",
-        "static/cards/Green_9.png",
-        "static/cards/Green_Draw.png",
-        "static/cards/Green_Reverse.png",
-        "static/cards/Green_Skip.png",
-        "static/cards/Yellow_0.png",
-        "static/cards/Yellow_1.png",
-        "static/cards/Yellow_2.png",
-        "static/cards/Yellow_3.png",
-        "static/cards/Yellow_4.png",
-        "static/cards/Yellow_5.png",
-        "static/cards/Yellow_6.png",
-        "static/cards/Yellow_7.png",
-        "static/cards/Yellow_8.png",
-        "static/cards/Yellow_9.png",
-        "static/cards/Yellow_Draw.png",
-        "static/cards/Yellow_Reverse.png",
-        "static/cards/Yellow_Skip.png",
-        "static/cards/Wild.png",
-        "static/cards/Wild_Draw.png",
+        "cards/Back.png",
+        "cards/Blue_0.png",
+        "cards/Blue_1.png",
+        "cards/Blue_2.png",
+        "cards/Blue_3.png",
+        "cards/Blue_4.png",
+        "cards/Blue_5.png",
+        "cards/Blue_6.png",
+        "cards/Blue_7.png",
+        "cards/Blue_8.png",
+        "cards/Blue_9.png",
+        "cards/Blue_Draw.png",
+        "cards/Blue_Reverse.png",
+        "cards/Blue_Skip.png",
+        "cards/Red_0.png",
+        "cards/Red_1.png",
+        "cards/Red_2.png",
+        "cards/Red_3.png",
+        "cards/Red_4.png",
+        "cards/Red_5.png",
+        "cards/Red_6.png",
+        "cards/Red_7.png",
+        "cards/Red_8.png",
+        "cards/Red_9.png",
+        "cards/Red_Draw.png",
+        "cards/Red_Reverse.png",
+        "cards/Red_Skip.png",
+        "cards/Green_0.png",
+        "cards/Green_1.png",
+        "cards/Green_2.png",
+        "cards/Green_3.png",
+        "cards/Green_4.png",
+        "cards/Green_5.png",
+        "cards/Green_6.png",
+        "cards/Green_7.png",
+        "cards/Green_8.png",
+        "cards/Green_9.png",
+        "cards/Green_Draw.png",
+        "cards/Green_Reverse.png",
+        "cards/Green_Skip.png",
+        "cards/Yellow_0.png",
+        "cards/Yellow_1.png",
+        "cards/Yellow_2.png",
+        "cards/Yellow_3.png",
+        "cards/Yellow_4.png",
+        "cards/Yellow_5.png",
+        "cards/Yellow_6.png",
+        "cards/Yellow_7.png",
+        "cards/Yellow_8.png",
+        "cards/Yellow_9.png",
+        "cards/Yellow_Draw.png",
+        "cards/Yellow_Reverse.png",
+        "cards/Yellow_Skip.png",
+        "cards/Wild.png",
+        "cards/Wild_Draw.png",
       ];
 
       // function to shuffle an array
