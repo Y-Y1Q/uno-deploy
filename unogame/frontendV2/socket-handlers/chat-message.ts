@@ -23,7 +23,7 @@ export function chatMessageHandler(socket: Socket) {
       if (data.from !== username) {
         // msg from other user
       } else if (data.from === "ADMIN") {
-        // msg from admin
+        // msg from admin/system, no avatar
       } else {
         // msg from same user
       }
