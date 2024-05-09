@@ -85,19 +85,89 @@
       let currentColor = ""; // current color of the game
       let currentNumber = ""; // current number of the game
 
+      const cardImages = [
+        "static/cards/Back.png",
+        "static/cards/Blue_0.png",
+        "static/cards/Blue_1.png",
+        "static/cards/Blue_2.png",
+        "static/cards/Blue_3.png",
+        "static/cards/Blue_4.png",
+        "static/cards/Blue_5.png",
+        "static/cards/Blue_6.png",
+        "static/cards/Blue_7.png",
+        "static/cards/Blue_8.png",
+        "static/cards/Blue_9.png",
+        "static/cards/Blue_Draw.png",
+        "static/cards/Blue_Reverse.png",
+        "static/cards/Blue_Skip.png",
+        "static/cards/Red_0.png",
+        "static/cards/Red_1.png",
+        "static/cards/Red_2.png",
+        "static/cards/Red_3.png",
+        "static/cards/Red_4.png",
+        "static/cards/Red_5.png",
+        "static/cards/Red_6.png",
+        "static/cards/Red_7.png",
+        "static/cards/Red_8.png",
+        "static/cards/Red_9.png",
+        "static/cards/Red_Draw.png",
+        "static/cards/Red_Reverse.png",
+        "static/cards/Red_Skip.png",
+        "static/cards/Green_0.png",
+        "static/cards/Green_1.png",
+        "static/cards/Green_2.png",
+        "static/cards/Green_3.png",
+        "static/cards/Green_4.png",
+        "static/cards/Green_5.png",
+        "static/cards/Green_6.png",
+        "static/cards/Green_7.png",
+        "static/cards/Green_8.png",
+        "static/cards/Green_9.png",
+        "static/cards/Green_Draw.png",
+        "static/cards/Green_Reverse.png",
+        "static/cards/Green_Skip.png",
+        "static/cards/Yellow_0.png",
+        "static/cards/Yellow_1.png",
+        "static/cards/Yellow_2.png",
+        "static/cards/Yellow_3.png",
+        "static/cards/Yellow_4.png",
+        "static/cards/Yellow_5.png",
+        "static/cards/Yellow_6.png",
+        "static/cards/Yellow_7.png",
+        "static/cards/Yellow_8.png",
+        "static/cards/Yellow_9.png",
+        "static/cards/Yellow_Draw.png",
+        "static/cards/Yellow_Reverse.png",
+        "static/cards/Yellow_Skip.png",
+        "static/cards/Wild.png",
+        "static/cards/Wild_Draw.png",
+      ];
+
+      // function to shuffle an array
+      function shuffleArray(array) {
+        console.log("[unogame.ejs] Shuffling the array...");
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
       // function to initialize UNO game interface
       function initializeUNOGame() {
         // get references to HTML elements
         const unoGameInterface = document.getElementById("unoGameInterface");
 
+        // load card images onto the interface
+        loadCardImages();
+
         // create and append game elements to the interface
         const gameElements = `
-      <!-- Game interface and controls -->
-      <div>
-        <!-- Display game status, cards, etc. -->
-        <p>Game Status: Waiting for players...</p>
-      </div>
-    `;
+          <!-- Game interface and controls -->
+          <div>
+            <!-- Display game status, cards, etc. -->
+            <p>Game Status: Waiting for players...</p>
+          </div>
+        `;
         unoGameInterface.innerHTML = gameElements;
 
         // add event listeners for game controls
@@ -107,6 +177,17 @@
         abandonButton.addEventListener("click", abandonGame);
         const sayUnoButton = document.getElementById("sayUnoButton");
         sayUnoButton.addEventListener("click", sayUno);
+      }
+
+      // Function to dynamically load card images onto the interface
+      function loadCardImages() {
+        const cardContainer = document.getElementById("cardContainer");
+        cardImages.forEach((imageName, index) => {
+          const cardImage = document.createElement("img");
+          cardImage.src = imageName;
+          cardImage.alt = "Card " + (index + 1);
+          cardContainer.appendChild(cardImage);
+        });
       }
 
       // function to handle drawing a card
@@ -137,7 +218,7 @@
           );
           // add abandonment logic here
         } else {
-          console.log("Abandonment canceled.");
+          console.log("[unogame.ejs] Abandonment canceled.");
         }
       }
 
@@ -153,15 +234,15 @@
           // ? further logic here, such as informing the server
         } else {
           console.log(
-            "You can only say UNO when you have one card left in your deck."
+            "[unogame.ejs] You can only say UNO when you have one card left in your deck."
           );
           // ? display a message to the user indicating they cannot say UNO yet
         }
       }
 
-      // Function to update game interface after drawing card
+      // function to update game interface after drawing card
       function updateGameInterface() {
-        // Display player's deck and other game details
+        // display player's deck and other game details
         const unoGameInterface = document.getElementById("unoGameInterface");
         unoGameInterface.innerHTML = `
                 <div>
@@ -175,6 +256,7 @@
 
       // call initialize function when the page loads
       window.addEventListener("load", initializeUNOGame);
+      console.log("[unogame.ejs] Page loaded. Initializing UNO game...");
     </script>
   </body>
 </html>
