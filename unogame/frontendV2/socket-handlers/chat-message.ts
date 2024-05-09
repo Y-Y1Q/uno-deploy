@@ -21,21 +21,35 @@ export function chatMessageHandler(socket: Socket) {
       const messageBubble = document.createElement("div");
 
       if (data.from !== username) {
-        // msg from other user
+        messageBubble.classList.add(
+          "bg-blue-200",
+          "text-blue-700",
+          "rounded",
+          "py-2",
+          "px-4"
+        );
+        newMessage.classList.add("justify-end");
+        messageBubble.innerHTML = `<p>${data.message}</p><p class="text-right font-bold">${data.from}</p>`;
       } else if (data.from === "ADMIN") {
-        // msg from admin/system, no avatar
+        messageBubble.classList.add(
+          "bg-orange-200",
+          "text-orange-700",
+          "rounded",
+          "py-2",
+          "px-4"
+        );
+        newMessage.classList.add("justify-end");
+        messageBubble.innerHTML = `<p>${data.message}</p><p class="text-right font-bold">${data.from}</p>`;
       } else {
-        // msg from same user
+        messageBubble.classList.add(
+          "bg-green-200",
+          "text-green-700",
+          "rounded",
+          "py-2",
+          "px-4"
+        );
+        messageBubble.innerHTML = `<p>${data.message}</p><p class="text-left font-bold">${data.from}</p>`;
       }
-
-      messageBubble.classList.add(
-        "bg-green-200",
-        "text-green-700",
-        "rounded",
-        "py-2",
-        "px-4"
-      );
-      messageBubble.innerHTML = `<p>${data.message}</p><p class="text-left font-bold">${data.from}</p>`;
 
       newMessage.appendChild(messageBubble);
       chatbox.appendChild(newMessage);
