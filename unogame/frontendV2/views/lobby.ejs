@@ -184,6 +184,22 @@
               class="flex flex-col justify-center items-center mt-4"
             >
               <label
+                for="maxPlayers"
+                class="block text-base font-bold text-gray-700 w-32 text-center"
+                >Max Players</label
+              >
+              <br />
+              <select
+                id="maxPlayers"
+                name="maxPlayers"
+                class="mt-1 block w-32 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base"
+              >
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+              <br />
+              <label
                 for="roomName"
                 class="block text-base font-bold text-gray-700 w-32 text-center"
                 >Room Name</label
@@ -213,36 +229,22 @@
                 class="text-lg font-bold mb-4 text-blue-500"
               ></h3>
               <p id="maxPlayersDisplay" class="mb-4"></p>
-              <button
-                id="closeRoomCard"
-                class="bg-red-500 text-white px-4 py-2 rounded"
-              >
-                Close
-              </button>
+              <div class="flex space-x-4">
+                <button class="bg-blue-500 text-white px-2 py-1 rounded mt-4">
+                  Start Game
+                </button>
+                <button
+                  id="closeRoomCard"
+                  class="bg-red-500 text-white px-2 py-1 rounded mt-4"
+                >
+                  Close
+                </button>
+              </div>
             </div>
             <br />
             <!--<button class="bg-red-500 text-white px-4 py-2 rounded mt-4">
               Join a Game
             </button>-->
-            <label
-              for="maxPlayers"
-              class="block text-base font-bold text-gray-700 w-32 text-center"
-              >Max Players</label
-            >
-            <select
-              id="maxPlayers"
-              name="maxPlayers"
-              class="mt-1 block w-32 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base"
-            >
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-            </select>
-            <br />
-            <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4">
-              Start Game
-            </button>
-            <br />
             <form action="/logout" method="post">
               <button
                 type="submit"
