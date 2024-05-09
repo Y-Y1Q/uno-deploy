@@ -10,7 +10,7 @@
     "dev:build": "NODE_ENV=development node esbuild.js --watch",
     "dev:server": "wait-on -d 1000 ./unogame/static/dist/server.js && NODE_ENV=development nodemon ./unogame/static/dist/server.js",
     "format": "prettier . --write",
-    "db": "tsx ./unogame/backend/db/reset.ts && npm run db:migrate",
+    "db": "tsx ./unogame/backend/db/reset.ts && npm run db:migrate && tsx ./unogame/backend/db/mock_data.ts",
     "db:create": "node-pg-migrate -m \"./unogame/backend/db/migrations\" create -j=cjs -- ",
     "db:migrate": "node-pg-migrate -m \"./unogame/backend/db/migrations\" up",
     "db:rollback": "node-pg-migrate -m \"./unogame/backend/db/migrations\" down",

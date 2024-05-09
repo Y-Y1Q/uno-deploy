@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import HttpCode from "../../../constants/http_code";
 import * as UsersDB from "../../db/db_users";
 
-const SALT_ROUNDS = 10;
+const SALT_ROUNDS = 12;
 
 const signUp = async (req, res) => {
   console.log(req.body);
