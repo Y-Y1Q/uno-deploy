@@ -6,10 +6,10 @@ const startGame = async (req, res) => {
 
   const gameStatus = await GamesDB.getGameStatus(gameId);
   const users = await GamesDB.getUsersInGame(gameId);
-  if (users.length != gameStatus.player_count) {
+  if (users.length != gameStatus.max_players) {
     return res.status(HttpCode.Forbidden).json({
       message:
-        "Not enough players: " + users.length + " / " + gameStatus.player_count,
+        "Not enough players: " + users.length + " / " + gameStatus.max_players,
     });
   }
 
@@ -17,12 +17,16 @@ const startGame = async (req, res) => {
     .then(async () => {
       await GamesDB.deleteAllCards(gameId);
       for (const uid of users) {
-        await GamesDB.drawCards(gameId, uid, 10); // initialize draw count here
+        await GamesDB.drawCards(gameId, uid, 7); // initialize draw count here
       }
+
+      // always start with a number card
+      const color = Math.floor(Math.random() * 4);
+      const number = Math.floor(Math.random() * 10);
       await GamesDB.setLastUserAndCard(
         gameId,
         null,
-        Math.floor(Math.random() * 108) + 1
+        color * 27 + number * 2 + 1
       );
 
       return res
