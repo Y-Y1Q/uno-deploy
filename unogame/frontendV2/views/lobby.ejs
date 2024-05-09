@@ -1,22 +1,7 @@
 <!doctype html>
 <html lang="en">
-  <!-- values render from BE route-->
-  <input type="hidden" name="game-id" id="game-id" value="<%= gameId %>" />
-
-  <input
-    type="hidden"
-    name="current-user-id"
-    id="current-user-id"
-    value="<%= user.id %>"
-  />
-  <input
-    type="hidden"
-    name="current-user-name"
-    id="current-user-name"
-    value="<%= user.username %>"
-  />
-
-  <% if(errorMsg && errorMsg.length > 0) { %>
+  <%- include("./layout/server-var") %> <% if(errorMsg && errorMsg.length > 0) {
+  %>
   <script>
     alert("<%= errorMsg %>");
   </script>
