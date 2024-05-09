@@ -24,6 +24,7 @@
     <script src="/dist/index.js" defer></script>
     <%- include("./layout/favicons") %>
   </head>
+
   <body>
     <%- include("./layout/nav-bar") %>
     <div class="container mx-auto px-4">
@@ -72,5 +73,108 @@
         </div>
       </div>
     </div>
+
+    <script>
+      // define variables to store game state
+      let gameId = "<%= gameId %>";
+      let userId = "<%= user.id %>";
+      let userName = "<%= user.username %>";
+      let playerDeck = []; // assuming playerDeck is an array containing the player's cards
+      let drawCardPile = []; // assuming drawCardPile is an array containing the draw pile
+      let playedCardsPile = []; // assuming playedCardsPile is an array containing the played cards
+      let currentColor = ""; // current color of the game
+      let currentNumber = ""; // current number of the game
+
+      // function to initialize UNO game interface
+      function initializeUNOGame() {
+        // get references to HTML elements
+        const unoGameInterface = document.getElementById("unoGameInterface");
+
+        // create and append game elements to the interface
+        const gameElements = `
+      <!-- Game interface and controls -->
+      <div>
+        <!-- Display game status, cards, etc. -->
+        <p>Game Status: Waiting for players...</p>
+      </div>
+    `;
+        unoGameInterface.innerHTML = gameElements;
+
+        // add event listeners for game controls
+        const drawButton = document.getElementById("drawButton");
+        drawButton.addEventListener("click", drawCard);
+        const abandonButton = document.getElementById("abandonButton");
+        abandonButton.addEventListener("click", abandonGame);
+        const sayUnoButton = document.getElementById("sayUnoButton");
+        sayUnoButton.addEventListener("click", sayUno);
+      }
+
+      // function to handle drawing a card
+      function drawCard() {
+        if (drawCardPile.length > 0) {
+          const cardDrawn = drawCardPile.pop(); // remove card from draw pile
+          playerDeck.push(cardDrawn); // add card to player's deck
+          console.log("[unogame.ejs] Draw button clicked. Drawing a card...");
+          console.log("[unogame.ejs] Card drawn:", cardDrawn);
+          updateGameInterface(); // update game interface after drawing card
+        } else {
+          console.log("[unogame.ejs] No cards left in the draw pile!");
+        }
+        console.log("[unogame.ejs] Draw button clicked. Drawing a card...");
+      }
+
+      // function to handle abandoning the game
+      function abandonGame() {
+        // prompt user for confirmation
+        const confirmation = confirm(
+          "Are you sure you want to abandon the game?"
+        );
+
+        // if user confirms, perform abandonment actions
+        if (confirmation) {
+          console.log(
+            "[unogame.ejs] Abandon button clicked. Abandoning the game..."
+          );
+          // add abandonment logic here
+        } else {
+          console.log("Abandonment canceled.");
+        }
+      }
+
+      // function to handle saying UNO
+      function sayUno() {
+        // check if the player has only one card left
+        if (playerDeck.length === 1) {
+          console.log(
+            "[unogame.ejs] SAY UNO! button clicked. Announcing UNO..."
+          );
+          // set a flag indicating that UNO has been said
+          isUnoButtonPressed = true;
+          // ? further logic here, such as informing the server
+        } else {
+          console.log(
+            "You can only say UNO when you have one card left in your deck."
+          );
+          // ? display a message to the user indicating they cannot say UNO yet
+        }
+      }
+
+      // Function to update game interface after drawing card
+      function updateGameInterface() {
+        // Display player's deck and other game details
+        const unoGameInterface = document.getElementById("unoGameInterface");
+        unoGameInterface.innerHTML = `
+                <div>
+                    <p>Game Status: In Progress</p>
+                    <p>Current Color: ${currentColor}</p>
+                    <p>Current Number: ${currentNumber}</p>
+                    <p>Player Deck: ${playerDeck.join(", ")}</p>
+                </div>
+            `;
+      }
+
+      // call initialize function when the page loads
+      window.addEventListener("load", initializeUNOGame);
+    </script>
   </body>
 </html>
