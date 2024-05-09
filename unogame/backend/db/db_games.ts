@@ -17,6 +17,7 @@ import {
 import {
   createGame,
   endGame,
+  getGameStarted,
   getGameStatus,
   getGames,
   getGamesByName,
@@ -44,6 +45,7 @@ export {
   userHasCard,
   getGamesJoined,
   getGamesCanJoin,
+  getGameStarted,
   getGameStatus,
   setLastUserAndCard,
 };

@@ -32,7 +32,12 @@ router.post(
   isGameStarted,
   Games.endGame
 );
-router.post("/:id/get-status", isUserInGame, Games.getGameCurrentStatus);
+router.post(
+  "/:id/get-status",
+  isUserInGame,
+  isGameStarted,
+  Games.getGameCurrentStatus
+);
 router.post("/:id/play", isUserInGame, isGameStarted, Games.playGame);
 
 export default router;

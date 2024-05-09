@@ -35,19 +35,20 @@ exports.up = (pgm) => {
       onDelete: "cascade",
       default: null
     },
-    last_card: {
+    last_card_played: {
       type: "int",
       notNull: true,
       references: "cards(id)",
       onDelete: "cascade",
       default: 1
     },
-    current_turn: {
+    last_card_drew: {
       type: "int",
-      notNull: true,
-      default: 0,
+      references: "cards(id)",
+      onDelete: "cascade",
+      default: null
     },
-    current_penalty: {
+    penalty: {
       type: "int",
       notNull: true,
       default: 0,

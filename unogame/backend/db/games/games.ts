@@ -50,29 +50,34 @@ const getGamesCanJoin = async (userId) => {
   return ret;
 };
 
+const getGameStarted = async (gameId) => {
+  const ret = await db.one("SELECT started FROM games WHERE id=$1", [gameId]);
+
+  return ret.started;
+};
+
 const getGameStatus = async (gameId) => {
   const ret = await db.one(
-    "SELECT max_players,started,is_clockwise,last_user,last_card,current_turn,current_penalty FROM games WHERE id=$1",
+    "SELECT max_players,is_clockwise,last_user,last_card_played,last_card_drew,penalty FROM games WHERE id=$1",
     [gameId]
   );
 
+  // decouple from database when returning results
   return {
-    player_count: ret.max_players,
-    started: ret.started,
+    max_players: ret.max_players,
     is_clockwise: ret.is_clockwise,
     last_user: ret.last_user,
-    last_card: ret.last_card,
-    turn: ret.current_turn,
-    penalty: ret.current_penalty,
+    last_card_played: ret.last_card_played,
+    last_card_drew: ret.last_card_drew,
+    penalty: ret.penalty,
   };
 };
 
 const setLastUserAndCard = async (gameId, userId, cardId) => {
-  await db.none("UPDATE games SET last_user=$2,last_card=$3 WHERE id=$1", [
-    gameId,
-    userId,
-    cardId,
-  ]);
+  await db.none(
+    "UPDATE games SET last_user=$2,last_card_played=$3 WHERE id=$1",
+    [gameId, userId, cardId]
+  );
 };
 
 export {
@@ -82,6 +87,7 @@ export {
   startGame,
   endGame,
   getGamesCanJoin,
+  getGameStarted,
   getGameStatus,
   setLastUserAndCard,
 };

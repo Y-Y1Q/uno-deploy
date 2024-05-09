@@ -14,7 +14,7 @@ const joinGame = async (req, res) => {
   }
 
   const gameStatus = await GamesDB.getGameStatus(gameId);
-  if (users.length >= gameStatus.player_count) {
+  if (users.length >= gameStatus.max_players) {
     return res.status(HttpCode.Forbidden).json({
       error:
         "Gameroom with gameId=" +
