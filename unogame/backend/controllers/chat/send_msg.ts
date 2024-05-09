@@ -1,7 +1,7 @@
 import { funEmoji } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
 
-import { SOCKET_EVENT } from "../../../constants/socket_event";
+import { SocketEvent } from "../../../constants/socket_event";
 
 const sendMessage = (req, res) => {
   let { id: roomId } = req.params; //   params - someurl/:id  (placeholder)
@@ -33,7 +33,7 @@ const sendMessage = (req, res) => {
   const svg = avatar.toString();
   // console.log("test avatar:" + svg);
 
-  io.emit(SOCKET_EVENT.CHAT(roomId), {
+  io.emit(SocketEvent.CHAT(roomId), {
     avatar: svg,
     from: username,
     timestamp: Date.now(),

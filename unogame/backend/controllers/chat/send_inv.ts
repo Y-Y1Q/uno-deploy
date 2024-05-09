@@ -1,4 +1,4 @@
-import { SOCKET_EVENT } from "../../../constants/socket_event";
+import { SocketEvent } from "../../../constants/socket_event";
 import { getUser } from "../../db/users";
 
 // DELETE COMMENT LATER
@@ -20,7 +20,7 @@ const sendInvitation = async (req, res) => {
 
     // send inv message to the toUser's lobby
 
-    io.to(toUserId).emit(SOCKET_EVENT.CHAT(0), {
+    io.to(toUserId).emit(SocketEvent.CHAT(0), {
       from: "ADMIN",
       timestamp: Date.now(),
 

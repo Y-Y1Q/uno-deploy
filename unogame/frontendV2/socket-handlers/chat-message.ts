@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 
-import { SOCKET_EVENT } from "../../constants/socket_event";
+import { SocketEvent } from "../../constants/socket_event";
 
 const chatbox = document.getElementById("chatbox") as HTMLDivElement;
 
@@ -10,11 +10,24 @@ export function chatMessageHandler(socket: Socket) {
       document.getElementById("game-id") as HTMLInputElement | null
     )?.value;
 
-    socket.on(SOCKET_EVENT.CHAT(gameId), function (data) {
+    const username = (
+      document.getElementById("current-user-name") as HTMLInputElement | null
+    )?.value;
+
+    socket.on(SocketEvent.CHAT(gameId), function (data) {
       const newMessage = document.createElement("div");
       newMessage.classList.add("flex", "justify-start", "mb-2");
 
       const messageBubble = document.createElement("div");
+
+      if (data.from !== username) {
+        // msg from other user
+      } else if (data.from === "ADMIN") {
+        // msg from admin
+      } else {
+        // msg from same user
+      }
+
       messageBubble.classList.add(
         "bg-green-200",
         "text-green-700",
