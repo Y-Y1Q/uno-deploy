@@ -1,7 +1,22 @@
 <!doctype html>
 <html lang="en">
-  <%- include("./layout/server-var") %> <% if(errorMsg && errorMsg.length > 0) {
-  %>
+  <!-- values render from BE route-->
+  <input type="hidden" name="game-id" id="game-id" value="<%= gameId %>" />
+
+  <input
+    type="hidden"
+    name="current-user-id"
+    id="current-user-id"
+    value="<%= user.id %>"
+  />
+  <input
+    type="hidden"
+    name="current-user-name"
+    id="current-user-name"
+    value="<%= user.username %>"
+  />
+
+  <% if(errorMsg && errorMsg.length> 0) { %>
   <script>
     alert("<%= errorMsg %>");
   </script>
@@ -14,9 +29,12 @@
 
   <%- include("./layout/nav-bar") %>
 
-  <body class="flex flex-col items-center justify-center min-h-screen">
-    <div class="container mx-auto px-4 border-gray-400">
+  <body
+    class="bg-gray-200 flex flex-col items-center justify-center min-h-screen"
+  >
+    <div class="container mx-auto px-4">
       <div class="flex justify-between">
+        <!-- Toggleable Container with Fixed Height and Tailwind CSS -->
         <div class="w-1/3 border border-red-500 p-4">
           <button
             id="toggleContent"
@@ -239,6 +257,7 @@
         <%- include("./layout/chat-box") %>
       </div>
     </div>
+
     <script>
       document
         .getElementById("toggleContent")
