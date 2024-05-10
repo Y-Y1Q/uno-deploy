@@ -21,11 +21,12 @@ import {
   getGames,
   getGamesByName,
   getGamesCanJoin,
-  resetPenalty,
   resetUserHasDrewOnce,
   setLastUserAndCard,
+  setPenalty,
   setUserHasDrewOnce,
   startGame,
+  toggleReverse,
 } from "./games/games";
 
 export {
@@ -48,7 +49,8 @@ export {
   getGamesCanJoin,
   getGameStarted,
   getGameStatus,
-  resetPenalty,
+  setPenalty,
+  toggleReverse,
   resetUserHasDrewOnce,
   setUserHasDrewOnce,
   setLastUserAndCard,

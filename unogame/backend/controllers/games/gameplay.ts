@@ -1,6 +1,21 @@
 import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
 
+function castColor(colorStr) {
+  switch (colorStr.toLowerCase()) {
+    case "red":
+      return 0;
+    case "yellow":
+      return 1;
+    case "blue":
+      return 2;
+    case "green":
+      return 3;
+    default:
+      return null;
+  }
+}
+
 function castCard(cardId) {
   let color;
   switch (Math.floor((cardId - 1) / 27)) {
@@ -183,7 +198,7 @@ const playGame = async (req, res) => {
 
       if (status.penalty > 0) {
         await GamesDB.drawCards(gameId, userId, status.penalty);
-        await GamesDB.resetPenalty(gameId);
+        await GamesDB.setPenalty(gameId, 0);
         return res.status(HttpCode.OK).json({
           message: "Taking the penalty cards, now is still user's turn",
         });
@@ -209,16 +224,47 @@ const playGame = async (req, res) => {
     }
 
     const card = status.current_user_cards[cardIndex];
+    if (card.type == "wild" || card.type == "wild & draw 4") {
+      let color = castColor(colorStr);
+
+      if (color == null) {
+        return res.status(HttpCode.BadRequest).json({
+          error:
+            "invalid color: " +
+            colorStr +
+            ", acceptable colors are red, yellow, blue, green",
+        });
+      }
+
+      const newCard = castCard(color * 27 + (card.type == "wild" ? 26 : 27));
+      card.id = newCard.id;
+      card.color = newCard.color;
+      if (card.type != newCard.type) {
+        return res.status(HttpCode.InternalServerError).json({
+          error: "error in wild card id computation (MUST BE DEBUGGED)",
+        });
+      }
+    }
+
+    switch (card.type) {
+      case "reverse":
+        await GamesDB.toggleReverse(gameId);
+        break;
+      case "draw 2":
+        await GamesDB.setPenalty(gameId, status.penalty + 2);
+        break;
+      case "wild & draw 4":
+        await GamesDB.setPenalty(gameId, status.penalty + 4);
+        break;
+    }
 
     await GamesDB.deleteOneCard(gameId, userId, card.id);
     await GamesDB.setLastUserAndCard(gameId, userId, card.id);
     if (status.user_has_drew_once) {
       await GamesDB.resetUserHasDrewOnce(gameId, userId);
     }
-
-    // TODO increase turn count + card check logic
     return res.status(HttpCode.OK).json({
-      message: "You just played a card (no logic check yet)",
+      message: "You played a card",
     });
   } catch (err) {
     return res.status(HttpCode.InternalServerError).json({ error: err });

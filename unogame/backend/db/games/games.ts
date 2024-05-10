@@ -73,8 +73,14 @@ const getGameStatus = async (gameId) => {
   };
 };
 
-const resetPenalty = async (gameId) => {
-  await db.none("UPDATE games SET penalty=0 WHERE id=$1", [gameId]);
+const setPenalty = async (gameId, penalty) => {
+  await db.none("UPDATE games SET penalty=$2 WHERE id=$1", [gameId, penalty]);
+};
+
+const toggleReverse = async (gameId) => {
+  await db.none("UPDATE games SET is_clockwise=NOT is_clockwise WHERE id=$1", [
+    gameId,
+  ]);
 };
 
 const resetUserHasDrewOnce = async (gameId, userId) => {
@@ -106,7 +112,8 @@ export {
   getGamesCanJoin,
   getGameStarted,
   getGameStatus,
-  resetPenalty,
+  setPenalty,
+  toggleReverse,
   resetUserHasDrewOnce,
   setUserHasDrewOnce,
   setLastUserAndCard,
