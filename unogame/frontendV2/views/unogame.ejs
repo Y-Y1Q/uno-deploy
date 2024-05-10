@@ -25,6 +25,13 @@
           </div>
 
           <div class="flex justify-center mt-4">
+            <div
+              class="w-full border border-red-500 mt-4"
+              id="discardPileContainer"
+            >
+              Discard Pile
+            </div>
+
             <button
               class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2"
               id="startGameButton"
@@ -184,6 +191,21 @@
           }
         }
       }
+
+      // Function to display a random card as the discard pile
+      function displayRandomDiscardPileCard() {
+        const discardPileContainer = document.getElementById(
+          "discardPileContainer"
+        );
+        const randomIndex = Math.floor(Math.random() * cardImages.length);
+        const randomCardImage = cardImages[randomIndex];
+
+        // Clear previous content and display the random card
+        discardPileContainer.innerHTML = `<img src="${randomCardImage}" alt="Discard Pile" class="w-16 h-24 mx-auto">`;
+      }
+
+      // Call the function to display a random card as the discard pile when the page loads
+      window.addEventListener("load", displayRandomDiscardPileCard);
       // function to start the game
       function startGame() {
         console.log("[unogame.ejs] Game started!");
