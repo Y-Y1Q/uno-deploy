@@ -50,9 +50,6 @@ async function getAndCastGameStatus(gameId, userId) {
   let last_card_played = castCard(status.last_card_played);
   const user_ids = await GamesDB.getUsersInGame(gameId);
 
-  // TEST
-  status.last_user = 0;
-
   // get user for this turn
   let user_index = 0;
   if (status.last_user == null) {
@@ -89,10 +86,9 @@ async function getAndCastGameStatus(gameId, userId) {
     ) {
       // not allowing wild & draw 4 as the last card
     } else {
-      let card_list =
-        status.last_card_drew == null
-          ? current_user_cards
-          : [castCard(status.last_card_drew)];
+      let card_list = status.user_has_drew_once
+        ? [current_user_cards[current_user_cards.length - 1]]
+        : current_user_cards;
 
       for (let i = 0; i < card_list.length; i++) {
         const card = card_list[i];
@@ -129,6 +125,10 @@ async function getAndCastGameStatus(gameId, userId) {
           }
         }
       }
+
+      if (status.user_has_drew_once && playable_cards_index.length > 0) {
+        playable_cards_index = [current_user_cards.length - 1];
+      }
     }
   }
 
@@ -138,7 +138,7 @@ async function getAndCastGameStatus(gameId, userId) {
     penalty: status.penalty,
     last_user: status.last_user,
     last_card_played: last_card_played,
-    user_chose_to_draw: status.last_card_drew != null,
+    user_has_drew_once: status.user_has_drew_once,
     user_this_turn: user_this_turn,
     playable_cards_index: playable_cards_index,
     current_user_cards: current_user_cards,
@@ -163,7 +163,7 @@ const playGame = async (req, res) => {
   try {
     // validate the user for current turn
     const status = await getAndCastGameStatus(gameId, userId);
-    if (userId != status.user_this_turn) {
+    if (status.playable_cards_index == null) {
       return res.status(HttpCode.BadRequest).json({
         error: "it is not the turn for userId=" + userId,
       });
@@ -171,17 +171,29 @@ const playGame = async (req, res) => {
 
     const cardId = parseInt(cardIdStr);
 
-    // draw a card
+    // draw card(s)
     if (Number.isNaN(cardId)) {
-      await GamesDB.drawCards(gameId, userId, 1 + status.penalty);
-      // TODO when drawing one card, only that card is playable
-      if (status.penalty > 0) {
-      } else {
+      if (status.user_has_drew_once) {
+        await GamesDB.resetUserHasDrewOnce(gameId, userId);
+        return res.status(HttpCode.OK).json({
+          message:
+            "user has drew once && cardId is NaN (not a number) => skip turn",
+        });
       }
-      return res.status(HttpCode.OK).json({
-        message:
-          "cardId is NaN (not a number) => draw card with coutn as 1 + penalty.",
-      });
+
+      if (status.penalty > 0) {
+        await GamesDB.drawCards(gameId, userId, status.penalty);
+        await GamesDB.resetPenalty(gameId);
+        return res.status(HttpCode.OK).json({
+          message: "Taking the penalty cards, now is still user's turn",
+        });
+      } else {
+        await GamesDB.drawCards(gameId, userId, 1);
+        await GamesDB.setUserHasDrewOnce(gameId);
+        return res.status(HttpCode.OK).json({
+          message: "cardId is NaN (not a number) => draw one card",
+        });
+      }
     }
 
     // validate the card and its existence
@@ -190,7 +202,12 @@ const playGame = async (req, res) => {
         error: "invalid cardId=" + cardId + ", it should be beetween 1-108",
       });
     }
-    if (!(await GamesDB.userHasCard(gameId, userId, cardId))) {
+    findCard: {
+      for (const card of status.current_user_cards) {
+        if (card.id == cardId) {
+          break findCard;
+        }
+      }
       return res.status(HttpCode.NotFound).json({
         message: "user doesn't have the card with cardId=" + cardId,
       });

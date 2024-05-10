@@ -42,11 +42,10 @@ exports.up = (pgm) => {
       onDelete: "cascade",
       default: 1
     },
-    last_card_drew: {
-      type: "int",
-      references: "cards(id)",
-      onDelete: "cascade",
-      default: null
+    user_has_drew_once: {
+      type: "boolean",
+      notNull: true,
+      default: false,
     },
     penalty: {
       type: "int",

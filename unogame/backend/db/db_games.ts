@@ -3,7 +3,6 @@ import {
   deleteOneCard,
   drawCards,
   getUserCards,
-  userHasCard,
 } from "./games/game_cards";
 import {
   deleteGame,
@@ -22,7 +21,10 @@ import {
   getGames,
   getGamesByName,
   getGamesCanJoin,
+  resetPenalty,
+  resetUserHasDrewOnce,
   setLastUserAndCard,
+  setUserHasDrewOnce,
   startGame,
 } from "./games/games";
 
@@ -42,10 +44,12 @@ export {
   deleteAllCards,
   getUserCards,
   deleteOneCard,
-  userHasCard,
   getGamesJoined,
   getGamesCanJoin,
   getGameStarted,
   getGameStatus,
+  resetPenalty,
+  resetUserHasDrewOnce,
+  setUserHasDrewOnce,
   setLastUserAndCard,
 };
