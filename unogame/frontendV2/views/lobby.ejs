@@ -36,13 +36,13 @@
               </h2>
               <div class="border-l-4 border-red-500 pl-4 mb-4">
                 <h4 class="font-bold block mb-2">Current Games</h4>
-                <ul>
+                <ul id="current-games">
                   <%- include("./layout/current-games") %>
                 </ul>
               </div>
               <div class="border-l-4 border-red-500 pl-4 mb-4">
                 <h4 class="font-bold block mb-2">Available Games</h4>
-                <ul>
+                <ul id="available-games">
                   <%- include("./layout/available-games") %>
                 </ul>
               </div>
@@ -99,7 +99,7 @@
                 type="submit"
                 class="bg-blue-500 text-white px-4 py-2 rounded mt-4"
               >
-                Enter
+                Create
               </button>
             </form>
 

@@ -1,24 +1,13 @@
-<li>
-  Game 1
-  <button class="flex justify-end mb-2 bg-red-500 text-white px-2 py-1 rounded">
-    Exit
-  </button>
+<% if(currentGames !==undefined && currentGames.length> 0) { %> <%
+currentGames.forEach(game=> { %>
+<li id="<%= game.id %>">
+  <a
+    class="hover:text-blue-800 hover:underline"
+    href="/game/<%= game.id %>/join"
+  >
+    <%= game.room_name %>
+  </a>
 </li>
-<li>
-  Game 2
-  <button class="flex justify-end mb-2 bg-red-500 text-white px-2 py-1 rounded">
-    Exit
-  </button>
-</li>
-<li>
-  Game 3
-  <button class="flex justify-end mb-2 bg-red-500 text-white px-2 py-1 rounded">
-    Exit
-  </button>
-</li>
-<li>
-  Game 4
-  <button class="flex justify-end mb-2 bg-red-500 text-white px-2 py-1 rounded">
-    Exit
-  </button>
-</li>
+<% })} else { %>
+<p>You are not playing any games yet</p>
+<% } %>
