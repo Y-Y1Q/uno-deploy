@@ -28,7 +28,7 @@
               <h3 class="text-xl font-bold">Welcome <%= user.username %></h3>
             </div>
             <div class="mb-4">
-              In game room: <%= game.room_name %> <br />
+              Game room: <%= game.room_name %> <br />
               Game ID:
               <%= gameId %>
             </div>
@@ -59,6 +59,7 @@
               <button
                 class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full"
                 id="goBackButton"
+                onclick="redirectToLobby()"
               >
                 Go Back
               </button>
@@ -70,4 +71,10 @@
       </div>
     </div>
   </body>
+
+  <script>
+    function redirectToLobby() {
+      window.location.href = "/lobby";
+    }
+  </script>
 </html>
