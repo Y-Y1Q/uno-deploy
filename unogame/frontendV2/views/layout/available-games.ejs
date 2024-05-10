@@ -1,32 +1,14 @@
-<li>
-  Game A
-  <button
-    class="flex justify-end mb-2 bg-green-500 text-white px-2 py-1 rounded"
+<% if(availableGames !== undefined && availableGames.length > 0) { %> <%
+availableGames.forEach(game => { %>
+<li id="<%= game.id %>">
+  <a
+    class="hover:text-blue-800 hover:underline"
+    href="/game/<%= game.id %>/join"
+    ><%= game.room_name %></a
   >
-    Join
-  </button>
+
+  <%= game.player_count %>/<%= game.max_players %>
 </li>
-<li>
-  Game B
-  <button
-    class="flex justify-end mb-2 bg-green-500 text-white px-2 py-1 rounded"
-  >
-    Join
-  </button>
-</li>
-<li>
-  Game C
-  <button
-    class="flex justify-end mb-2 bg-green-500 text-white px-2 py-1 rounded"
-  >
-    Join
-  </button>
-</li>
-<li>
-  Game D
-  <button
-    class="flex justify-end mb-2 bg-green-500 text-white px-2 py-1 rounded"
-  >
-    Join
-  </button>
-</li>
+<% })} else { %>
+<p>No games available</p>
+<% } %>
