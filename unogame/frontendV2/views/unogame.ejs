@@ -52,7 +52,9 @@
             </button>
           </div>
 
-          <div class="w-full border border-red-500">PLAYER 1 CONTAINER</div>
+          <div class="w-full border border-red-500" id="player1Container">
+            PLAYER 1 CONTAINER
+          </div>
         </div>
 
         <%- include("./layout/chat-box") %>
@@ -159,11 +161,29 @@
         // load card images onto the interface
         // loadCardImages();
 
+        // generate and add 7 random cards for PLAYER 1
+        addRandomCardsToPlayer(player1Container, 7);
+
         // add event listener for the "Start Game" button
         const startGameButton = document.getElementById("startGameButton");
         startGameButton.addEventListener("click", startGame);
-      }
 
+        // function to add random cards to a player's container
+        function addRandomCardsToPlayer(container, count) {
+          container.style.display = "flex"; // Set display to flex
+          container.style.flexDirection = "row"; // Align cards horizontally
+
+          for (let i = 0; i < count; i++) {
+            const randomIndex = Math.floor(Math.random() * cardImages.length);
+            const cardImage = cardImages[randomIndex];
+            const cardElement = document.createElement("img");
+            cardElement.src = cardImage;
+            cardElement.alt = "Card " + (randomIndex + 1);
+            cardElement.classList.add("w-16", "h-24", "m-2");
+            container.appendChild(cardElement);
+          }
+        }
+      }
       // function to start the game
       function startGame() {
         console.log("[unogame.ejs] Game started!");
