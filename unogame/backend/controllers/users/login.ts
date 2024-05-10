@@ -4,7 +4,10 @@ import HttpCode from "../../../constants/http_code";
 import * as UsersDB from "../../db/db_users";
 
 const logIn = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = {
+    username: req.body.username.trim(),
+    password: req.body.password.trim(),
+  };
 
   // Redirect to lobby if user is already logged in
   if (req.session.user !== undefined) {

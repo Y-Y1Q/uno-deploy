@@ -2,7 +2,10 @@ import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
 
 const createGame = async (req, res) => {
-  const { roomName, maxPlayers } = req.body;
+  const { roomName, maxPlayers } = {
+    roomName: req.body.roomName.trim(),
+    maxPlayers: req.body.maxPlayers.trim(),
+  };
   const { id: userId } = req.session.user;
 
   // check room's maxPlayer
