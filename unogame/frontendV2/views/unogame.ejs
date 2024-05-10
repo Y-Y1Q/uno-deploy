@@ -15,9 +15,15 @@
         <!-- UNO Game Interface -->
         <div class="w-full border border-red-500 p-4">
           <h2 class="text-lg font-bold mb-4 text-red-500">UNO GAME</h2>
+
+          <div class="w-full border border-red-500">
+            PLAYER 2 OR OTHERS CONTAINER
+          </div>
+
           <div id="cardContainer" class="flex flex-wrap justify-center">
             <!-- Card images will be dynamically loaded here -->
           </div>
+
           <div class="flex justify-center mt-4">
             <button
               class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2"
@@ -25,33 +31,28 @@
             >
               Start Game
             </button>
-          </div>
-        </div>
 
-        <!-- Leaderboard and Controls -->
-        <div class="w-1/3 border border-red-500 p-4" id="lobbyContainer">
-          <div class="leaderboard bg-gray-200 p-4 rounded">
-            <h3 class="text-lg font-bold mb-2">LEADERBOARD INTERFACE</h3>
-            <p class="text-base mb-2">STATUS - PLAYT</p>
             <button
-              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2"
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2 hidden"
               id="abandonButton"
             >
               Abandon
             </button>
             <button
-              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2 hidden"
               id="drawButton"
             >
               Draw
             </button>
             <button
-              class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+              class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-2 hidden"
               id="sayUnoButton"
             >
               SAY UNO!
             </button>
           </div>
+
+          <div class="w-full border border-red-500">PLAYER 1 CONTAINER</div>
         </div>
 
         <%- include("./layout/chat-box") %>
@@ -64,6 +65,7 @@
       let userId = "<%= user.id %>";
       let userName = "<%= user.username %>";
       let playerDeck = []; // assuming playerDeck is an array containing the player's cards
+      let playerDeck2 = []; // assuming playerDeck is an array containing the player's cards
       let drawCardPile = []; // assuming drawCardPile is an array containing the draw pile
       let playedCardsPile = []; // assuming playedCardsPile is an array containing the played cards
       let currentColor = ""; // current color of the game
@@ -136,44 +138,8 @@
         }
         return array;
       }
-      // function to initialize UNO game interface
-      function initializeUNOGame() {
-        // get references to HTML elements
-        const unoGameInterface = document.getElementById("unoGameInterface");
 
-        // load card images onto the interface
-        loadCardImages();
-
-        // create and append game elements to the interface
-        const gameElements = `
-        <!-- UNO Game Interface -->
-          <div class="w-full border border-red-500 p-4">
-            <h2 class="text-lg font-bold mb-4 text-red-500">UNO GAME</h2>
-            <div id="cardContainer" class="flex flex-wrap justify-center">
-              <!-- Card images will be dynamically loaded here -->
-            </div>
-            <div class="flex justify-center mt-4">
-              <button
-                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2"
-                id="startGameButton"
-              >
-                Start Game
-              </button>
-            </div>
-          </div>
-        `;
-        unoGameInterface.innerHTML = gameElements;
-
-        // add event listeners for game controls
-        const drawButton = document.getElementById("drawButton");
-        drawButton.addEventListener("click", drawCard);
-        const abandonButton = document.getElementById("abandonButton");
-        abandonButton.addEventListener("click", abandonGame);
-        const sayUnoButton = document.getElementById("sayUnoButton");
-        sayUnoButton.addEventListener("click", sayUno);
-      }
-
-      // Function to dynamically load card images onto the interface
+      // function to dynamically load card images onto the interface
       function loadCardImages() {
         const cardContainer = document.getElementById("cardContainer");
         cardImages.forEach((imageName, index) => {
@@ -185,9 +151,27 @@
         });
       }
 
-      // unction to start the game
+      // function to initialize UNO game interface
+      function initializeUNOGame() {
+        // get references to HTML elements
+        const unoGameInterface = document.getElementById("unoGameInterface");
+
+        // load card images onto the interface
+        // loadCardImages();
+
+        // add event listener for the "Start Game" button
+        const startGameButton = document.getElementById("startGameButton");
+        startGameButton.addEventListener("click", startGame);
+      }
+
+      // function to start the game
       function startGame() {
         console.log("[unogame.ejs] Game started!");
+        console.log("[unogame.ejs] Start Game button clicked!");
+
+        // hide the "Start Game" button after being clicked
+        const startGameButton = document.getElementById("startGameButton");
+        startGameButton.style.display = "none";
 
         // draw 7 cards for the first player
         for (let i = 0; i < 7; i++) {
@@ -198,13 +182,18 @@
         // draw 7 cards for the second player
         for (let i = 0; i < 7; i++) {
           const cardDrawn = drawCardFromPile(); // Draw a card from the draw pile
-          // Assuming player 2's deck is stored in another array named playerDeck2
-          playerDeck2.push(cardDrawn); // Add the card to the second player's deck
+          playerDeck2.push(cardDrawn); // add the card to the second player's deck
         }
+
+        // Abandon - Draw - Say UNO buttons
+        showGameControls();
 
         // display the player's decks and the draw pile
         updateGameInterface();
       }
+
+      // call initialize function when the page loads
+      window.addEventListener("load", initializeUNOGame);
 
       // Function to draw a card from the draw pile
       function drawCardFromPile() {
@@ -277,12 +266,21 @@
             </div>
           </div>
         </div>
-  `;
+       `;
       }
 
-      // call initialize function when the page loads
-      window.addEventListener("load", initializeUNOGame);
-      console.log("[unogame.ejs] Page loaded. Initializing UNO game...");
+      // function to show game controls after starting the game
+      function showGameControls() {
+        // Show the game controls
+        const abandonButton = document.getElementById("abandonButton");
+        const drawButton = document.getElementById("drawButton");
+        const sayUnoButton = document.getElementById("sayUnoButton");
+        abandonButton.classList.remove("hidden");
+        drawButton.classList.remove("hidden");
+        sayUnoButton.classList.remove("hidden");
+      }
+
+      // console.log("[unogame.ejs] Page loaded. Initializing UNO game...");
     </script>
   </body>
 </html>
