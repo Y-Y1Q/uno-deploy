@@ -1,11 +1,12 @@
 import { chatMessageHandler } from "./chat-message";
+import { waitRoomHandler } from "./waitroom";
 
-export default [chatMessageHandler];
+export default [chatMessageHandler, waitRoomHandler];
 
 //Socket handler template
 /*
 import { Socket } from "socket.io-client";
-import { SocketEvent } from "../../constants/SocketEvent";
+import { SocketEvent } from "../../constants/socket_event";
 
 const something = document.getElementById("someId") as someHTMLElement
 

@@ -4,7 +4,7 @@
 
 // for use in other controllers only, not in routes
 
-export async function updateGameState() {
+export async function gameStateUpdate() {
   // TODO
   return null;
 }

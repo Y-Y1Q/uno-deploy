@@ -33,7 +33,7 @@ const joinGame = async (req, res) => {
       res.redirect(`/game/${gameId}/wait`);
 
       setTimeout(async () => {
-        await Socket.updateWaitroom(gameId, userId, req);
+        await Socket.waitroomUpdate(gameId, userId, req);
       }, 1000);
     })
     .catch((err) => {

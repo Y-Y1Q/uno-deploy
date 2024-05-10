@@ -51,8 +51,19 @@ router.get("/game/:id/wait", isAuthenticated, async (req, res) => {
   const game = await GamesDB.getGameById(gameId);
   const user = Session.getCurrentUser(req);
   const playersList = await UserDB.getAllUsers();
+  const usersInGame = await GamesDB.getUsersnameInGame(gameId);
+  const playersCount = usersInGame.length;
+  const { max_players: maxPlayers } = await GamesDB.getGameById(gameId);
 
-  res.render("waitroom", { gameId, user, playersList, game });
+  res.render("waitroom", {
+    gameId,
+    user,
+    playersList,
+    game,
+    playersCount,
+    maxPlayers,
+    usersInGame,
+  });
 });
 
 export default router;

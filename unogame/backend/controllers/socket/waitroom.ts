@@ -2,9 +2,7 @@ import { SocketEvent } from "../../../constants/socket_event";
 import * as GamesDB from "../../db/db_games";
 import * as UsersDB from "../../db/db_users";
 
-// for use in other controllers only, not in routes
-
-export async function updateWaitroom(gameId, userId, req) {
+export async function waitroomUpdate(gameId, userId, req) {
   const io = req.app.get("io");
 
   // send welcome msg in waitroom chat
@@ -27,13 +25,13 @@ export async function updateWaitroom(gameId, userId, req) {
 
   // update waitroom info
   const usersInGame = await GamesDB.getUsersnameInGame(gameId);
-  const playerCount = usersInGame.length;
+  const playersCount = usersInGame.length;
   const { max_players: maxPlayers } = await GamesDB.getGameById(gameId);
 
   io.emit(SocketEvent.WAIT(gameId), {
     timestamp: Date.now(),
-    playerCount,
+    playersCount,
     maxPlayers,
-    usersInGame,
+    playersList: usersInGame,
   });
 }

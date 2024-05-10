@@ -1,6 +1,6 @@
-import { updateGameState } from "./game_state";
-import { updateWaitroom } from "./waitroom";
+import { gameStateUpdate } from "./game_state";
+import { waitroomUpdate } from "./waitroom";
 
-export { updateGameState, updateWaitroom };
+export { gameStateUpdate, waitroomUpdate };
 
 // for use in other controller only, not in routes

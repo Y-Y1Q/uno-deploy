@@ -32,12 +32,19 @@
               Game ID:
               <%= gameId %>
             </div>
-            <div class="mb-4">
-              <p>1/2 players joined</p>
-              <p>You are in the room</p>
-              <p>Waiting for other players to join</p>
+
+            <!-- Waitroom Info here -->
+            <div class="mb-4" id="players-count">
+              <%= playersCount %> / <%= maxPlayers %> players joined
             </div>
+            <div class="mb-4" id="players-in-game">
+              <% usersInGame.forEach(player=> { %>
+              <p><%= player.username %></p>
+              <% }); %>
+            </div>
+
             <div id="send-inv" class="mb-4">
+              <!-- Invite player here -->
               <select
                 id="playerChoice"
                 name="playerChoice"

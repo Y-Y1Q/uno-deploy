@@ -43,7 +43,7 @@ const getUsersInGame = async (gameid) => {
 };
 
 const getUsersnameInGame = async (gameid) => {
-  const ret = await db.any(
+  const ret = await db.manyOrNone(
     `SELECT u.username
     FROM game_users gu
     RIGHT JOIN users u ON gu.user_id = u.id
@@ -52,7 +52,7 @@ const getUsersnameInGame = async (gameid) => {
     [gameid]
   );
 
-  return ret.map((row) => row.user_id);
+  return ret;
 };
 
 const getGamesJoined = async (userId) => {
