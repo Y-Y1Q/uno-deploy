@@ -36,18 +36,17 @@ const deleteOneCard = async (gameId, userId, cardId) => {
   );
 };
 
-const getWinnerUser = async (gameId) => {
-  const ret = await db.manyOrNone(
-    "SELECT user_id from game_users WHERE user_id NOT IN " +
-      "(SELECT user_id FROM game_cards WHERE game_id=1 GROUP BY user_id)",
+const getAllUserCardCounts = async (gameId) => {
+  const ret = await db.many(
+    "SELECT user_id,COUNT(*) as count FROM game_cards WHERE game_id=1 GROUP BY user_id",
     [gameId]
   );
 
-  if (ret.length == 0) {
-    return null;
-  } else {
-    return ret[0].user_id;
+  const counts = {};
+  for (const row of ret) {
+    counts[row.user_id] = Number(row.count);
   }
+  return counts;
 };
 
 export {
@@ -55,5 +54,5 @@ export {
   deleteAllCards,
   getUserCards,
   deleteOneCard,
-  getWinnerUser,
+  getAllUserCardCounts,
 };

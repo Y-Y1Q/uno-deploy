@@ -13,7 +13,7 @@ const createGame = async (req, res) => {
   if (Number.isNaN(playerCount)) {
     req.flash(
       "error",
-      "maxPlayer" +
+      "maxPlayer=" +
         String(maxPlayers) +
         " is invalid, its value should be 2/3/4"
     );

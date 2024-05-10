@@ -2,8 +2,8 @@ import {
   deleteAllCards,
   deleteOneCard,
   drawCards,
+  getAllUserCardCounts,
   getUserCards,
-  getWinnerUser,
 } from "./games/game_cards";
 import {
   countUsersInGame,
@@ -61,7 +61,7 @@ export {
   resetUserHasDrewOnce,
   setUserHasDrewOnce,
   setLastUserAndCard,
-  getWinnerUser,
+  getAllUserCardCounts,
   getUsersnameInGame,
   countUsersInGame,
 };

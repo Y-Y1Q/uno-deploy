@@ -145,8 +145,18 @@ async function getAndCastGameStatus(gameId, userId) {
     }
   }
 
+  const counts = await GamesDB.getAllUserCardCounts(gameId);
+  const everyone_counts = [];
+  for (const user of user_ids) {
+    let count = counts[String(user)];
+    everyone_counts.push({
+      id: user,
+      count: count == undefined ? 0 : count,
+    });
+  }
+
   return {
-    winner_user_id: await GamesDB.getWinnerUser(gameId),
+    everyone_counts: everyone_counts,
     max_players: status.max_players,
     is_clockwise: status.is_clockwise,
     penalty: status.penalty,
@@ -176,11 +186,12 @@ const playGame = async (req, res) => {
 
   try {
     const status = await getAndCastGameStatus(gameId, userId);
-    if (status.winner_user_id != null) {
-      return res.status(HttpCode.Forbidden).json({
-        error:
-          "Someone wins already with userId=" + String(status.winner_user_id),
-      });
+    for (const count of status.everyone_counts) {
+      if (count.count == 0) {
+        return res.status(HttpCode.Forbidden).json({
+          error: "Someone wins already with userId=" + String(count.id),
+        });
+      }
     }
 
     // validate the user for current turn

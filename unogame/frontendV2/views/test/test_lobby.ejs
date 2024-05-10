@@ -44,7 +44,7 @@
       <h3>TEST Creating Games</h3>
       <form action="/game/create" method="post">
         Room Name: <input name="roomName" />
-        <select name="maxPlayer">
+        <select name="maxPlayers">
           <option value="2">2</option>
           <option value="3">3</option>
           <option value="4">4</option>
@@ -91,7 +91,7 @@
       </h2>
 
       <h3>TEST Joining Game</h3>
-      <form action="/game/1/join" method="post">
+      <form action="/game/1/join" method="get">
         <button type="submit">submit</button>
       </form>
       <br />
