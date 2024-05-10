@@ -1,5 +1,6 @@
 import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
+import * as Socket from "../socket";
 
 const joinGame = async (req, res) => {
   const { id: gameId } = req.params;
@@ -29,7 +30,11 @@ const joinGame = async (req, res) => {
   // only game that is not full will accept new user join
   await GamesDB.joinGame(gameId, userId)
     .then(() => {
-      return res.redirect(`/game/${gameId}/wait`);
+      res.redirect(`/game/${gameId}/wait`);
+
+      setTimeout(async () => {
+        await Socket.waitroomUpdate(gameId, userId, req);
+      }, 1000);
     })
     .catch((err) => {
       return res
@@ -38,7 +43,7 @@ const joinGame = async (req, res) => {
     });
 };
 
-// redirect based on the started status of game
+// helper func, redirect based on the started status of game
 async function handleRedirect(gameId: string, res: any) {
   const started = await GamesDB.getGameStarted(gameId);
 

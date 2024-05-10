@@ -64,9 +64,9 @@ async function addMockData() {
   // with all types of UNO card in each player's hand
 }
 
-addMockData()
+await addMockData()
   .then(() => {
-    console.log("Mock data added successfully.");
+    console.log("Adding mock data...");
   })
   .catch((err) => {
     console.error("Error adding mock data: ", err);

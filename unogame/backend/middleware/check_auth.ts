@@ -43,12 +43,13 @@ const isCreatorInGame = async (req, res, next) => {
   if (isCreator) {
     next();
   } else {
-    return res.status(HttpCode.BadRequest).json({
-      error:
-        "The current user with userId=" +
+    req.flash(
+      "error",
+      "The current user with userId=" +
         userId +
-        " is not the creator of this room!",
-    });
+        " is not the creator of this room!"
+    );
+    return res.redirect(`/game/${gameId}/wait`);
   }
 };
 
