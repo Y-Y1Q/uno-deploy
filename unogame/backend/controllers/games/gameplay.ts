@@ -67,9 +67,7 @@ async function getAndCastGameStatus(gameId, userId) {
 
   // get user for this turn
   let user_index = 0;
-  if (status.last_user == null) {
-    user_index = Math.floor(Math.random() * status.max_players);
-  } else {
+  if (status.last_user != null) {
     let step = last_card_played.type == "skip" ? 2 : 1;
     user_index = user_ids.indexOf(status.last_user);
     if (status.is_clockwise) {

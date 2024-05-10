@@ -35,7 +35,14 @@ const createGame = async (roomName, maxPlayer) => {
 };
 
 const startGame = async (gameId) => {
-  await db.none("UPDATE games SET started=TRUE WHERE id=$1", [gameId]);
+  // always start with a number card
+  const color = Math.floor(Math.random() * 4);
+  const number = Math.floor(Math.random() * 10);
+
+  await db.none(
+    "UPDATE games SET started=TRUE,last_user=NULL,last_card_played=$2 WHERE id=$1",
+    [gameId, color * 27 + number * 2 + 1]
+  );
 };
 
 const endGame = async (gameId) => {
@@ -112,22 +119,6 @@ const setLastUserAndCard = async (gameId, userId, cardId) => {
     "UPDATE games SET last_user=$2,last_card_played=$3 WHERE id=$1",
     [gameId, userId, cardId]
   );
-};
-
-const setWinnerUser = async (gameId, userId) => {
-  const ret = await db.manyOrNone(
-    "UPDATE user_id FROM game_cards WHERE game_id=$1 " +
-      "GROUP BY user_id HAVING COUNT(*)=0",
-    [gameId, userId]
-  );
-
-  console.log(ret);
-
-  if (ret.length == 0) {
-    return null;
-  } else {
-    return ret[0].user_id;
-  }
 };
 
 export {
