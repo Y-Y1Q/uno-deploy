@@ -156,7 +156,7 @@ const getGameCurrentStatus = async (req, res) => {
 
 // please ignore the red error for status.*
 const playGame = async (req, res) => {
-  const { card_id: cardIdStr, wild_color: colorStr } = req.body;
+  const { card_index: cardIndexStr, wild_color: colorStr } = req.body;
   const { id: gameId } = req.params;
   const { id: userId } = req.session.user;
 
@@ -169,15 +169,15 @@ const playGame = async (req, res) => {
       });
     }
 
-    const cardId = parseInt(cardIdStr);
+    const cardIndex = parseInt(cardIndexStr);
 
     // draw card(s)
-    if (Number.isNaN(cardId)) {
+    if (Number.isNaN(cardIndex)) {
       if (status.user_has_drew_once) {
         await GamesDB.resetUserHasDrewOnce(gameId, userId);
         return res.status(HttpCode.OK).json({
           message:
-            "user has drew once && cardId is NaN (not a number) => skip turn",
+            "user has drew once && card_index is NaN (not a number) => skip turn",
         });
       }
 
@@ -191,30 +191,30 @@ const playGame = async (req, res) => {
         await GamesDB.drawCards(gameId, userId, 1);
         await GamesDB.setUserHasDrewOnce(gameId);
         return res.status(HttpCode.OK).json({
-          message: "cardId is NaN (not a number) => draw one card",
+          message: "card_index is NaN (not a number) => draw one card",
         });
       }
     }
 
-    // validate the card and its existence
-    if (cardId < 1 || cardId > 108) {
+    // validate the card
+    if (cardIndexStr < 0 || cardIndexStr >= status.current_user_cards.length) {
       return res.status(HttpCode.BadRequest).json({
-        error: "invalid cardId=" + cardId + ", it should be beetween 1-108",
+        error: "invalid card_index=" + cardIndex,
       });
     }
-    findCard: {
-      for (const card of status.current_user_cards) {
-        if (card.id == cardId) {
-          break findCard;
-        }
-      }
-      return res.status(HttpCode.NotFound).json({
-        message: "user doesn't have the card with cardId=" + cardId,
+    if (!status.playable_cards_index.includes(cardIndex)) {
+      return res.status(HttpCode.BadRequest).json({
+        error: "not a playable card_index=" + cardIndex,
       });
     }
 
-    await GamesDB.deleteOneCard(gameId, userId, cardId);
-    await GamesDB.setLastUserAndCard(gameId, userId, cardId);
+    const card = status.current_user_cards[cardIndex];
+
+    await GamesDB.deleteOneCard(gameId, userId, card.id);
+    await GamesDB.setLastUserAndCard(gameId, userId, card.id);
+    if (status.user_has_drew_once) {
+      await GamesDB.resetUserHasDrewOnce(gameId, userId);
+    }
 
     // TODO increase turn count + card check logic
     return res.status(HttpCode.OK).json({
