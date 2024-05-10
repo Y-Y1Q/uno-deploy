@@ -6,6 +6,7 @@ import {
   getWinnerUser,
 } from "./games/game_cards";
 import {
+  countUsersInGame,
   deleteGame,
   getGamesJoined,
   getUsersInGame,
@@ -62,4 +63,5 @@ export {
   setLastUserAndCard,
   getWinnerUser,
   getUsersnameInGame,
+  countUsersInGame,
 };

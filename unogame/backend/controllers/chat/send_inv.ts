@@ -1,4 +1,6 @@
+import HttpCode from "../../../constants/http_code";
 import { SocketEvent } from "../../../constants/socket_event";
+import * as GamesDB from "../../db/db_games";
 import { getUser } from "../../db/users";
 
 // DELETE COMMENT LATER
@@ -7,29 +9,38 @@ import { getUser } from "../../db/users";
 // send invite message to a user
 const sendInvitation = async (req, res) => {
   const { id: fromRoomId } = req.params; //   params - someurl/:id  (placeholder)
-  const { username: toUser } = req.body; // in FE, sender should choose from a players list
+  const { username: toUser } = req.body;
   const { username: fromUser } = req.session.user; // sender
   const { id: fromUserId } = req.session.user;
   const { id: toUserId } = await getUser(toUser);
+  const { room_name: fromRoom, max_players: maxPlayers } =
+    await GamesDB.getGameById(fromRoomId);
+  const { count: playersCount } = await GamesDB.countUsersInGame(fromRoomId);
+
+  if (playersCount == maxPlayers) {
+    return res
+      .status(HttpCode.BadRequest)
+      .json({ error: "Can not send invite if game is full" });
+  }
 
   // CASE: sender and receiver is not same user
   if (fromUserId !== toUserId) {
-    const msg = `${fromUser} invite you to join ${fromRoomId}.`;
-
     const io = req.app.get("io");
 
     // send inv message to the toUser's lobby only
+    const invMsg =
+      `${fromUser} invite you to join` +
+      `<a class="font-bold hover:underline" href="/game/${fromRoomId}/join">` +
+      ` ${fromRoom}</a>`;
 
     io.to(toUserId).emit(SocketEvent.CHAT(0), {
       from: "ADMIN",
       timestamp: Date.now(),
-
-      // may use roomId to make a clickable link in the FE
-      // POST   /game/${roomId}/join
       roomId: fromRoomId,
-      message: msg,
+      message: invMsg,
     });
   }
+
   return res.sendStatus(200);
 };
 

@@ -1,87 +1,100 @@
 <!doctype html>
 <html lang="en">
-  <%- include("./layout/server-var") %>
+<%- include("./layout/server-var") %>
 
-  <head>
-    <%- include("./layout/header") %>
-    <title>Lobby</title>
-  </head>
+  <% if(errorMsg && errorMsg.length> 0) {
+    %>
+    <script>
+      alert("<%= errorMsg %>");
+    </script>
+    <% } %>
 
-  <%- include("./layout/nav-bar") %>
+      <head>
+        <%- include("./layout/header") %>
+          <title>Lobby</title>
+      </head>
 
-  <body class="bg-gray-200 flex flex-col items-center justify-center h-screen">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between">
-        <!-- Rules Container -->
-        <div class="w-1/3 p-4 border border-red-500">
-          <h2 class="text-lg font-bold mb-4 text-red-500">Rules Container</h2>
-          <%- include("./layout/rules") %>
-        </div>
+      <%- include("./layout/nav-bar") %>
 
-        <!-- Waitroom Container -->
-        <div class="w-1/3 p-4 border border-pink-500">
-          <h2 class="text-lg font-bold mb-4">WAITING ROOM</h2>
-          <div
-            class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4"
-          >
-            <div class="mb-4">
-              <h3 class="text-xl font-bold">Welcome <%= user.username %></h3>
-            </div>
-            <div class="mb-4">
-              Game room: <%= game.room_name %> <br />
-              Game ID:
-              <%= gameId %>
-            </div>
+        <body class="bg-gray-200 flex flex-col items-center justify-center h-screen">
+          <div class="container mx-auto px-4">
+            <div class="flex justify-between">
+              <!-- Rules Container -->
+              <div class="w-1/3 p-4 border border-red-500">
+                <h2 class="text-lg font-bold mb-4 text-red-500">Rules Container</h2>
+                <%- include("./layout/rules") %>
+              </div>
 
-            <!-- Waitroom Info here -->
-            <div class="mb-4" id="players-count">
-              <%= playersCount %> / <%= maxPlayers %> players joined
-            </div>
-            <div class="mb-4" id="players-in-game">
-              <% usersInGame.forEach(player=> { %>
-              <p><%= player.username %></p>
-              <% }); %>
-            </div>
+              <!-- Waitroom Container -->
+              <div class="w-1/3 p-4 border border-pink-500">
+                <h2 class="text-lg font-bold mb-4">WAITING ROOM</h2>
+                <div class="flex flex-col justify-center items-center max-h-full border border-blue-500 p-4">
+                  <div class="mb-4">
+                    <h3 class="text-xl font-bold">Welcome <%= user.username %>
+                    </h3>
+                  </div>
+                  <div class="mb-4">
+                    Game room: <%= game.room_name %> <br />
+                      Game ID:
+                      <%= gameId %>
+                  </div>
 
-            <div id="send-inv" class="mb-4">
-              <!-- Invite player here -->
-              <select
-                id="playerChoice"
-                name="playerChoice"
-                class="w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="" disabled selected>Invite Players</option>
-                <% playersList.forEach(player=> { %>
-                <option value="<%= player.id %>"><%= player.username %></option>
-                <% }); %>
-              </select>
-            </div>
-            <div>
-              <button
-                class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full"
-                id="playGameButton"
-              >
-                Start Game
-              </button>
-              <button
-                class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full"
-                id="goBackButton"
-                onclick="redirectToLobby()"
-              >
-                Go Back
-              </button>
+                  <!-- Waitroom Info here -->
+                  <div class="mb-4" id="players-count">
+                    <%= playersCount %> / <%= maxPlayers %> players joined
+                  </div>
+                  <div class="mb-4" id="players-in-game">
+                    <% usersInGame.forEach(player=> { %>
+                      <p>
+                        <%= player.username %>
+                      </p>
+                      <% }); %>
+                  </div>
+
+
+                  <!-- Invite player here --> 
+                  <form id="inviteForm" class="mb-4" action="/send-inv/<%= gameId %>" method="post">
+                    <select id="invUser" name="username" class="w-full p-2 border border-gray-300 rounded" <% if
+                      (playersCount==maxPlayers) { %>
+                      disabled
+                      <% } %>
+                        >
+                        <option value="" disabled selected>Invite Players</option>
+                        <% playersList.forEach(player=> { %>
+                          <option value="<%= player.username %>">
+                            <%= player.username %>
+                          </option>
+                          <% }); %>
+                    </select>
+
+                    <% if (playersCount !=maxPlayers) { %>
+                      <button type="submit" class="font-bold px-4 py-2 rounded mt-4 w-full">
+                        Test Invite - change to fetch after M3
+                      </button>
+                      <% } %>
+
+                  </form>
+                  <div>
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="playGameButton">
+                      Start Game
+                    </button>
+                    <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton"
+                      onclick="redirectToLobby()">
+                      Go Back
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <%- include("./layout/chat-box") %>
             </div>
           </div>
-        </div>
+        </body>
 
-        <%- include("./layout/chat-box") %>
-      </div>
-    </div>
-  </body>
+        <script>
+          function redirectToLobby() {
+            window.location.href = "/lobby";
+          }
+        </script>
 
-  <script>
-    function redirectToLobby() {
-      window.location.href = "/lobby";
-    }
-  </script>
 </html>

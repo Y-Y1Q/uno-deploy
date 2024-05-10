@@ -62,12 +62,21 @@ const getGamesJoined = async (userId) => {
     LEFT JOIN game_users ON games.id = game_users.game_id
     WHERE games.id IN (SELECT game_id FROM game_users WHERE user_id = $1)
     GROUP BY games.id
-    ORDER BY games.id ASC`,
+    ORDER BY games.id ASC;`,
     [userId]
   );
   return ret;
 };
 
+const countUsersInGame = async (gameId) => {
+  return await db.one(
+    `SELECT COUNT(user_id) 
+  FROM game_users 
+  WHERE game_id = $1;
+  `,
+    [gameId]
+  );
+};
 export {
   joinGame,
   quitGame,
@@ -77,4 +86,5 @@ export {
   deleteGame,
   isCreatorInGame,
   getUsersnameInGame,
+  countUsersInGame,
 };

@@ -54,6 +54,7 @@ router.get("/game/:id/wait", isAuthenticated, async (req, res) => {
   const usersInGame = await GamesDB.getUsersnameInGame(gameId);
   const playersCount = usersInGame.length;
   const { max_players: maxPlayers } = await GamesDB.getGameById(gameId);
+  const errorMsg = req.flash("error");
 
   res.render("waitroom", {
     gameId,
@@ -63,6 +64,7 @@ router.get("/game/:id/wait", isAuthenticated, async (req, res) => {
     playersCount,
     maxPlayers,
     usersInGame,
+    errorMsg,
   });
 });
 
