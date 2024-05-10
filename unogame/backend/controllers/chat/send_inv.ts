@@ -18,7 +18,7 @@ const sendInvitation = async (req, res) => {
 
     const io = req.app.get("io");
 
-    // send inv message to the toUser's lobby
+    // send inv message to the toUser's lobby only
 
     io.to(toUserId).emit(SocketEvent.CHAT(0), {
       from: "ADMIN",

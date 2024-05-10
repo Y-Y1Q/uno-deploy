@@ -14,8 +14,11 @@ const foundUser = async (username: string): Promise<boolean> => {
     .catch(() => false);
 };
 
-const getAllUsers = async () => {
-  return await db.manyOrNone("SELECT id, username, fullname FROM users");
+const getAllUsersExcept = async (userId) => {
+  return await db.manyOrNone(
+    "SELECT id, username, fullname FROM users WHERE id != $1",
+    [userId]
+  );
 };
 
 const getUser = async (username) => {
@@ -26,4 +29,4 @@ const getUserById = async (userId) => {
   return await db.one("SELECT * FROM users WHERE id=$1", [userId]);
 };
 
-export { addUser, foundUser, getAllUsers, getUser, getUserById };
+export { addUser, foundUser, getAllUsersExcept, getUser, getUserById };
