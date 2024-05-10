@@ -17,11 +17,13 @@ import {
 import {
   createGame,
   endGame,
+  getGameById,
   getGameStarted,
   getGameStatus,
   getGames,
   getGamesByName,
   getGamesCanJoin,
+  isRoomNameTaken,
   resetUserHasDrewOnce,
   setLastUserAndCard,
   setPenalty,
@@ -32,6 +34,8 @@ import {
 
 export {
   getGames,
+  getGameById,
+  isRoomNameTaken,
   getGamesByName,
   createGame,
   startGame,

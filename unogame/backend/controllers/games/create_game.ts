@@ -2,43 +2,45 @@ import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
 
 const createGame = async (req, res) => {
-  const { roomName, maxPlayer } = req.body;
+  const { roomName, maxPlayers } = {
+    roomName: req.body.roomName.trim(),
+    maxPlayers: req.body.maxPlayers.trim(),
+  };
   const { id: userId } = req.session.user;
 
-  const playerCount = parseInt(maxPlayer);
+  // check room's maxPlayer
+  const playerCount = parseInt(maxPlayers);
   if (Number.isNaN(playerCount)) {
-    return res.status(HttpCode.BadRequest).json({
-      message:
-        "maxPlayer" +
-        String(maxPlayer) +
-        " is invalid, its value should be 2/3/4",
-    });
+    req.flash(
+      "error",
+      "maxPlayer" +
+        String(maxPlayers) +
+        " is invalid, its value should be 2/3/4"
+    );
+    return res.redirect("/lobby");
   }
 
-  await GamesDB.createGame(roomName, maxPlayer)
-    .then(async (gameId) => {
-      try {
-        await GamesDB.joinGame(gameId, userId);
-        await GamesDB.setCreatorInGame(gameId, userId);
-      } catch (err) {
-        // ensure integrity of database because creator is set seperately
-        await GamesDB.deleteGame(gameId);
-        return res.status(HttpCode.BadRequest).json({ message: err.detail });
-      }
+  // check room name
+  const nameExist = await GamesDB.isRoomNameTaken(roomName);
+  if (nameExist) {
+    req.flash("error", `Room name ${roomName} is taken`);
+    return res.redirect("/lobby");
+  }
 
-      return res
-        .status(HttpCode.OK)
-        .json({ message: "Created and joined with gameId=" + gameId });
-    })
-    .catch(async (err) => {
-      let msg = "";
-      if (err.code == 23505) {
-        msg = "The name '" + roomName + "' is already taken by someone";
-      } else {
-        msg = err.detail;
-      }
-      return res.status(HttpCode.BadRequest).json({ error: msg });
-    });
+  const newGameId = await GamesDB.createGame(roomName, maxPlayers);
+
+  try {
+    await GamesDB.joinGame(newGameId, userId);
+    await GamesDB.setCreatorInGame(newGameId, userId);
+  } catch (err) {
+    // ensure integrity of database because creator is set seperately
+    await GamesDB.deleteGame(newGameId);
+    return res
+      .status(HttpCode.InternalServerError)
+      .json({ message: err.detail });
+  }
+
+  return res.redirect(`/game/${newGameId}/wait`);
 };
 
 export { createGame };

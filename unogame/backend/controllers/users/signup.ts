@@ -7,7 +7,11 @@ const SALT_ROUNDS = 12;
 
 const signUp = async (req, res) => {
   console.log(req.body);
-  const { username, password, fullname } = req.body;
+  const { username, password, fullname } = {
+    username: req.body.username.trim(),
+    password: req.body.password.trim(),
+    fullname: req.body.fullname.trim(),
+  };
 
   // Redirect to lobby if user is already logged in
   if (req.session.user !== undefined) {
