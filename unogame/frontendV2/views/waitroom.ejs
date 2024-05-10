@@ -75,9 +75,14 @@
 
                   </form>
                   <div>
-                    <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="playGameButton">
+                    <form id="startGameForm" class="mb-4" action="/game/<%= gameId %>/start" method="post">
+
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="playGameButton">
                       Start Game
                     </button>
+
+                  </form>
+
                     <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton"
                       onclick="redirectToLobby()">
                       Go Back
