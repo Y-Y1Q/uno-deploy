@@ -15,4 +15,5 @@ export const SocketEvent = {
   CREATED: "game-created",
   START: "game-start",
   JOIN: "game-join",
+  END: "game-end",
 };
