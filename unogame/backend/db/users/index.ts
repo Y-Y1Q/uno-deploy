@@ -22,4 +22,8 @@ const getUser = async (username) => {
   return await db.one("SELECT * FROM users WHERE username=$1", [username]);
 };
 
-export { addUser, foundUser, getAllUsers, getUser };
+const getUserById = async (userId) => {
+  return await db.one("SELECT * FROM users WHERE id=$1", [userId]);
+};
+
+export { addUser, foundUser, getAllUsers, getUser, getUserById };

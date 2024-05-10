@@ -42,6 +42,19 @@ const getUsersInGame = async (gameid) => {
   return ret.map((row) => row.user_id);
 };
 
+const getUsersnameInGame = async (gameid) => {
+  const ret = await db.any(
+    `SELECT u.username
+    FROM game_users gu
+    RIGHT JOIN users u ON gu.user_id = u.id
+    WHERE gu.game_id = $1;
+    `,
+    [gameid]
+  );
+
+  return ret.map((row) => row.user_id);
+};
+
 const getGamesJoined = async (userId) => {
   const ret = await db.manyOrNone(
     `SELECT games.id, games.room_name, games.max_players, COUNT(game_users.user_id) AS player_count
@@ -63,4 +76,5 @@ export {
   setCreatorInGame,
   deleteGame,
   isCreatorInGame,
+  getUsersnameInGame,
 };
