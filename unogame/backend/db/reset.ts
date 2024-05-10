@@ -9,10 +9,10 @@ async function resetSchema() {
     `);
 }
 
-resetSchema()
+await resetSchema()
   .then(() => {
-    console.log("DB Schema reset successfully.");
+    console.log("Resetting DB Schema...");
   })
   .catch((err) => {
-    console.error("Error resetting DB schema:", err);
+    console.error("Error resetting DB schema: ", err);
   });

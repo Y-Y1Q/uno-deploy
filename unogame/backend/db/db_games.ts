@@ -9,6 +9,7 @@ import {
   deleteGame,
   getGamesJoined,
   getUsersInGame,
+  getUsersnameInGame,
   isCreatorInGame,
   joinGame,
   quitGame,
@@ -60,4 +61,5 @@ export {
   setUserHasDrewOnce,
   setLastUserAndCard,
   getWinnerUser,
+  getUsersnameInGame,
 };
