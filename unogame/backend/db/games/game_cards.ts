@@ -36,4 +36,24 @@ const deleteOneCard = async (gameId, userId, cardId) => {
   );
 };
 
-export { drawCards, deleteAllCards, getUserCards, deleteOneCard };
+const getWinnerUser = async (gameId) => {
+  const ret = await db.manyOrNone(
+    "SELECT user_id from game_users WHERE user_id NOT IN " +
+      "(SELECT user_id FROM game_cards WHERE game_id=1 GROUP BY user_id)",
+    [gameId]
+  );
+
+  if (ret.length == 0) {
+    return null;
+  } else {
+    return ret[0].user_id;
+  }
+};
+
+export {
+  drawCards,
+  deleteAllCards,
+  getUserCards,
+  deleteOneCard,
+  getWinnerUser,
+};

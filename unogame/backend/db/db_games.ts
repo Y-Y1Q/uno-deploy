@@ -3,6 +3,7 @@ import {
   deleteOneCard,
   drawCards,
   getUserCards,
+  getWinnerUser,
 } from "./games/game_cards";
 import {
   deleteGame,
@@ -54,4 +55,5 @@ export {
   resetUserHasDrewOnce,
   setUserHasDrewOnce,
   setLastUserAndCard,
+  getWinnerUser,
 };

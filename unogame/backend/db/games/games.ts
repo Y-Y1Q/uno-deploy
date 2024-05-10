@@ -103,6 +103,21 @@ const setLastUserAndCard = async (gameId, userId, cardId) => {
   );
 };
 
+const setWinnerUser = async (gameId, userId) => {
+  const ret = await db.manyOrNone(
+    "UPDATE user_id FROM game_cards WHERE game_id=$1 " +
+      "GROUP BY user_id HAVING COUNT(*)=0",
+    [gameId, userId]
+  );
+
+  console.log(ret);
+
+  if (ret.length == 0) {
+    return null;
+  } else {
+    return ret[0].user_id;
+  }
+};
 export {
   getGames,
   getGamesByName,

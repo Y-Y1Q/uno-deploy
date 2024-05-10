@@ -148,6 +148,7 @@ async function getAndCastGameStatus(gameId, userId) {
   }
 
   return {
+    winner_user_id: await GamesDB.getWinnerUser(gameId),
     max_players: status.max_players,
     is_clockwise: status.is_clockwise,
     penalty: status.penalty,
@@ -176,8 +177,15 @@ const playGame = async (req, res) => {
   const { id: userId } = req.session.user;
 
   try {
-    // validate the user for current turn
     const status = await getAndCastGameStatus(gameId, userId);
+    if (status.winner_user_id != null) {
+      return res.status(HttpCode.Forbidden).json({
+        error:
+          "Someone wins already with userId=" + String(status.winner_user_id),
+      });
+    }
+
+    // validate the user for current turn
     if (status.playable_cards_index == null) {
       return res.status(HttpCode.BadRequest).json({
         error: "it is not the turn for userId=" + userId,
