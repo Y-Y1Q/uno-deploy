@@ -25,12 +25,12 @@
             id="toggleContent"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded mb-4"
           >
-            Games
+            Rules
           </button>
 
           <!-- Game list Container -->
           <div class="overflow-y-auto">
-            <div id="gamesContainer" class="hidden h-[700px] overflow-y-auto">
+            <div id="gamesContainer" class="h-[700px] overflow-y-auto">
               <h2 class="text-lg font-bold mb-4 text-red-500">
                 Games Container
               </h2>
@@ -50,7 +50,7 @@
           </div>
 
           <!-- Rules Container -->
-          <div id="rulesContent" class="h-[700px] overflow-y-auto">
+          <div id="rulesContent" class="hidden h-[700px] overflow-y-auto">
             <h2 class="text-lg font-bold mb-4 text-red-500">Rules Container</h2>
             <%- include("./layout/rules") %>
           </div>
@@ -65,6 +65,8 @@
             <form
               id="roomForm"
               class="flex flex-col justify-center items-center mt-4"
+              action="/game/create"
+              method="post"
             >
               <label
                 for="maxPlayers"
@@ -129,23 +131,11 @@
 
           let button = document.getElementById("toggleContent");
 
-          if (button.textContent === "Rules") {
-            button.textContent = "Games";
-          } else {
+          if (button.textContent === "Games") {
             button.textContent = "Rules";
+          } else {
+            button.textContent = "Games";
           }
-        });
-
-      document
-        .getElementById("roomForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          let roomName = document.getElementById("roomName").value;
-          let maxPlayers = document.getElementById("maxPlayers").value;
-          document.getElementById("roomNameDisplay").textContent = roomName;
-          document.getElementById("maxPlayersDisplay").textContent =
-            "Max Players: " + maxPlayers;
-          document.getElementById("roomCard").classList.remove("hidden");
         });
     </script>
   </body>

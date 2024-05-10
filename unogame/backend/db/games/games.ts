@@ -6,6 +6,17 @@ const getGames = async () => {
   return ret;
 };
 
+export async function getGameById(gameId) {
+  return await db.one("SELECT * FROM games WHERE id=$1", [gameId]);
+}
+
+export async function isRoomNameTaken(roomName: string): Promise<boolean> {
+  return await db
+    .one("SELECT room_name FROM games WHERE room_name=$1", [roomName])
+    .then(() => true)
+    .catch(() => false);
+}
+
 const getGamesByName = async (roomName) => {
   const ret = await db.any(
     "SELECT * FROM games WHERE room_name LIKE '%" + roomName + "%'"
@@ -118,6 +129,7 @@ const setWinnerUser = async (gameId, userId) => {
     return ret[0].user_id;
   }
 };
+
 export {
   getGames,
   getGamesByName,

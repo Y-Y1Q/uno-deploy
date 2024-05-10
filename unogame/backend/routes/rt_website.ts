@@ -59,10 +59,11 @@ router.get("/game/:id/wait", isAuthenticated, async (req, res) => {
     */
 
   const { id: gameId } = req.params;
+  const game = await GamesDB.getGameById(gameId);
   const user = Session.getCurrentUser(req);
   const playersList = await UserDB.getAllUsers();
 
-  res.render("waitroom", { gameId, user, playersList });
+  res.render("waitroom", { gameId, user, playersList, game });
 });
 
 export default router;

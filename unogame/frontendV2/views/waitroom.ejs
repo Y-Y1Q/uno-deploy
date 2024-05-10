@@ -27,7 +27,11 @@
             <div class="mb-4">
               <h3 class="text-xl font-bold">Welcome <%= user.username %></h3>
             </div>
-            <div class="mb-4">In room: <%= gameId %></div>
+            <div class="mb-4">
+              In game room: <%= game.room_name %> <br />
+              Game ID:
+              <%= gameId %>
+            </div>
             <div class="mb-4">
               <p>1/2 players joined</p>
               <p>You are in the room</p>
