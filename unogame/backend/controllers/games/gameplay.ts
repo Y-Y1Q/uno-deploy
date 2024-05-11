@@ -5,11 +5,11 @@ function castColor(colorStr) {
   switch (colorStr.toLowerCase()) {
     case "red":
       return 0;
-    case "yellow":
+    case "green":
       return 1;
     case "blue":
       return 2;
-    case "green":
+    case "yellow":
       return 3;
     default:
       return null;
@@ -23,13 +23,13 @@ function castCard(cardId) {
       color = "red";
       break;
     case 1:
-      color = "yellow";
+      color = "green";
       break;
     case 2:
       color = "blue";
       break;
     case 3:
-      color = "green";
+      color = "yellow";
       break;
   }
 
@@ -155,6 +155,11 @@ async function getAndCastGameStatus(gameId, userId) {
     });
   }
 
+  const current_user_cards_name = await GamesDB.getUserCardsInfo(
+    gameId,
+    userId
+  );
+
   return {
     everyone_counts: everyone_counts,
     max_players: status.max_players,
@@ -166,6 +171,7 @@ async function getAndCastGameStatus(gameId, userId) {
     user_this_turn: user_this_turn,
     playable_cards_index: playable_cards_index,
     current_user_cards: current_user_cards,
+    current_user_cards_name: current_user_cards_name,
   };
 }
 

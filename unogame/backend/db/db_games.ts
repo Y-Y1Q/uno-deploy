@@ -4,6 +4,7 @@ import {
   drawCards,
   getAllUserCardCounts,
   getUserCards,
+  getUserCardsInfo,
 } from "./games/game_cards";
 import {
   countUsersInGame,
@@ -64,4 +65,5 @@ export {
   getAllUserCardCounts,
   getUsersnameInGame,
   countUsersInGame,
+  getUserCardsInfo,
 };
