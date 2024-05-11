@@ -11,16 +11,24 @@ export function waitRoomHandler(socket: Socket) {
   const playersInGame = document.getElementById(
     "players-in-game"
   ) as HTMLDivElement;
+  const selectElement = document.getElementById(
+    "invPlayer"
+  ) as HTMLSelectElement;
 
   socket.on(SocketEvent.WAIT(gameId), function (data) {
     playersCount.innerHTML = `${data.playersCount} / ${data.maxPlayers} players joined`;
 
+    if (data.playersCount === data.maxPlayers) {
+      selectElement.disabled = true;
+    } else {
+      selectElement.disabled = false;
+    }
+
+    // Display current players in waitroom
     let content = "";
     data.playersList.forEach((player) => {
       content += `<p>${player.username}</p>`;
     });
-
-    console.log(content);
 
     playersInGame.innerHTML = content;
   });
