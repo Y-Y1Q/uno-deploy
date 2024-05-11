@@ -16,7 +16,7 @@ function castColor(colorStr) {
   }
 }
 
-function castCard(cardId) {
+async function castCard(cardId) {
   let color;
   switch (Math.floor((cardId - 1) / 27)) {
     case 0:
@@ -56,13 +56,15 @@ function castCard(cardId) {
     }
   }
 
-  return { id: cardId, color: color, type: type };
+  const { name: path } = await GamesDB.getCardImgPath(cardId);
+
+  return { id: cardId, color: color, type: type, path };
 }
 
 async function getAndCastGameStatus(gameId, userId) {
   const status = await GamesDB.getGameStatus(gameId);
 
-  let last_card_played = castCard(status.last_card_played);
+  let last_card_played = await castCard(status.last_card_played);
   const user_ids = await GamesDB.getUsersInGame(gameId);
 
   // get user for this turn
@@ -84,8 +86,10 @@ async function getAndCastGameStatus(gameId, userId) {
   }
 
   // get cards for current user and check playable cards
-  const current_user_cards = (await GamesDB.getUserCards(gameId, userId)).map(
-    (card) => castCard(card)
+  const current_user_cards = await Promise.all(
+    (await GamesDB.getUserCards(gameId, userId)).map(
+      async (card) => await castCard(card)
+    )
   );
 
   let playable_cards_index = null;
@@ -155,14 +159,7 @@ async function getAndCastGameStatus(gameId, userId) {
     });
   }
 
-  const current_user_cards_name = await GamesDB.getUserCardsInfo(
-    gameId,
-    userId
-  );
-
   const opponent_info = await GamesDB.getOpponentInfo(gameId, userId);
-
-  const dicard_pile_info = await GamesDB.getDiscardPileInfo(gameId);
 
   return {
     everyone_counts,
@@ -175,9 +172,7 @@ async function getAndCastGameStatus(gameId, userId) {
     user_this_turn,
     playable_cards_index,
     current_user_cards,
-    current_user_cards_name,
     opponent_info,
-    dicard_pile_info,
   };
 }
 
@@ -265,7 +260,9 @@ const playGame = async (req, res) => {
         });
       }
 
-      const newCard = castCard(color * 27 + (card.type == "wild" ? 26 : 27));
+      const newCard = await castCard(
+        color * 27 + (card.type == "wild" ? 26 : 27)
+      );
       card.id = newCard.id;
       card.color = newCard.color;
       if (card.type != newCard.type) {
