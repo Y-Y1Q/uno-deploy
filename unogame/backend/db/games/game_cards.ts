@@ -61,6 +61,31 @@ const getUserCardsInfo = async (gameId, userId) => {
   return ret;
 };
 
+const getOpponentInfo = async (gameId, userId) => {
+  const ret = await db.any(
+    `SELECT gc.user_id, u.username, COUNT(gc.card_id) AS card_count 
+    FROM game_cards gc
+    LEFT JOIN users u on gc.user_id = u.id
+    WHERE gc.game_id=$1 AND gc.user_id!=$2
+    GROUP BY gc.user_id, u.username;`,
+    [gameId, userId]
+  );
+
+  return ret;
+};
+
+const getDiscardPileInfo = async (gameId) => {
+  const ret = await db.any(
+    `SELECT g.last_card_played, c.name 
+    FROM games g
+    LEFT JOIN cards c on c.id = g.last_card_played
+    WHERE g.id=$1`,
+    [gameId]
+  );
+
+  return ret;
+};
+
 export {
   drawCards,
   deleteAllCards,
@@ -68,4 +93,6 @@ export {
   deleteOneCard,
   getAllUserCardCounts,
   getUserCardsInfo,
+  getOpponentInfo,
+  getDiscardPileInfo,
 };

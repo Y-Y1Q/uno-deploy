@@ -22,7 +22,7 @@ exports.up = (pgm) => {
     id: "id",
     color: { type: "int" },
     type: { type: "int" },
-    name: { type: "varchar(20)" }
+    name: { type: "varchar(50)" }
   });
 
   const cardValues = [];
@@ -33,24 +33,24 @@ exports.up = (pgm) => {
     let name = "";
 
     // Number 0
-    cardValues.push({ color, type: 0, name: `${Color[color]}_0` });
+    cardValues.push({ color, type: 0, name: `cards/${Color[color]}_0.png` });
 
     // Number 1 - 9, Skip, Reverse, Draw 2 have two sets in each color
     for (let type = 1; type <= 12; type++) {
       if (type < 10) {
         // 1 - 9
-        cardValues.push({ color, type, name: `${Color[color]}_${type}` });
-        cardValues.push({ color, type, name: `${Color[color]}_${type}` });
+        cardValues.push({ color, type, name: `cards/${Color[color]}_${type}.png` });
+        cardValues.push({ color, type, name: `cards/${Color[color]}_${type}.png` });
       } else {
         // Skip, Reverse, Draw 2
-        cardValues.push({ color, type, name: `${Color[color]}_${Type[type]}` });
-        cardValues.push({ color, type, name: `${Color[color]}_${Type[type]}` });
+        cardValues.push({ color, type, name: `cards/${Color[color]}_${Type[type]}.png` });
+        cardValues.push({ color, type, name: `cards/${Color[color]}_${Type[type]}.png` });
       }
     }
 
     // Check card type directly for wild card, ignore card color
-    cardValues.push({ color, type: 13, name: `${Type[13]}` }); // Wild
-    cardValues.push({ color, type: 14, name: `${Type[14]}` }); // Wild Draw 4
+    cardValues.push({ color, type: 13, name: `cards/${Type[13]}.png` }); // Wild
+    cardValues.push({ color, type: 14, name: `cards/${Type[14]}.png` }); // Wild Draw 4
   }
 
   pgm.sql(`
