@@ -17,23 +17,26 @@ export function chatMessageHandler(socket: Socket) {
     socket.on(SocketEvent.CHAT(gameId), function (data) {
       const newMessage = document.createElement("div");
       newMessage.classList.add("flex", "justify-start", "mb-2");
-
       const messageBubble = document.createElement("div");
 
-      if (data.from !== username) {
+      if (data.message === "start" && data.from === "ADMIN") {
+        setTimeout(() => {
+          window.location.href = `/game/${data.gameId}`;
+        }, 1000);
+      } else if (data.from === "ADMIN") {
         messageBubble.classList.add(
-          "bg-blue-200",
-          "text-blue-700",
+          "bg-orange-200",
+          "text-orange-700",
           "rounded",
           "py-2",
           "px-4"
         );
         newMessage.classList.add("justify-end");
         messageBubble.innerHTML = `<p>${data.message}</p><p class="text-right font-bold">${data.from}</p>`;
-      } else if (data.from === "ADMIN") {
+      } else if (data.from !== username) {
         messageBubble.classList.add(
-          "bg-orange-200",
-          "text-orange-700",
+          "bg-blue-200",
+          "text-blue-700",
           "rounded",
           "py-2",
           "px-4"

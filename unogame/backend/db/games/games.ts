@@ -6,6 +6,17 @@ const getGames = async () => {
   return ret;
 };
 
+export async function getGameById(gameId) {
+  return await db.one("SELECT * FROM games WHERE id=$1", [gameId]);
+}
+
+export async function isRoomNameTaken(roomName: string): Promise<boolean> {
+  return await db
+    .one("SELECT room_name FROM games WHERE room_name=$1", [roomName])
+    .then(() => true)
+    .catch(() => false);
+}
+
 const getGamesByName = async (roomName) => {
   const ret = await db.any(
     "SELECT * FROM games WHERE room_name LIKE '%" + roomName + "%'"
@@ -24,7 +35,14 @@ const createGame = async (roomName, maxPlayer) => {
 };
 
 const startGame = async (gameId) => {
-  await db.none("UPDATE games SET started=TRUE WHERE id=$1", [gameId]);
+  // always start with a number card
+  const color = Math.floor(Math.random() * 4);
+  const number = Math.floor(Math.random() * 10);
+
+  await db.none(
+    "UPDATE games SET started=TRUE,last_user=NULL,last_card_played=$2 WHERE id=$1",
+    [gameId, color * 27 + number * 2 + 1]
+  );
 };
 
 const endGame = async (gameId) => {
@@ -50,29 +68,57 @@ const getGamesCanJoin = async (userId) => {
   return ret;
 };
 
+const getGameStarted = async (gameId) => {
+  const ret = await db.one("SELECT started FROM games WHERE id=$1", [gameId]);
+
+  return ret.started;
+};
+
 const getGameStatus = async (gameId) => {
   const ret = await db.one(
-    "SELECT max_players,started,is_clockwise,last_user,last_card,current_turn,current_penalty FROM games WHERE id=$1",
+    "SELECT max_players,is_clockwise,last_user,last_card_played,user_has_drew_once,penalty FROM games WHERE id=$1",
     [gameId]
   );
 
+  // decouple from database when returning results
   return {
-    player_count: ret.max_players,
-    started: ret.started,
+    max_players: ret.max_players,
     is_clockwise: ret.is_clockwise,
     last_user: ret.last_user,
-    last_card: ret.last_card,
-    turn: ret.current_turn,
-    penalty: ret.current_penalty,
+    last_card_played: ret.last_card_played,
+    user_has_drew_once: ret.user_has_drew_once,
+    penalty: ret.penalty,
   };
 };
 
-const setLastUserAndCard = async (gameId, userId, cardId) => {
-  await db.none("UPDATE games SET last_user=$2,last_card=$3 WHERE id=$1", [
+const setPenalty = async (gameId, penalty) => {
+  await db.none("UPDATE games SET penalty=$2 WHERE id=$1", [gameId, penalty]);
+};
+
+const toggleReverse = async (gameId) => {
+  await db.none("UPDATE games SET is_clockwise=NOT is_clockwise WHERE id=$1", [
     gameId,
-    userId,
-    cardId,
   ]);
+};
+
+const resetUserHasDrewOnce = async (gameId, userId) => {
+  await db.none(
+    "UPDATE games SET last_user=$2,user_has_drew_once=FALSE WHERE id=$1",
+    [gameId, userId]
+  );
+};
+
+const setUserHasDrewOnce = async (gameId) => {
+  await db.none("UPDATE games SET user_has_drew_once=TRUE WHERE id=$1", [
+    gameId,
+  ]);
+};
+
+const setLastUserAndCard = async (gameId, userId, cardId) => {
+  await db.none(
+    "UPDATE games SET last_user=$2,last_card_played=$3 WHERE id=$1",
+    [gameId, userId, cardId]
+  );
 };
 
 export {
@@ -82,6 +128,11 @@ export {
   startGame,
   endGame,
   getGamesCanJoin,
+  getGameStarted,
   getGameStatus,
+  setPenalty,
+  toggleReverse,
+  resetUserHasDrewOnce,
+  setUserHasDrewOnce,
   setLastUserAndCard,
 };

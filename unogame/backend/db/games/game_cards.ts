@@ -36,13 +36,23 @@ const deleteOneCard = async (gameId, userId, cardId) => {
   );
 };
 
-const userHasCard = async (gameId, userId, cardId) => {
-  const ret = await db.one(
-    "SELECT EXISTS(SELECT * FROM game_cards WHERE game_id=$1 AND user_id=$2 AND card_id=$3)",
-    [gameId, userId, cardId]
+const getAllUserCardCounts = async (gameId) => {
+  const ret = await db.many(
+    "SELECT user_id,COUNT(*) as count FROM game_cards WHERE game_id=1 GROUP BY user_id",
+    [gameId]
   );
 
-  return ret.exists;
+  const counts = {};
+  for (const row of ret) {
+    counts[row.user_id] = Number(row.count);
+  }
+  return counts;
 };
 
-export { drawCards, deleteAllCards, getUserCards, deleteOneCard, userHasCard };
+export {
+  drawCards,
+  deleteAllCards,
+  getUserCards,
+  deleteOneCard,
+  getAllUserCardCounts,
+};

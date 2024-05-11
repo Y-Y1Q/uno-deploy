@@ -1,5 +1,6 @@
 import express from "express";
 
+import * as GamesDB from "../db/db_games";
 import * as UserDB from "../db/db_users";
 import { isAuthenticated } from "../middleware/check_auth";
 import * as Session from "../middleware/session";
@@ -21,12 +22,14 @@ router.get("/signup", (req, res) => {
   res.render("signup", { errorMsg });
 });
 
-router.get("/lobby", isAuthenticated, (req, res) => {
+router.get("/lobby", isAuthenticated, async (req, res) => {
   const user = Session.getCurrentUser(req);
   const gameId = 0;
   const errorMsg = req.flash("error");
+  const availableGames = await GamesDB.getGamesCanJoin(user.id);
+  const currentGames = await GamesDB.getGamesJoined(user.id);
 
-  res.render("lobby", { user, gameId, errorMsg });
+  res.render("lobby", { user, gameId, errorMsg, availableGames, currentGames });
 });
 
 router.get("/game/:id", isAuthenticated, (req, res) => {
@@ -35,10 +38,7 @@ router.get("/game/:id", isAuthenticated, (req, res) => {
 
     1. update unogame.ejs
 
-    2. update lobby.ejs with game list that allow user to join
-       if game is not started, redirect user to /game/:id/wait
-
-    3. add isUserInGame & other checks later  
+    2. add isUserInGame & other checks later  
     */
   const user = Session.getCurrentUser(req);
   const { id: gameId } = req.params;
@@ -47,19 +47,25 @@ router.get("/game/:id", isAuthenticated, (req, res) => {
 });
 
 router.get("/game/:id/wait", isAuthenticated, async (req, res) => {
-  /*
-    TODO
-    
-    1. send invitation
-
-    2. update wait room message via socket
-    */
-
   const { id: gameId } = req.params;
+  const game = await GamesDB.getGameById(gameId);
   const user = Session.getCurrentUser(req);
-  const playersList = await UserDB.getAllUsers();
+  const playersList = await UserDB.getAllUsersExcept(user.id);
+  const usersInGame = await GamesDB.getUsersnameInGame(gameId);
+  const playersCount = usersInGame.length;
+  const { max_players: maxPlayers } = await GamesDB.getGameById(gameId);
+  const errorMsg = req.flash("error");
 
-  res.render("waitroom", { gameId, user, playersList });
+  res.render("waitroom", {
+    gameId,
+    user,
+    playersList,
+    game,
+    playersCount,
+    maxPlayers,
+    usersInGame,
+    errorMsg,
+  });
 });
 
 export default router;

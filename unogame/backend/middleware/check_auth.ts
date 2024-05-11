@@ -43,12 +43,13 @@ const isCreatorInGame = async (req, res, next) => {
   if (isCreator) {
     next();
   } else {
-    return res.status(HttpCode.BadRequest).json({
-      error:
-        "The current user with userId=" +
+    req.flash(
+      "error",
+      "The current user with userId=" +
         userId +
-        " is not the creator of this room!",
-    });
+        " is not the creator of this room!"
+    );
+    return res.redirect(`/game/${gameId}/wait`);
   }
 };
 
@@ -56,8 +57,7 @@ const isCreatorInGame = async (req, res, next) => {
 const isGameEnded = async (req, res, next) => {
   const { id: gameId } = req.params; // extract game ID from request parameters
 
-  const gameStatus = await GamesDB.getGameStatus(gameId);
-  if (gameStatus.started) {
+  if (await GamesDB.getGameStarted(gameId)) {
     return res.status(HttpCode.BadRequest).json({
       error: "The game with gameId=" + String(gameId) + " is already started",
     });
@@ -70,8 +70,7 @@ const isGameEnded = async (req, res, next) => {
 const isGameStarted = async (req, res, next) => {
   const { id: gameId } = req.params; // extract game ID from request parameters
 
-  const gameStatus = await GamesDB.getGameStatus(gameId);
-  if (gameStatus.started) {
+  if (await GamesDB.getGameStarted(gameId)) {
     next();
   } else {
     return res.status(HttpCode.BadRequest).json({

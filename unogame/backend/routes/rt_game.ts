@@ -1,6 +1,5 @@
 import express from "express";
 
-import * as Chat from "../controllers/ctrl_chat";
 import * as Games from "../controllers/ctrl_games";
 import {
   isCreatorInGame,
@@ -11,12 +10,10 @@ import {
 
 const router = express.Router();
 
-router.post("/:id/chat", isUserInGame, Chat.sendMessage);
-router.post("/:id/inv", isUserInGame, Chat.sendInvitation);
-
+router.get("/:id/join", Games.joinGame);
 router.get("/get-games/:name?", Games.getGames);
+
 router.post("/create", Games.createGame);
-router.post("/:id/join", isGameEnded, Games.joinGame);
 router.post("/:id/quit", isUserInGame, isGameEnded, Games.quitGame);
 router.post(
   "/:id/start",
@@ -32,7 +29,12 @@ router.post(
   isGameStarted,
   Games.endGame
 );
-router.post("/:id/get-status", isUserInGame, Games.getGameCurrentStatus);
+router.post(
+  "/:id/get-status",
+  isUserInGame,
+  isGameStarted,
+  Games.getGameCurrentStatus
+);
 router.post("/:id/play", isUserInGame, isGameStarted, Games.playGame);
 
 export default router;
