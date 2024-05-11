@@ -17,10 +17,13 @@ export function chatMessageHandler(socket: Socket) {
     socket.on(SocketEvent.CHAT(gameId), function (data) {
       const newMessage = document.createElement("div");
       newMessage.classList.add("flex", "justify-start", "mb-2");
-
       const messageBubble = document.createElement("div");
 
-      if (data.from === "ADMIN") {
+      if (data.message === "start" && data.from === "ADMIN") {
+        setTimeout(() => {
+          window.location.href = `/game/${data.gameId}`;
+        }, 1000);
+      } else if (data.from === "ADMIN") {
         messageBubble.classList.add(
           "bg-orange-200",
           "text-orange-700",
