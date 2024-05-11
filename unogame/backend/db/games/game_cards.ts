@@ -38,7 +38,7 @@ const deleteOneCard = async (gameId, userId, cardId) => {
 
 const getAllUserCardCounts = async (gameId) => {
   const ret = await db.many(
-    "SELECT user_id,COUNT(*) as count FROM game_cards WHERE game_id=1 GROUP BY user_id",
+    "SELECT user_id,COUNT(*) as count FROM game_cards WHERE game_id=$1 GROUP BY user_id",
     [gameId]
   );
 
@@ -49,10 +49,23 @@ const getAllUserCardCounts = async (gameId) => {
   return counts;
 };
 
+const getUserCardsInfo = async (gameId, userId) => {
+  const ret = await db.any(
+    `SELECT gc.card_id, c.name 
+    FROM cards c
+    RIGHT JOIN game_cards gc on gc.card_id = c.id
+    WHERE gc.game_id=$1 AND gc.user_id=$2`,
+    [gameId, userId]
+  );
+
+  return ret;
+};
+
 export {
   drawCards,
   deleteAllCards,
   getUserCards,
   deleteOneCard,
   getAllUserCardCounts,
+  getUserCardsInfo,
 };
