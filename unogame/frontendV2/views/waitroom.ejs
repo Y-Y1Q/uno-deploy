@@ -53,12 +53,10 @@
 
 
                   <!-- Invite player here --> 
-                  <form id="inviteForm" class="mb-4" action="/send-inv/<%= gameId %>" method="post">
-                    <select id="invUser" name="username" class="w-full p-2 border border-gray-300 rounded" <% if
-                      (playersCount==maxPlayers) { %>
+                    <select id="invPlayer" class="w-full p-2 border border-gray-300 rounded"
+                    <% if(playersCount == maxPlayers) { %>
                       disabled
-                      <% } %>
-                        >
+                    <% } %> >
                         <option value="" disabled selected>Invite Players</option>
                         <% playersList.forEach(player=> { %>
                           <option value="<%= player.username %>">
@@ -67,13 +65,6 @@
                           <% }); %>
                     </select>
 
-                    <% if (playersCount !=maxPlayers) { %>
-                      <button type="submit" class="font-bold px-4 py-2 rounded mt-4 w-full">
-                        Test Invite - change to fetch after M3
-                      </button>
-                      <% } %>
-
-                  </form>
                   <div>
                     <form id="startGameForm" class="mb-4" action="/game/<%= gameId %>/start" method="post">
 
