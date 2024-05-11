@@ -49,14 +49,8 @@ const getAllUserCardCounts = async (gameId) => {
   return counts;
 };
 
-const getUserCardsInfo = async (gameId, userId) => {
-  const ret = await db.any(
-    `SELECT gc.card_id, c.name 
-    FROM cards c
-    RIGHT JOIN game_cards gc on gc.card_id = c.id
-    WHERE gc.game_id=$1 AND gc.user_id=$2`,
-    [gameId, userId]
-  );
+const getCardImgPath = async (cardId) => {
+  const ret = await db.one("SELECT name FROM cards WHERE id=$1", [cardId]);
 
   return ret;
 };
@@ -92,7 +86,7 @@ export {
   getUserCards,
   deleteOneCard,
   getAllUserCardCounts,
-  getUserCardsInfo,
   getOpponentInfo,
   getDiscardPileInfo,
+  getCardImgPath,
 };

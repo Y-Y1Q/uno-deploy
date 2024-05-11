@@ -3,10 +3,10 @@ import {
   deleteOneCard,
   drawCards,
   getAllUserCardCounts,
+  getCardImgPath,
   getDiscardPileInfo,
   getOpponentInfo,
   getUserCards,
-  getUserCardsInfo,
 } from "./games/game_cards";
 import {
   countUsersInGame,
@@ -67,7 +67,7 @@ export {
   getAllUserCardCounts,
   getUsersnameInGame,
   countUsersInGame,
-  getUserCardsInfo,
   getOpponentInfo,
   getDiscardPileInfo,
+  getCardImgPath,
 };
