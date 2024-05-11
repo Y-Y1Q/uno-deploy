@@ -3,6 +3,8 @@ import {
   deleteOneCard,
   drawCards,
   getAllUserCardCounts,
+  getDiscardPileInfo,
+  getOpponentInfo,
   getUserCards,
   getUserCardsInfo,
 } from "./games/game_cards";
@@ -66,4 +68,6 @@ export {
   getUsersnameInGame,
   countUsersInGame,
   getUserCardsInfo,
+  getOpponentInfo,
+  getDiscardPileInfo,
 };

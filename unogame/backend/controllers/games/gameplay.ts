@@ -160,18 +160,24 @@ async function getAndCastGameStatus(gameId, userId) {
     userId
   );
 
+  const opponent_info = await GamesDB.getOpponentInfo(gameId, userId);
+
+  const dicard_pile_info = await GamesDB.getDiscardPileInfo(gameId);
+
   return {
-    everyone_counts: everyone_counts,
+    everyone_counts,
     max_players: status.max_players,
     is_clockwise: status.is_clockwise,
     penalty: status.penalty,
     last_user: status.last_user,
     last_card_played: last_card_played,
     user_has_drew_once: status.user_has_drew_once,
-    user_this_turn: user_this_turn,
-    playable_cards_index: playable_cards_index,
-    current_user_cards: current_user_cards,
-    current_user_cards_name: current_user_cards_name,
+    user_this_turn,
+    playable_cards_index,
+    current_user_cards,
+    current_user_cards_name,
+    opponent_info,
+    dicard_pile_info,
   };
 }
 
