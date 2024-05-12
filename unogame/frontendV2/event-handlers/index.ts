@@ -1,7 +1,10 @@
-import { chatFormHandler } from "./chat-form";
-import { invHandler } from "./inv-player";
+import { sendMessage } from "./chat-form";
+import { drawCard } from "./draw-card";
+import { invite } from "./inv-player";
+import { sayUno } from "./say-uno";
+import { unoDisplay } from "./uno-display";
 
-export default [chatFormHandler, invHandler];
+export default [sendMessage, invite, drawCard, sayUno, unoDisplay];
 
 //Event handler template
 /*
