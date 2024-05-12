@@ -98,16 +98,21 @@
         <%- include("./layout/chat-box") %>
       </div>
     </div>
-
     <script>
       const startGameButton = document.getElementById("startGameButton");
       const drawButton = document.getElementById("drawButton");
       const sayUnoButton = document.getElementById("sayUnoButton");
       const cardContainer = document.getElementById("cardContainer");
+      const discardPileContainer = document.getElementById(
+        "discardPileContainer"
+      );
+      const gameId = "<%= gameId %>";
+      let refreshInterval;
 
       function startGame() {
         showGameControls();
         updateGameState();
+        setupRefresh();
       }
 
       function showGameControls() {
@@ -115,9 +120,11 @@
         sayUnoButton.classList.remove("hidden");
       }
 
-      // current game state (e.g., current player, playable cards)
+      function setupRefresh() {
+        refreshInterval = setInterval(updateGameState, 5000); // Refresh every 5 seconds
+      }
+
       function updateGameState() {
-        const gameId = "<%= gameId %>";
         fetch(`/game/${gameId}/get-status`, { method: "POST" })
           .then((response) => response.json())
           .then((data) => {
@@ -128,31 +135,48 @@
           .catch((error) => console.error("Error fetching game state:", error));
       }
 
-      // cards in the user's hand
       function displayCards(cards) {
         cardContainer.innerHTML = "";
-        cards.forEach((card) => {
-          console.log("Card:", card);
+        cards.forEach((card, index) => {
           const cardElement = document.createElement("img");
           cardElement.src = card.path;
-          cardElement.alt = `${card.path}`;
+          cardElement.alt = `${card.type}`;
           cardElement.classList.add("w-16", "h-24", "m-2");
+          cardElement.onclick = () =>
+            playCard(index, card.type.includes("wild") ? "red" : null);
           cardContainer.appendChild(cardElement);
         });
       }
 
-      // display a random card as the discard pile
       function displayDiscard(card) {
         discardPileContainer.innerHTML = "";
-        console.log("discard pile current:", card);
         const cardElement = document.createElement("img");
         cardElement.src = card.path;
-        cardElement.alt = `${card.path}`;
+        cardElement.alt = `${card.type}`;
+        cardElement.classList.add("w-16", "h-24", "m-2");
         discardPileContainer.appendChild(cardElement);
       }
 
+      function playCard(cardIndex, wildColor) {
+        fetch(`/game/${gameId}/play`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            card_index: cardIndex,
+            wild_color: wildColor,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Play card response:", data);
+            updateGameState(); // Refresh the game state to reflect the changes
+          })
+          .catch((error) => console.error("Error playing card:", error));
+      }
+
       function drawCard() {
-        const gameId = "<%= gameId %>";
         fetch(`/game/${gameId}/play`, {
           method: "POST",
           headers: {
@@ -168,12 +192,15 @@
           .catch((error) => console.error("Error drawing card:", error));
       }
 
-      // Event listeners
-      startGameButton.addEventListener("click", startGame);
       drawButton.addEventListener("click", drawCard);
       sayUnoButton.addEventListener("click", () =>
         console.log("SAY UNO! button clicked")
       );
+      startGameButton.addEventListener("click", startGame);
+
+      window.addEventListener("unload", function () {
+        clearInterval(refreshInterval); // Clear the interval when the page is unloaded
+      });
     </script>
   </body>
 </html>
