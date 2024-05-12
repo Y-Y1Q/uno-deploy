@@ -36,7 +36,7 @@ function updateGameState() {
     .catch((error) => console.error("Error fetching game state:", error));
 }
 
-function displayOpponents(opponents) {
+export function displayOpponents(opponents) {
   const opponentsContainer = document.getElementById("opponentsContainer");
   opponentsContainer.innerHTML = "";
 
@@ -66,7 +66,7 @@ function displayOpponents(opponents) {
   });
 }
 
-function displayCards(cards) {
+export function displayCards(cards) {
   cardContainer.innerHTML = "";
   cards.forEach((card, index) => {
     const cardDiv = document.createElement("div");
@@ -128,7 +128,8 @@ function displayCards(cards) {
     cardContainer.appendChild(cardDiv);
   });
 }
-function displayDiscard(card) {
+
+export function displayDiscard(card) {
   discardPileContainer.innerHTML = "";
   const cardElement = document.createElement("img");
   cardElement.src = card.path;
@@ -158,7 +159,7 @@ function playCard(cardIndex, wildColor) {
         return;
       }
       console.log("Play card response:", data);
-      updateGameState();
+      //updateGameState();
     })
     .catch((error) => console.error("Error playing card:", error));
 }

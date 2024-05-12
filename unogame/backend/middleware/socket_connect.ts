@@ -4,7 +4,7 @@ const handleSocketConnection = (socket) => {
     // Join the socket to a room identified by the user's ID
     socket.join(socket.request.session.user.id);
     console.log(
-      `Username-${socket.request.session.user.username} UserId-${socket.request.session.user.id} connected`
+      `Username-${socket.request.session.user.username} id - ${socket.request.session.user.id} connected`
     );
 
     // Handle socket disconnection

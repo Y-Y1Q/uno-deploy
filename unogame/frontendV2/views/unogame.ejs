@@ -4,7 +4,6 @@
 
   <head>
     <%- include("./layout/header") %>
-    <script src="/dist/uno.js" type="module" defer></script>
     <title>UNO Game</title>
   </head>
 
@@ -16,7 +15,10 @@
     <div class="container mx-auto px-4 h-full">
       <div class="flex">
         <!-- UNO Game Interface -->
-        <div class="w-full h-3/4 border border-yellow-500 p-4">
+        <div
+          id="uno-interface"
+          class="w-full h-3/4 border border-yellow-500 p-4"
+        >
           <h2 id="game-state-info" class="text-lg font-bold mb-4 text-red-500">
             <%= game.room_name %><br />
             YOU:
