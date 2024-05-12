@@ -54,14 +54,14 @@
             </button> -->
 
             <button
-              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2 hidden"
+              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2"
               id="drawButton"
             >
               Draw
             </button>
 
             <button
-              class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-2 hidden"
+              class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-2"
               id="sayUnoButton"
             >
               SAY UNO!
@@ -155,7 +155,12 @@
           const cardElement = document.createElement("img");
           cardElement.src = card.path;
           cardElement.alt = `${card.type}`;
-          cardElement.classList.add("w-16", "h-24", "cursor-pointer");
+          cardElement.classList.add(
+            "w-16",
+            "h-24",
+            "cursor-pointer",
+            "hover:scale-125"
+          );
           cardDiv.appendChild(cardElement);
 
           if (card.type.includes("wild")) {
@@ -219,8 +224,14 @@
             wild_color: wildColor,
           }),
         })
-          .then((response) => response.json())
+          .then((response) => {
+            return response.json();
+          })
           .then((data) => {
+            if (data.error) {
+              alert(data.error);
+              return;
+            }
             console.log("Play card response:", data);
             updateGameState();
           })
