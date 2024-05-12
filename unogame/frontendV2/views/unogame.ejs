@@ -84,8 +84,7 @@
       let refreshInterval;
 
       function startGame() {
-        startGameButton.style.display = "none"; // Hide the start button when clicked
-        showGameControls();
+        startGameButton.style.display = "none";
         updateGameState();
         setupRefresh();
       }
@@ -150,22 +149,61 @@
       function displayCards(cards) {
         cardContainer.innerHTML = "";
         cards.forEach((card, index) => {
+          const cardDiv = document.createElement("div");
+          cardDiv.classList.add("relative", "inline-block", "m-2");
+
           const cardElement = document.createElement("img");
           cardElement.src = card.path;
           cardElement.alt = `${card.type}`;
-          cardElement.classList.add("w-16", "h-24", "m-2");
-          cardElement.onclick = () =>
-            playCard(index, card.type.includes("wild") ? "red" : null);
-          cardContainer.appendChild(cardElement);
+          cardElement.classList.add("w-16", "h-24", "cursor-pointer");
+          cardDiv.appendChild(cardElement);
+
+          if (card.type.includes("wild")) {
+            const selectElement = document.createElement("select");
+            ["Red", "Blue", "Yellow", "Green"].forEach((color) => {
+              const option = document.createElement("option");
+              option.value = color.toLowerCase();
+              option.text = color;
+              selectElement.appendChild(option);
+            });
+
+            selectElement.classList.add(
+              "absolute",
+              "top-0",
+              "left-0",
+              "w-full",
+              "h-full",
+              "opacity-0",
+              "cursor-pointer"
+            );
+            selectElement.style.display = "none";
+
+            cardElement.addEventListener("click", () => {
+              selectElement.style.display = "block";
+              selectElement.classList.remove("opacity-0");
+            });
+
+            selectElement.addEventListener("change", () => {
+              playCard(index, selectElement.value);
+              selectElement.style.display = "none";
+            });
+
+            cardDiv.appendChild(selectElement);
+          } else {
+            cardElement.addEventListener("click", () => {
+              playCard(index, null);
+            });
+          }
+
+          cardContainer.appendChild(cardDiv);
         });
       }
-
       function displayDiscard(card) {
         discardPileContainer.innerHTML = "";
         const cardElement = document.createElement("img");
         cardElement.src = card.path;
         cardElement.alt = `${card.type}`;
-        cardElement.classList.add("w-16", "h-24", "m-2");
+        cardElement.classList.add("w-16");
         discardPileContainer.style.border = `3px solid ${card.color}`;
         discardPileContainer.appendChild(cardElement);
       }
@@ -188,7 +226,6 @@
           })
           .catch((error) => console.error("Error playing card:", error));
       }
-
       function drawCard() {
         fetch(`/game/${gameId}/play`, {
           method: "POST",
