@@ -1,6 +1,7 @@
 import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
 import * as UserDB from "../../db/db_users";
+import { gameStateUpdate } from "../socket/game_state";
 
 function castColor(colorStr) {
   switch (colorStr.toLowerCase()) {
@@ -219,6 +220,9 @@ const playGame = async (req, res) => {
     if (Number.isNaN(cardIndex)) {
       if (status.user_has_drew_once) {
         await GamesDB.resetUserHasDrewOnce(gameId, userId);
+
+        await gameStateUpdate(gameId, userId, req);
+
         return res.status(HttpCode.OK).json({
           message:
             "user has drew once && card_index is NaN (not a number) => skip turn",
@@ -228,12 +232,18 @@ const playGame = async (req, res) => {
       if (status.penalty > 0) {
         await GamesDB.drawCards(gameId, userId, status.penalty);
         await GamesDB.setPenalty(gameId, 0);
+
+        await gameStateUpdate(gameId, userId, req);
+
         return res.status(HttpCode.OK).json({
           message: "Taking the penalty cards, now is still user's turn",
         });
       } else {
         await GamesDB.drawCards(gameId, userId, 1);
         await GamesDB.setUserHasDrewOnce(gameId);
+
+        await gameStateUpdate(gameId, userId, req);
+
         return res.status(HttpCode.OK).json({
           message: "card_index is NaN (not a number) => draw one card",
         });
@@ -294,6 +304,9 @@ const playGame = async (req, res) => {
     if (status.user_has_drew_once) {
       await GamesDB.resetUserHasDrewOnce(gameId, userId);
     }
+
+    await gameStateUpdate(gameId, userId, req);
+
     return res.status(HttpCode.OK).json({
       message: "You played a card",
     });
