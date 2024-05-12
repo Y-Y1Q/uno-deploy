@@ -1,5 +1,6 @@
 import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
+import * as UserDB from "../../db/db_users";
 
 function castColor(colorStr) {
   switch (colorStr.toLowerCase()) {
@@ -161,6 +162,9 @@ async function getAndCastGameStatus(gameId, userId) {
 
   const opponent_info = await GamesDB.getOpponentInfo(gameId, userId);
 
+  const { username: user_this_turn_name } =
+    await UserDB.getUserById(user_this_turn);
+
   return {
     everyone_counts,
     max_players: status.max_players,
@@ -170,6 +174,7 @@ async function getAndCastGameStatus(gameId, userId) {
     last_card_played: last_card_played,
     user_has_drew_once: status.user_has_drew_once,
     user_this_turn,
+    user_this_turn_name,
     playable_cards_index,
     current_user_cards,
     opponent_info,
@@ -297,4 +302,4 @@ const playGame = async (req, res) => {
   }
 };
 
-export { getGameCurrentStatus, playGame };
+export { getGameCurrentStatus, playGame, getAndCastGameStatus };
