@@ -154,23 +154,26 @@
         discardPileContainer.appendChild(cardElement);
       }
 
-      //   // function to dynamically load card images onto the interface
-      //   function loadCardImages() {
-      //     const cardContainer = document.getElementById("cardContainer");
-      //     cardImages.forEach((imageName, index) => {
-      //       const cardImage = document.createElement("img");
-      //       cardImage.src = imageName;
-      //       cardImage.alt = "Card " + (index + 1);
-      //       cardImage.classList.add("w-16", "h-24", "m-2");
-      //       cardContainer.appendChild(cardImage);
-      //     });
-      //   }
+      function drawCard() {
+        const gameId = "<%= gameId %>";
+        fetch(`/game/${gameId}/play`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ card_index: null, wild_color: null }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Card drawn:", data);
+            updateGameState(); // Update the game state to reflect the new card
+          })
+          .catch((error) => console.error("Error drawing card:", error));
+      }
 
-      // Event Listeners
+      // Event listeners
       startGameButton.addEventListener("click", startGame);
-      drawButton.addEventListener("click", () =>
-        console.log("Draw button clicked")
-      );
+      drawButton.addEventListener("click", drawCard); // Updated to use drawCard function
       sayUnoButton.addEventListener("click", () =>
         console.log("SAY UNO! button clicked")
       );
