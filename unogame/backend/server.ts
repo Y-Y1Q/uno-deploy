@@ -18,6 +18,19 @@ const app = express();
 const httpServer = createServer(app);
 app.use(requestTime);
 
+// To check response from server
+// comment out code below
+// app.use((req, res, next) => {
+//   let send = res.send;
+//   res.send = c => {
+//       console.log(`Code: ${res.statusCode}`);
+//       console.log("Body: ", c);
+//       res.send = send;
+//       return res.send(c);
+//   }
+//   next();
+// });
+
 const UNOGAME_PATH = path.dirname(path.dirname(import.meta.dirname));
 const STATIC_PATH = path.join(UNOGAME_PATH, "static");
 const VIEW_PATH = path.join(UNOGAME_PATH, "frontendV2", "views");
