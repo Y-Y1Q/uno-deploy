@@ -32,7 +32,7 @@ export async function winningMsg(gameId, userId, req) {
   ];
 
   const randomIndex = Math.floor(Math.random() * winnerMsg.length);
-  const randomMsg = winnerMsg[randomIndex];
+  const randomMsg = JSON.stringify(winnerMsg[randomIndex]);
 
   io.emit(SocketEvent.CHAT(gameId), {
     from: "ADMIN",
