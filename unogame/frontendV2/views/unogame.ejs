@@ -19,39 +19,13 @@
           <h2 class="text-lg font-bold mb-4 text-red-500">UNO GAME</h2>
 
           <div class="w-full flex justify-center">YOUR OPPONENT(S)</div>
-
           <div class="w-full">
             <!-- OPPONENT(S) -->
-            <div class="flex items-center justify-center">
-              <!-- Player 2's cards -->
-              <div class="flex items-center justify-center">
-                <!-- Card 1 -->
-                <img src="cards/Back.png" alt="Card 1" class="w-16 h-24 m-2" />
-                <div class="flex flex-col items-center ml-2">
-                  <span>Player 2</span>
-                  <span>x7</span>
-                </div>
-              </div>
-
-              <!-- Player 3's cards -->
-              <div class="flex items-center justify-center ml-4">
-                <!-- Card 2 -->
-                <img src="cards/Back.png" alt="Card 2" class="w-16 h-24 m-2" />
-                <div class="flex flex-col items-center ml-2">
-                  <span>Player 3</span>
-                  <span>x2</span>
-                </div>
-              </div>
-
-              <!-- Player 4's cards -->
-              <div class="flex items-center justify-center ml-4">
-                <!-- Card 3 -->
-                <img src="cards/Back.png" alt="Card 3" class="w-16 h-24 m-2" />
-                <div class="flex flex-col items-center ml-2">
-                  <span>Player 4</span>
-                  <span>x4</span>
-                </div>
-              </div>
+            <div
+              id="opponentsContainer"
+              class="flex items-center justify-center"
+            >
+              <!-- Opponents will be dynamically inserted here by JavaScript -->
             </div>
           </div>
 
@@ -110,6 +84,7 @@
       let refreshInterval;
 
       function startGame() {
+        startGameButton.style.display = "none"; // Hide the start button when clicked
         showGameControls();
         updateGameState();
         setupRefresh();
@@ -121,7 +96,7 @@
       }
 
       function setupRefresh() {
-        refreshInterval = setInterval(updateGameState, 5000); // Refresh every 5 seconds
+        refreshInterval = setInterval(updateGameState, 5000);
       }
 
       function updateGameState() {
@@ -131,8 +106,45 @@
             console.log("Current Game State:", data);
             displayCards(data.current_user_cards);
             displayDiscard(data.last_card_played);
+            displayOpponents(data.opponent_info);
           })
           .catch((error) => console.error("Error fetching game state:", error));
+      }
+
+      function displayOpponents(opponents) {
+        const opponentsContainer =
+          document.getElementById("opponentsContainer");
+        opponentsContainer.innerHTML = "";
+
+        opponents.forEach((opponent) => {
+          const opponentDiv = document.createElement("div");
+          opponentDiv.classList.add(
+            "flex",
+            "items-center",
+            "justify-center",
+            "m-4"
+          );
+
+          const avatarImg = document.createElement("img");
+          avatarImg.src = "cards/Back.png";
+          avatarImg.alt = "Card Back";
+          avatarImg.classList.add("w-16", "h-24");
+
+          const infoDiv = document.createElement("div");
+          infoDiv.classList.add("flex", "flex-col", "items-center", "ml-2");
+
+          const nameSpan = document.createElement("span");
+          nameSpan.textContent = opponent.username;
+          const countSpan = document.createElement("span");
+          countSpan.textContent = `x${opponent.card_count}`;
+
+          infoDiv.appendChild(nameSpan);
+          infoDiv.appendChild(countSpan);
+          opponentDiv.appendChild(avatarImg);
+          opponentDiv.appendChild(infoDiv);
+
+          opponentsContainer.appendChild(opponentDiv);
+        });
       }
 
       function displayCards(cards) {
@@ -154,6 +166,7 @@
         cardElement.src = card.path;
         cardElement.alt = `${card.type}`;
         cardElement.classList.add("w-16", "h-24", "m-2");
+        discardPileContainer.style.border = `3px solid ${card.color}`;
         discardPileContainer.appendChild(cardElement);
       }
 
@@ -171,7 +184,7 @@
           .then((response) => response.json())
           .then((data) => {
             console.log("Play card response:", data);
-            updateGameState(); // Refresh the game state to reflect the changes
+            updateGameState();
           })
           .catch((error) => console.error("Error playing card:", error));
       }
@@ -199,7 +212,7 @@
       startGameButton.addEventListener("click", startGame);
 
       window.addEventListener("unload", function () {
-        clearInterval(refreshInterval); // Clear the interval when the page is unloaded
+        clearInterval(refreshInterval);
       });
     </script>
   </body>
