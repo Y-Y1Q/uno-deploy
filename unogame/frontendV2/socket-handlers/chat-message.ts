@@ -18,6 +18,7 @@ export function chatMessageHandler(socket: Socket) {
       const newMessage = document.createElement("div");
       newMessage.classList.add("flex", "justify-start", "mb-2");
       const messageBubble = document.createElement("div");
+      const messageAvatar = document.createElement("div");
 
       if (data.message === "start" && data.from === "ADMIN") {
         setTimeout(() => {
@@ -33,6 +34,8 @@ export function chatMessageHandler(socket: Socket) {
         );
         newMessage.classList.add("justify-end");
         messageBubble.innerHTML = `<p>${data.message}</p><p class="text-right font-bold">${data.from}</p>`;
+        newMessage.appendChild(messageBubble);
+        newMessage.appendChild(messageAvatar);
       } else if (data.from !== username) {
         messageBubble.classList.add(
           "bg-blue-200",
@@ -41,8 +44,13 @@ export function chatMessageHandler(socket: Socket) {
           "py-2",
           "px-4"
         );
+        messageAvatar.classList.add("ml-2");
         newMessage.classList.add("justify-end");
+
         messageBubble.innerHTML = `<p>${data.message}</p><p class="text-right font-bold">${data.from}</p>`;
+
+        newMessage.appendChild(messageBubble);
+        newMessage.appendChild(messageAvatar);
       } else {
         messageBubble.classList.add(
           "bg-green-200",
@@ -51,10 +59,18 @@ export function chatMessageHandler(socket: Socket) {
           "py-2",
           "px-4"
         );
+        messageAvatar.classList.add("mr-2");
+
         messageBubble.innerHTML = `<p>${data.message}</p><p class="text-left font-bold">${data.from}</p>`;
+
+        newMessage.appendChild(messageAvatar);
+        newMessage.appendChild(messageBubble);
       }
 
-      newMessage.appendChild(messageBubble);
+      if (data.avatar) {
+        messageAvatar.innerHTML = data.avatar;
+      }
+
       chatbox.appendChild(newMessage);
       chatbox.scrollTop = chatbox.scrollHeight;
     });
