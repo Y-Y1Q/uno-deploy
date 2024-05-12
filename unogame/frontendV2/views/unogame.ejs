@@ -100,25 +100,22 @@
     </div>
 
     <script>
-      // Reference to important DOM elements
       const startGameButton = document.getElementById("startGameButton");
       const drawButton = document.getElementById("drawButton");
       const sayUnoButton = document.getElementById("sayUnoButton");
       const cardContainer = document.getElementById("cardContainer");
 
-      // Starts the game and fetches initial game state from the server
       function startGame() {
         showGameControls();
         updateGameState();
       }
 
-      // Show game control buttons
       function showGameControls() {
         drawButton.classList.remove("hidden");
         sayUnoButton.classList.remove("hidden");
       }
 
-      // Fetches and displays the current game state (e.g., current player, playable cards)
+      // current game state (e.g., current player, playable cards)
       function updateGameState() {
         const gameId = "<%= gameId %>";
         fetch(`/game/${gameId}/get-status`, { method: "POST" })
@@ -131,9 +128,9 @@
           .catch((error) => console.error("Error fetching game state:", error));
       }
 
-      // Displays cards in the user's hand
+      // cards in the user's hand
       function displayCards(cards) {
-        cardContainer.innerHTML = ""; // Clear previous cards
+        cardContainer.innerHTML = "";
         cards.forEach((card) => {
           console.log("Card:", card);
           const cardElement = document.createElement("img");
@@ -144,9 +141,9 @@
         });
       }
 
-      // Function to display a random card as the discard pile
+      // display a random card as the discard pile
       function displayDiscard(card) {
-        discardPileContainer.innerHTML = ""; // Clear previous cards
+        discardPileContainer.innerHTML = "";
         console.log("discard pile current:", card);
         const cardElement = document.createElement("img");
         cardElement.src = card.path;
@@ -166,203 +163,17 @@
           .then((response) => response.json())
           .then((data) => {
             console.log("Card drawn:", data);
-            updateGameState(); // Update the game state to reflect the new card
+            updateGameState();
           })
           .catch((error) => console.error("Error drawing card:", error));
       }
 
       // Event listeners
       startGameButton.addEventListener("click", startGame);
-      drawButton.addEventListener("click", drawCard); // Updated to use drawCard function
+      drawButton.addEventListener("click", drawCard);
       sayUnoButton.addEventListener("click", () =>
         console.log("SAY UNO! button clicked")
       );
-
-      //   // function to shuffle an array
-      //  /*function shuffleArray(array) {
-      //     console.log("[unogame.ejs] Shuffling the array...");
-      //     for (let i = array.length - 1; i > 0; i--) {
-      //       const j = Math.floor(Math.random() * (i + 1));
-      //       [array[i], array[j]] = [array[j], array[i]];
-      //     }
-      //     return array;
-      //   }*/
-
-      //   // function to dynamically load card images onto the interface
-      //   function loadCardImages() {
-      //     const cardContainer = document.getElementById("cardContainer");
-      //     cardImages.forEach((imageName, index) => {
-      //       const cardImage = document.createElement("img");
-      //       cardImage.src = imageName;
-      //       cardImage.alt = "Card " + (index + 1);
-      //       cardImage.classList.add("w-16", "h-24", "m-2");
-      //       cardContainer.appendChild(cardImage);
-      //     });
-      //   }
-
-      //   // function to initialize UNO game interface
-      //   function initializeUNOGame() {
-      //     // get references to HTML elements
-      //     const unoGameInterface = document.getElementById("unoGameInterface");
-
-      //     // load card images onto the interface
-      //     // loadCardImages();
-
-      //     // generate and add 7 random cards for PLAYER 1
-      //     addRandomCardsToPlayer(player1Container, 7);
-
-      //     // add event listener for the "Start Game" button
-      //     const startGameButton = document.getElementById("startGameButton");
-      //     startGameButton.addEventListener("click", startGame);
-
-      //     // function to add random cards to a player's container
-      //     function addRandomCardsToPlayer(container, count) {
-      //       container.style.display = "flex"; // Set display to flex
-      //       container.style.flexDirection = "row"; // Align cards horizontally
-
-      //       for (let i = 0; i < count; i++) {
-      //         const randomIndex = Math.floor(Math.random() * cardImages.length);
-      //         const cardImage = cardImages[randomIndex];
-      //         const cardElement = document.createElement("img");
-      //         cardElement.src = cardImage;
-      //         cardElement.alt = "Card " + (randomIndex + 1);
-      //         cardElement.classList.add("w-16", "h-24", "m-2");
-      //         container.appendChild(cardElement);
-      //       }
-      //     }
-      //   }
-
-      //   // Function to display a random card as the discard pile
-      //   function displayRandomDiscardPileCard() {
-      //     const discardPileContainer = document.getElementById(
-      //       "discardPileContainer"
-      //     );
-      //     const randomIndex = Math.floor(Math.random() * cardImages.length);
-      //     const randomCardImage = cardImages[randomIndex];
-
-      //     // Clear previous content and display the random card
-      //     discardPileContainer.innerHTML = `<img src="${randomCardImage}" alt="Discard Pile" class="w-16 h-24 mx-auto">`;
-      //   }
-
-      //   // Call the function to display a random card as the discard pile when the page loads
-      //   window.addEventListener("load", displayRandomDiscardPileCard);
-      //   // function to start the game
-      //   function startGame() {
-      //     console.log("[unogame.ejs] Game started!");
-      //     console.log("[unogame.ejs] Start Game button clicked!");
-
-      //     // hide the "Start Game" button after being clicked
-      //     const startGameButton = document.getElementById("startGameButton");
-      //     startGameButton.style.display = "none";
-
-      //     // draw 7 cards for the first player
-      //     for (let i = 0; i < 7; i++) {
-      //       const cardDrawn = drawCardFromPile(); // Draw a card from the draw pile
-      //       playerDeck.push(cardDrawn); // Add the card to the player's deck
-      //     }
-
-      //     // draw 7 cards for the second player
-      //     for (let i = 0; i < 7; i++) {
-      //       const cardDrawn = drawCardFromPile(); // Draw a card from the draw pile
-      //       playerDeck2.push(cardDrawn); // add the card to the second player's deck
-      //     }
-
-      //     // Abandon - Draw - Say UNO buttons
-      //     showGameControls();
-
-      //     // display the player's decks and the draw pile
-      //     updateGameInterface();
-      //   }
-
-      //   // call initialize function when the page loads
-      //   window.addEventListener("load", initializeUNOGame);
-
-      //   // Function to draw a card from the draw pile
-      //   function drawCardFromPile() {
-      //     if (drawCardPile.length > 0) {
-      //       console.log("[unogame.ejs] Drawing a card from the draw pile...");
-      //       return drawCardPile.pop(); // remove and return the top card from the draw pile
-      //     } else {
-      //       console.log("[unogame.ejs] No cards left in the draw pile!");
-      //       return null; // return null if there are no cards left in the draw pile
-      //     }
-      //   }
-
-      //   // function to handle abandoning the game
-      //   // function abandonGame() {
-      //   //   // prompt user for confirmation
-      //   //   const confirmation = confirm(
-      //   //     "Are you sure you want to abandon the game?"
-      //   //   );
-
-      //   //   // if user confirms, perform abandonment actions
-      //   //   if (confirmation) {
-      //   //     console.log(
-      //   //       "[unogame.ejs] Abandon button clicked. Abandoning the game..."
-      //   //     );
-      //   //     // add abandonment logic here
-      //   //   } else {
-      //   //     console.log("[unogame.ejs] Abandonment canceled.");
-      //   //   }
-      //   // }
-
-      //   // function to handle saying UNO
-      //   function sayUno() {
-      //     // check if the player has only one card left
-      //     if (playerDeck.length === 1) {
-      //       console.log(
-      //         "[unogame.ejs] SAY UNO! button clicked. Announcing UNO..."
-      //       );
-      //       // set a flag indicating that UNO has been said
-      //       isUnoButtonPressed = true;
-      //       // ? further logic here, such as informing the server
-      //     } else {
-      //       console.log(
-      //         "[unogame.ejs] You can only say UNO when you have one card left in your deck."
-      //       );
-      //       // ? display a message to the user indicating they cannot say UNO yet
-      //     }
-      //   }
-
-      //   // function to update game interface after drawing card
-      //   function updateGameInterface() {
-      //     // Display player's decks and the draw pile
-      //     const unoGameInterface = document.getElementById("unoGameInterface");
-      //     unoGameInterface.innerHTML = `
-      //     <div>
-      //       <p>Game Status: In Progress</p>
-      //       <p>Current Color: ${currentColor}</p>
-      //       <p>Current Number: ${currentNumber}</p>
-      //       <div class="flex justify-between">
-      //         <div>
-      //           <p>Player Deck:</p>
-      //           ${getPlayerDeckHTML(playerDeck)} <!-- Display player 1's deck -->
-      //         </div>
-      //         <div>
-      //           <p>Draw Pile:</p>
-      //           ${getDrawPileHTML()} <!-- Display the draw pile -->
-      //         </div>
-      //         <div>
-      //           <p>Player 2 Deck:</p>
-      //           ${getPlayerDeckHTML(playerDeck2)} <!-- Display player 2's deck -->
-      //         </div>
-      //       </div>
-      //     </div>
-      //    `;
-      //   }
-
-      //   // function to show game controls after starting the game
-      //   function showGameControls() {
-      //     // show the game controls
-      //     // const abandonButton = document.getElementById("abandonButton");
-      //     const drawButton = document.getElementById("drawButton");
-      //     const sayUnoButton = document.getElementById("sayUnoButton");
-      //     // abandonButton.classList.remove("hidden");
-      //     drawButton.classList.remove("hidden");
-      //     sayUnoButton.classList.remove("hidden");
-      //   }
-
-      //   // console.log("[unogame.ejs] Page loaded. Initializing UNO game...");
     </script>
   </body>
 </html>
