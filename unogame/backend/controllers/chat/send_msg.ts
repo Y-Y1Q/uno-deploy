@@ -1,4 +1,4 @@
-import { funEmoji } from "@dicebear/collection";
+import { avataaars } from "@dicebear/collection";
 import { createAvatar } from "@dicebear/core";
 
 import { SocketEvent } from "../../../constants/socket_event";
@@ -16,18 +16,11 @@ const sendMessage = (req, res) => {
   console.log({ username, message, roomId });
 
   // Create funEmoji style avatar based on username
-  const avatar = createAvatar(funEmoji, {
+  const avatar = createAvatar(avataaars, {
     seed: `${username}`,
     radius: 30,
-    size: 32,
-    backgroundColor: [
-      "b6e3f4",
-      "c0aede",
-      "d1d4f9",
-      "ffdfbf",
-      "71cf62",
-      "fcbc34",
-    ],
+    size: 48,
+    skinColor: ["614335", "edb98a"],
   });
 
   const svg = avatar.toString();
