@@ -23,16 +23,16 @@ export async function waitroomStartMsg(gameId, req) {
 export async function winningMsg(gameId, userId, req) {
   const io = req.app.get("io");
 
-  const username = await UsersDB.getUserById(userId);
+  const { username: name } = await UsersDB.getUserById(userId);
 
   const winnerMsg = [
-    `<b>${username}</b>: If winning was an art, consider me da Vinci.`,
-    `<b>${username}</b>: Time to update my resume with this win.`,
-    `GG! <b>${username}</b>`,
+    `<h1><b>${name}</b>: If winning was an art, consider me da Vinci.</h1>`,
+    `<h1><b>${name}</b>: Time to update my resume with this win.</h1>`,
+    `<h1>GG! <b>${name}</b></h1>`,
   ];
 
   const randomIndex = Math.floor(Math.random() * winnerMsg.length);
-  const randomMsg = JSON.stringify(winnerMsg[randomIndex]);
+  const randomMsg = winnerMsg[randomIndex];
 
   io.emit(SocketEvent.CHAT(gameId), {
     from: "ADMIN",
