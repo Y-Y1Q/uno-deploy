@@ -1,5 +1,3 @@
-// display uno
-//const startGameButton = document.getElementById("startGameButton");
 const cardContainer = document.getElementById(
   "cardContainer"
 ) as HTMLDivElement;
@@ -8,21 +6,18 @@ const discardPileContainer = document.getElementById(
   "discardPileContainer"
 ) as HTMLDivElement;
 
+const opponentsContainer = document.getElementById(
+  "opponentsContainer"
+) as HTMLDivElement;
+
 const gameId = (document.getElementById("game-id") as HTMLInputElement | null)
   ?.value;
 
 export function unoDisplay() {
-  if (cardContainer && discardPileContainer) {
+  if (cardContainer) {
     updateGameState();
   }
 }
-
-//startGameButton.style.display = "none";
-
-// function showGameControls() {
-//   drawButton.classList.remove("hidden");
-//   sayUnoButton.classList.remove("hidden");
-// }
 
 function updateGameState() {
   fetch(`/game/${gameId}/get-status`, { method: "POST" })
@@ -36,8 +31,7 @@ function updateGameState() {
     .catch((error) => console.error("Error fetching game state:", error));
 }
 
-export function displayOpponents(opponents) {
-  const opponentsContainer = document.getElementById("opponentsContainer");
+function displayOpponents(opponents) {
   opponentsContainer.innerHTML = "";
 
   opponents.forEach((opponent) => {
@@ -66,7 +60,7 @@ export function displayOpponents(opponents) {
   });
 }
 
-export function displayCards(cards) {
+function displayCards(cards) {
   cardContainer.innerHTML = "";
   cards.forEach((card, index) => {
     const cardDiv = document.createElement("div");
@@ -129,7 +123,7 @@ export function displayCards(cards) {
   });
 }
 
-export function displayDiscard(card) {
+function displayDiscard(card) {
   discardPileContainer.innerHTML = "";
   const cardElement = document.createElement("img");
   cardElement.src = card.path;
@@ -159,7 +153,22 @@ function playCard(cardIndex, wildColor) {
         return;
       }
       console.log("Play card response:", data);
-      //updateGameState();
     })
     .catch((error) => console.error("Error playing card:", error));
 }
+
+/*
+
+Toggle to hide interface
+
+
+// display uno
+const startGameButton = document.getElementById("startGameButton");
+startGameButton.style.display = "none";
+
+function showGameControls() {
+  drawButton.classList.remove("hidden");
+  sayUnoButton.classList.remove("hidden");
+}
+
+*/

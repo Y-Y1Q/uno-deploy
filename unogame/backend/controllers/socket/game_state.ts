@@ -22,26 +22,25 @@ export async function gameStateUpdate(gameId, userId, req) {
     }
   }
 
-  // emit game state update event to userId's socket in gameId
+  /*
+   emit game state update event to gameId
+   client socket listen to this event then fetch data to update
+*/
   io.emit(SocketEvent.UPDATE(gameId), {
     currentRoom,
-    everyone_counts: status.everyone_counts,
-    max_players: status.max_players,
-    is_clockwise: status.is_clockwise,
-    penalty: status.penalty,
-    last_user: status.last_user,
-    last_card_played: status.last_card_played,
-    user_has_drew_once: status.user_has_drew_once,
-    user_this_turn: status.user_this_turn,
     user_this_turn_name: status.user_this_turn_name,
-    playable_cards_index: status.playable_cards_index,
-    current_user_cards: status.current_user_cards,
-    opponent_info: status.opponent_info,
-  });
 
-  console.log(
-    `=========Server EMIT TO Game ( ${gameId})========` +
-      "\n" +
-      JSON.stringify(status)
-  );
+    /* ======data below will be updated via FETCH ======d*/
+    // playable_cards_index: status.playable_cards_index,
+    // current_user_cards: status.current_user_cards,
+    // opponent_info: status.opponent_info,
+    // everyone_counts: status.everyone_counts,
+    // max_players: status.max_players,
+    // is_clockwise: status.is_clockwise,
+    // penalty: status.penalty,
+    // last_user: status.last_user,
+    // last_card_played: status.last_card_played,
+    // user_has_drew_once: status.user_has_drew_once,
+    // user_this_turn: status.user_this_turn,
+  });
 }
