@@ -67,17 +67,12 @@ io.engine.use(Session.config);
 app.set("io", io);
 io.on("connection", handleSocketConnection);
 
-// POST /signup /login /logout
-app.use(Routes.auth);
-
-// POST /chat/:id  /send-inv/:id
-app.use(Routes.chat);
-
 // GET website
 app.use(Routes.website);
 
-// API for lobby and game
-app.use("/lobby", isAuthenticated, Routes.lobby);
+// API
+app.use(Routes.auth);
+app.use(Routes.chat);
 app.use("/game", isAuthenticated, Routes.game);
 
 // test routes
