@@ -49,6 +49,7 @@ router.get("/game/:id", isAuthenticated, async (req, res) => {
 
 router.get("/game/:id/wait", isAuthenticated, async (req, res) => {
   const { id: gameId } = req.params;
+  const creator = await GamesDB.getCreatorByGameId(gameId);
   const game = await GamesDB.getGameById(gameId);
   const user = Session.getCurrentUser(req);
   const playersList = await UserDB.getAllUsersExcept(user.id);
@@ -66,6 +67,7 @@ router.get("/game/:id/wait", isAuthenticated, async (req, res) => {
     maxPlayers,
     usersInGame,
     errorMsg,
+    creator,
   });
 });
 

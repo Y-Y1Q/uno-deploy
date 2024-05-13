@@ -12,6 +12,9 @@ const playersInGame = document.getElementById(
   "players-in-game"
 ) as HTMLDivElement;
 const selectElement = document.getElementById("invPlayer") as HTMLSelectElement;
+// const userId = (
+//   document.getElementById("current-user-id") as HTMLInputElement | null
+// )?.value;
 
 export function waitRoomHandler(socket: Socket) {
   socket.on(SocketEvent.WAIT(gameId), function (data) {
@@ -20,7 +23,6 @@ export function waitRoomHandler(socket: Socket) {
     const isFull = data.playersCount === data.maxPlayers;
     selectElement.disabled = isFull;
     playGameButton.disabled = !isFull;
-    playGameButton.classList.toggle("disabled:opacity-25", !isFull);
 
     // Display current players in waitroom
     let content = "";
