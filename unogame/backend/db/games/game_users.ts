@@ -77,6 +77,18 @@ const countUsersInGame = async (gameId) => {
     [gameId]
   );
 };
+
+const getCreatorByGameId = async (gameId) => {
+  return await db.one(
+    `
+    SELECT u.id, u.username, gu.user_id 
+    FROM users u
+    INNER JOIN game_users gu ON gu.is_creator=true AND u.id = gu.user_id
+    WHERE gu.game_id = $1;
+    `,
+    [gameId]
+  );
+};
 export {
   joinGame,
   quitGame,
@@ -87,4 +99,5 @@ export {
   isCreatorInGame,
   getUsersnameInGame,
   countUsersInGame,
+  getCreatorByGameId,
 };
