@@ -1,5 +1,7 @@
 # Getting Started with Frontend
 
+NOTE: THIS README.md only works for that deprecated Frontend folder which might not work after being run
+
 ## Build and start frontend server
 
 `cd unogame/frontend`: change directory to frontend folder from repo root
