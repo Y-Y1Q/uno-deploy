@@ -18,6 +18,19 @@ const app = express();
 const httpServer = createServer(app);
 app.use(requestTime);
 
+// To check response from server
+// comment out code below
+// app.use((req, res, next) => {
+//   let send = res.send;
+//   res.send = c => {
+//       console.log(`Code: ${res.statusCode}`);
+//       console.log("Body: ", c);
+//       res.send = send;
+//       return res.send(c);
+//   }
+//   next();
+// });
+
 const UNOGAME_PATH = path.dirname(path.dirname(import.meta.dirname));
 const STATIC_PATH = path.join(UNOGAME_PATH, "static");
 const VIEW_PATH = path.join(UNOGAME_PATH, "frontendV2", "views");
@@ -54,17 +67,12 @@ io.engine.use(Session.config);
 app.set("io", io);
 io.on("connection", handleSocketConnection);
 
-// POST /signup /login /logout
-app.use(Routes.auth);
-
-// POST /chat/:id  /send-inv/:id
-app.use(Routes.chat);
-
 // GET website
 app.use(Routes.website);
 
-// API for lobby and game
-app.use("/lobby", isAuthenticated, Routes.lobby);
+// API
+app.use(Routes.auth);
+app.use(Routes.chat);
 app.use("/game", isAuthenticated, Routes.game);
 
 // test routes

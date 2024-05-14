@@ -27,10 +27,12 @@ export async function waitroomUpdate(gameId, userId, req) {
   const usersInGame = await GamesDB.getUsersnameInGame(gameId);
   const playersCount = usersInGame.length;
   const { max_players: maxPlayers } = await GamesDB.getGameById(gameId);
+  const creator = await GamesDB.getCreatorByGameId(gameId);
 
   io.emit(SocketEvent.WAIT(gameId), {
     timestamp: Date.now(),
     playersCount,
+    creator,
     maxPlayers,
     playersList: usersInGame,
   });

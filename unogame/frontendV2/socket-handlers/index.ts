@@ -1,7 +1,8 @@
 import { chatMessageHandler } from "./chat-message";
+import { gameStateUpdate } from "./game-state";
 import { waitRoomHandler } from "./waitroom";
 
-export default [chatMessageHandler, waitRoomHandler];
+export default [chatMessageHandler, waitRoomHandler, gameStateUpdate];
 
 //Socket handler template
 /*

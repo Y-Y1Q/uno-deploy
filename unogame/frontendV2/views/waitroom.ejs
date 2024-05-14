@@ -52,27 +52,39 @@
                   </div>
 
 
-                  <!-- Invite player here --> 
-                    <select id="invPlayer" class="w-full p-2 border border-gray-300 rounded"
-                    <% if(playersCount == maxPlayers) { %>
-                      disabled
+                  <!-- Invite player here -->
+                  <select id="invPlayer" class="w-full p-2 border border-gray-300 rounded" <%
+                    if(playersCount==maxPlayers) { %>
+                    hidden
                     <% } %> >
-                        <option value="" disabled selected>Invite Players</option>
-                        <% playersList.forEach(player=> { %>
-                          <option value="<%= player.username %>">
-                            <%= player.username %>
-                          </option>
-                          <% }); %>
-                    </select>
+                      <option value="" disabled selected>Invite Players</option>
+                      <% playersList.forEach(player=> { %>
+                        <option value="<%= player.username %>">
+                          <%= player.username %>
+                        </option>
+                        <% }); %>
+                  </select>
 
                   <div>
                     <form id="startGameForm" class="mb-4" action="/game/<%= gameId %>/start" method="post">
 
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 w-full" id="playGameButton">
-                      Start Game
-                    </button>
+                      <button id="playGameButton" type="submit" class="bg-blue-500 text-white px-4 py-2 rounded 
 
-                  </form>
+                        <% if(creator.id != user.id) { %>
+                          hidden
+                          <% } %>
+                        
+                        mt-4 w-full disabled:opacity-25" 
+                        
+                        <% if(playersCount !=maxPlayers) { %>
+                        disabled
+                        <% } %>
+                          >
+
+                          Start Game
+                      </button>
+
+                    </form>
 
                     <button class="bg-gray-500 text-white px-4 py-2 rounded mt-4 w-full" id="goBackButton"
                       onclick="redirectToLobby()">

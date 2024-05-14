@@ -1,6 +1,6 @@
 const selectElement = document.getElementById("invPlayer") as HTMLSelectElement;
 
-export function invHandler() {
+export function invite() {
   if (selectElement) {
     const gameId = (
       document.getElementById("game-id") as HTMLInputElement | null

@@ -11,6 +11,7 @@ import {
 import {
   countUsersInGame,
   deleteGame,
+  getCreatorByGameId,
   getGamesJoined,
   getUsersInGame,
   getUsersnameInGame,
@@ -70,4 +71,5 @@ export {
   getOpponentInfo,
   getDiscardPileInfo,
   getCardImgPath,
+  getCreatorByGameId,
 };

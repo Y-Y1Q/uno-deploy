@@ -1,5 +1,6 @@
 import express from "express";
 
+import { getAndCastGameStatus } from "../controllers/games/gameplay";
 import * as GamesDB from "../db/db_games";
 import * as UserDB from "../db/db_users";
 import { isAuthenticated } from "../middleware/check_auth";
@@ -32,22 +33,23 @@ router.get("/lobby", isAuthenticated, async (req, res) => {
   res.render("lobby", { user, gameId, errorMsg, availableGames, currentGames });
 });
 
-router.get("/game/:id", isAuthenticated, (req, res) => {
+router.get("/game/:id", isAuthenticated, async (req, res) => {
   /* 
     TODO
+    add isUserInGame & other checks later  
+  */
 
-    1. update unogame.ejs
-
-    2. add isUserInGame & other checks later  
-    */
   const user = Session.getCurrentUser(req);
   const { id: gameId } = req.params;
+  const game = await GamesDB.getGameById(gameId);
+  const gameState = await getAndCastGameStatus(gameId, user.id);
 
-  res.render("unogame", { gameId, user });
+  res.render("unogame", { gameId, game, user, gameState });
 });
 
 router.get("/game/:id/wait", isAuthenticated, async (req, res) => {
   const { id: gameId } = req.params;
+  const creator = await GamesDB.getCreatorByGameId(gameId);
   const game = await GamesDB.getGameById(gameId);
   const user = Session.getCurrentUser(req);
   const playersList = await UserDB.getAllUsersExcept(user.id);
@@ -65,6 +67,7 @@ router.get("/game/:id/wait", isAuthenticated, async (req, res) => {
     maxPlayers,
     usersInGame,
     errorMsg,
+    creator,
   });
 });
 

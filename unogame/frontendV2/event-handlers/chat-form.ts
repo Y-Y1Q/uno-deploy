@@ -1,6 +1,6 @@
 const messageForm = document.getElementById("chatForm") as HTMLFormElement;
 
-export function chatFormHandler() {
+export function sendMessage() {
   if (messageForm) {
     const messageInput = document.getElementById(
       "chatMessage"
