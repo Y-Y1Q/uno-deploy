@@ -21,7 +21,7 @@ export function waitRoomHandler(socket: Socket) {
     playersCount.innerHTML = `${data.playersCount} / ${data.maxPlayers} players joined`;
 
     const isFull = data.playersCount === data.maxPlayers;
-    selectElement.disabled = isFull;
+    selectElement.hidden = isFull;
     playGameButton.disabled = !isFull;
 
     // Display current players in waitroom

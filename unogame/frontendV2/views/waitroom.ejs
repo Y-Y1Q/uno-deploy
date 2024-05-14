@@ -55,7 +55,7 @@
                   <!-- Invite player here -->
                   <select id="invPlayer" class="w-full p-2 border border-gray-300 rounded" <%
                     if(playersCount==maxPlayers) { %>
-                    disabled
+                    hidden
                     <% } %> >
                       <option value="" disabled selected>Invite Players</option>
                       <% playersList.forEach(player=> { %>
