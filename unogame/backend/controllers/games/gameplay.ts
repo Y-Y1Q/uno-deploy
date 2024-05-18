@@ -216,7 +216,7 @@ const playGame = async (req, res) => {
     // validate the user for current turn
     if (status.playable_cards_index == null) {
       return res.status(HttpCode.BadRequest).json({
-        error: "it is not the turn for userId=" + userId,
+        error: "It is not your turn!",
       });
     }
 
@@ -254,6 +254,12 @@ const playGame = async (req, res) => {
           message: "card_index is NaN (not a number) => draw one card",
         });
       }
+    }
+
+    if (status.penalty > 0) {
+      return res.status(HttpCode.BadRequest).json({
+        error: "Invalid move! You have penalty and must DRAW!!!",
+      });
     }
 
     // validate the card

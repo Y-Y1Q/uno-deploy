@@ -29,6 +29,7 @@ export async function gameStateUpdate(gameId, userId, req) {
   io.emit(SocketEvent.UPDATE(gameId), {
     currentRoom,
     user_this_turn_name: status.user_this_turn_name,
+    penalty: status.penalty,
 
     /* ======data below will be updated via FETCH ======d*/
     // playable_cards_index: status.playable_cards_index,
@@ -37,7 +38,6 @@ export async function gameStateUpdate(gameId, userId, req) {
     // everyone_counts: status.everyone_counts,
     // max_players: status.max_players,
     // is_clockwise: status.is_clockwise,
-    // penalty: status.penalty,
     // last_user: status.last_user,
     // last_card_played: status.last_card_played,
     // user_has_drew_once: status.user_has_drew_once,

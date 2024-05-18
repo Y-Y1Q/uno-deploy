@@ -23,7 +23,8 @@ export function gameStateUpdate(socket: Socket) {
     gameStateInfo.innerHTML =
       `${data.currentRoom}<br>` +
       `YOU: ${username} <br>` +
-      `TURN: ${data.user_this_turn_name}`;
+      `TURN: ${data.user_this_turn_name}<br>` +
+      `PENALTY: ${data.penalty}`;
 
     unoDisplay();
   });
