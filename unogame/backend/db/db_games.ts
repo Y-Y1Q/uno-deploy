@@ -7,6 +7,7 @@ import {
   getDiscardPileInfo,
   getOpponentInfo,
   getUserCards,
+  testCards,
 } from "./games/game_cards";
 import {
   countUsersInGame,
@@ -72,4 +73,5 @@ export {
   getDiscardPileInfo,
   getCardImgPath,
   getCreatorByGameId,
+  testCards,
 };

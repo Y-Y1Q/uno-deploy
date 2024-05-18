@@ -80,6 +80,13 @@ const getDiscardPileInfo = async (gameId) => {
   return ret;
 };
 
+const testCards = async (gameId, userId, cardId) => {
+  await db.none(
+    "INSERT INTO game_cards (game_id, user_id, card_id) VALUES($1,$2,$3) ",
+    [gameId, userId, cardId]
+  );
+};
+
 export {
   drawCards,
   deleteAllCards,
@@ -89,4 +96,5 @@ export {
   getOpponentInfo,
   getDiscardPileInfo,
   getCardImgPath,
+  testCards,
 };
