@@ -1,5 +1,6 @@
 import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
+import { gameListUpdate } from "../socket/game_state";
 
 const quitGame = async (req, res) => {
   const { id: gameId } = req.params;
@@ -17,6 +18,7 @@ const quitGame = async (req, res) => {
 
   await GamesDB.quitGame(gameId, userId)
     .then(() => {
+      gameListUpdate(req);
       return res.status(HttpCode.OK).json({
         message: "userId=" + userId + " gameId=" + gameId + " LEAVE",
       });

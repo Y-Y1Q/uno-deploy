@@ -1,6 +1,7 @@
 import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
 import { waitroomStartMsg } from "../chat/send_admin_msg";
+import { gameListUpdate } from "../socket/game_state";
 
 const startGame = async (req, res) => {
   const { id: gameId } = req.params;
@@ -22,6 +23,7 @@ const startGame = async (req, res) => {
         await GamesDB.drawCards(gameId, uid, 7); // initialize draw count here
       }
 
+      gameListUpdate(req);
       res.redirect(`/game/${gameId}`);
       waitroomStartMsg(gameId, req);
       return;

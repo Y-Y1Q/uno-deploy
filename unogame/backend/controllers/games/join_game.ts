@@ -30,6 +30,8 @@ const joinGame = async (req, res) => {
   // only game that is not full will accept new user join
   await GamesDB.joinGame(gameId, userId)
     .then(() => {
+      Socket.gameListUpdate(req);
+
       res.redirect(`/game/${gameId}/wait`);
 
       setTimeout(async () => {

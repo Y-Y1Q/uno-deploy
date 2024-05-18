@@ -1,5 +1,4 @@
-import { getGamesCanJoin } from "./lobby/get_games_can_join";
-import { getGamesJoined } from "./lobby/get_games_joined";
+import { getGamesList } from "./lobby/get_games_list";
 import { getPlayersList } from "./lobby/get_players";
 
-export { getPlayersList, getGamesCanJoin, getGamesJoined };
+export { getPlayersList, getGamesList };

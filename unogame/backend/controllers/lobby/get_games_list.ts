@@ -1,14 +1,12 @@
 import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
 
-// delete comment later
-// get all games that a user joined
-
-const getGamesJoined = async (req, res) => {
+const getGamesList = async (req, res) => {
   const { id: userId } = req.session.user;
   try {
     const gamesJoined = await GamesDB.getGamesJoined(userId);
-    return res.status(HttpCode.OK).json(gamesJoined);
+    const gamesCanJoin = await GamesDB.getGamesCanJoin(userId);
+    return res.status(HttpCode.OK).json({ gamesJoined, gamesCanJoin });
   } catch (err) {
     console.log(err);
     return res
@@ -17,4 +15,4 @@ const getGamesJoined = async (req, res) => {
   }
 };
 
-export { getGamesJoined };
+export { getGamesList };

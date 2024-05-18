@@ -1,5 +1,6 @@
 import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
+import { gameListUpdate } from "../socket/game_state";
 
 const createGame = async (req, res) => {
   const { roomName, maxPlayers } = {
@@ -39,6 +40,8 @@ const createGame = async (req, res) => {
       .status(HttpCode.InternalServerError)
       .json({ message: err.detail });
   }
+
+  gameListUpdate(req);
 
   return res.redirect(`/game/${newGameId}/wait`);
 };
