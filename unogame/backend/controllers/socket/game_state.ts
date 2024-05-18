@@ -6,6 +6,10 @@ import { getAndCastGameStatus } from "../games/gameplay";
 // import * as UsersDB from "../../db/db_users"
 
 // for use in other controllers only, not in routes
+export function gameListUpdate(req) {
+  const io = req.app.get("io");
+  io.emit(SocketEvent.LOBBY);
+}
 
 export async function gameStateUpdate(gameId, userId, req) {
   const io = req.app.get("io");

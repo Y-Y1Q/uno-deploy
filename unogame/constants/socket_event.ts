@@ -11,9 +11,5 @@ export const SocketEvent = {
   UPDATE: (gameId: any) => `game-state-update-${gameId}`,
 
   // real-time update in the lobby's game list
-  // or just use a refresh button to fetch
-  CREATED: "game-created",
-  START: "game-start",
-  JOIN: "game-join",
-  END: "game-end",
+  LOBBY: "lobby-update",
 };
