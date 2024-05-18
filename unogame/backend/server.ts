@@ -74,6 +74,7 @@ app.use(Routes.website);
 app.use(Routes.auth);
 app.use(Routes.chat);
 app.use("/game", isAuthenticated, Routes.game);
+app.use("/lobby", isAuthenticated, Routes.lobby);
 
 // test routes
 app.use(Routes.test);
