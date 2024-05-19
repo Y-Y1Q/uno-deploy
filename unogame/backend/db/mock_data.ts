@@ -82,6 +82,20 @@ async function addMockData() {
     await GamesDB.testCards(9, i, 107);
     await GamesDB.testCards(9, i, 108);
   }
+
+  // TEST Say Uno
+  // 2 Players:  user123, user2
+  // Last card played: Red 0
+  await GamesDB.createGame("TEST SAY UNO", 2);
+  await GamesDB.joinGame(10, 1);
+  await GamesDB.setCreatorInGame(10, 1);
+  await GamesDB.joinGame(10, 2);
+  await db.query(`
+UPDATE games SET started=TRUE,last_user=NULL,last_card_played=1 WHERE id=10;`);
+  for (let i = 1; i < 3; i++) {
+    await GamesDB.testCards(10, i, 2);
+    await GamesDB.testCards(10, i, 3);
+  }
 }
 
 await addMockData()
