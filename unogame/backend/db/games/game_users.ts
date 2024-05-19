@@ -89,6 +89,21 @@ const getCreatorByGameId = async (gameId) => {
     [gameId]
   );
 };
+
+const declareUno = async (gameId, userId) => {
+  await db.none(
+    "UPDATE game_users SET uno=TRUE WHERE game_id=$1 AND user_id=$2",
+    [gameId, userId]
+  );
+};
+
+const checkUno = async (gameId, userId) => {
+  await db.none("SELECT uno FROM game_users WHERE game_id=$1 AND user_id=$2", [
+    gameId,
+    userId,
+  ]);
+};
+
 export {
   joinGame,
   quitGame,
@@ -100,4 +115,6 @@ export {
   getUsersnameInGame,
   countUsersInGame,
   getCreatorByGameId,
+  declareUno,
+  checkUno,
 };

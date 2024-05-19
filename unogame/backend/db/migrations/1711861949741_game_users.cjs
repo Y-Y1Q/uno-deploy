@@ -20,6 +20,10 @@ exports.up = (pgm) => {
       type: "bool",
       default: false,
     },
+    uno: {
+      type: "bool",
+      default: false,
+    },
   });
 
   pgm.createIndex("game_users", ["game_id", "user_id"], {

@@ -10,7 +10,9 @@ import {
   testCards,
 } from "./games/game_cards";
 import {
+  checkUno,
   countUsersInGame,
+  declareUno,
   deleteGame,
   getCreatorByGameId,
   getGamesJoined,
@@ -74,4 +76,6 @@ export {
   getCardImgPath,
   getCreatorByGameId,
   testCards,
+  declareUno,
+  checkUno,
 };
