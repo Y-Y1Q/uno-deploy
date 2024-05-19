@@ -9,6 +9,20 @@ import * as UsersDB from "../../db/db_users";
 
 // import * as GamesDB from "../../db/db_games";
 
+export async function unoMsg(gameId, userId, msg, req) {
+  const io = req.app.get("io");
+  const { username } = await UsersDB.getUserById(userId);
+  const message = `<b>${username}</b> ` + msg;
+
+  io.emit(SocketEvent.CHAT(gameId), {
+    from: "ADMIN",
+    gameId,
+    userId,
+    timestamp: Date.now(),
+    message,
+  });
+}
+
 export async function waitroomStartMsg(gameId, req) {
   const io = req.app.get("io");
 
@@ -28,7 +42,7 @@ export async function winningMsg(gameId, userId, req) {
   const winnerMsg = [
     `<h1><b>${name}</b>: If winning was an art, consider me da Vinci.</h1>`,
     `<h1><b>${name}</b>: Time to update my resume with this win.</h1>`,
-    `<h1>GG! <b>${name}</b></h1>`,
+    `<h1><b>${name}</b>: GG!</h1>`,
   ];
 
   const randomIndex = Math.floor(Math.random() * winnerMsg.length);

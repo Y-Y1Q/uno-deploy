@@ -91,17 +91,17 @@ const getCreatorByGameId = async (gameId) => {
 };
 
 const declareUno = async (gameId, userId) => {
-  await db.none(
+  return await db.none(
     "UPDATE game_users SET uno=TRUE WHERE game_id=$1 AND user_id=$2",
     [gameId, userId]
   );
 };
 
 const checkUno = async (gameId, userId) => {
-  await db.none("SELECT uno FROM game_users WHERE game_id=$1 AND user_id=$2", [
-    gameId,
-    userId,
-  ]);
+  return await db.one(
+    "SELECT uno FROM game_users WHERE game_id=$1 AND user_id=$2",
+    [gameId, userId]
+  );
 };
 
 export {
