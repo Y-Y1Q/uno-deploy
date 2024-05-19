@@ -19,16 +19,8 @@
           id="uno-interface"
           class="w-full h-3/4 border border-yellow-500 p-4"
         >
-          <h2 id="game-state-info" class="text-lg font-bold mb-4 text-red-500">
-            <%= game.room_name %><br />
-            YOU:
-            <%= user.username %>
-            <br />
-            TURN:
-            <%= gameState.user_this_turn_name %>
-            <br />
-            PENALTY:
-            <%= gameState.penalty %>
+          <h2 class="text-lg font-bold mb-4 text-red-500">
+            <%= game.room_name %>
           </h2>
 
           <div class="w-full flex justify-center">YOUR OPPONENT(S)</div>
@@ -42,8 +34,19 @@
             </div>
           </div>
 
-          <div id="discardPileContainer" class="w-24 h-24">
-            <!-- Dynamic content -->
+          <div class="flex items-center justify-center">
+            <div id="discardPileContainer" class="w-24 h-24">
+              <!-- Dynamic content -->
+            </div>
+            <div id="game-state-info" class="text-lg font-bold mb-4 pl-4">
+              YOU: <%= user.username %>
+              <br />
+              TURN:
+              <%= gameState.user_this_turn_name %>
+              <br />
+              PENALTY:
+              <%= gameState.penalty %>
+            </div>
           </div>
 
           <!-- Player Cards and Controls -->

@@ -1,7 +1,15 @@
 import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
 import * as UserDB from "../../db/db_users";
+import { unoMsg } from "../chat/send_admin_msg";
 import { gameStateUpdate } from "../socket/game_state";
+
+async function unoHandler(gameId, userId, req, res) {
+  await GamesDB.drawCards(gameId, userId, 2);
+  await GamesDB.resetUserHasDrewOnce(gameId, userId);
+  await unoMsg(gameId, userId, "didn't say UNO! Drew 2 penalty cards", req);
+  await gameStateUpdate(gameId, userId, req);
+}
 
 function castColor(colorStr) {
   switch (colorStr.toLowerCase()) {
@@ -105,56 +113,56 @@ async function getAndCastGameStatus(gameId, userId) {
     //   playable_cards_index.push(i);
     // }
 
-    if (
-      current_user_cards.length == 1 &&
-      current_user_cards[0].type == "wild & draw 4"
-    ) {
-      // not allowing wild & draw 4 as the last card
-    } else {
-      let card_list = status.user_has_drew_once
-        ? [current_user_cards[current_user_cards.length - 1]]
-        : current_user_cards;
+    // if (
+    //   current_user_cards.length == 1 &&
+    //   current_user_cards[0].type == "wild & draw 4"
+    // ) {
+    //   // not allowing wild & draw 4 as the last card
+    // } else {
+    let card_list = status.user_has_drew_once
+      ? [current_user_cards[current_user_cards.length - 1]]
+      : current_user_cards;
 
-      for (let i = 0; i < card_list.length; i++) {
-        const card = card_list[i];
+    for (let i = 0; i < card_list.length; i++) {
+      const card = card_list[i];
 
-        if (card.type == "wild & draw 4") {
+      if (card.type == "wild & draw 4") {
+        playable_cards_index.push(i);
+      }
+      // has NO penalty, regular case
+      else if (status.penalty == 0) {
+        if (card.type == "wild") {
+          playable_cards_index.push(i);
+        } else if (
+          card.color == last_card_played.color ||
+          card.type == last_card_played.type
+        ) {
           playable_cards_index.push(i);
         }
-        // has NO penalty, regular case
-        else if (status.penalty == 0) {
-          if (card.type == "wild") {
-            playable_cards_index.push(i);
-          } else if (
-            card.color == last_card_played.color ||
-            card.type == last_card_played.type
-          ) {
-            playable_cards_index.push(i);
-          }
-        }
-        // has penalty, last card must be a draw card
-        // note that wild & draw 4 is already included
-        else {
-          if (last_card_played.type == "draw 2") {
-            if (card.type == "draw 2") {
-              playable_cards_index.push(i);
-            }
-          } else if (last_card_played.type == "wild & draw 4") {
-            if (card.type == "draw 2" && card.color == last_card_played.color) {
-              playable_cards_index.push(i);
-            }
-          } else {
-            console.log(
-              "ERROR: non-zero penalty with non-draw card as last card"
-            );
-          }
-        }
       }
-
-      if (status.user_has_drew_once && playable_cards_index.length > 0) {
-        playable_cards_index = [current_user_cards.length - 1];
+      // has penalty, last card must be a draw card
+      // note that wild & draw 4 is already included
+      else {
+        if (last_card_played.type == "draw 2") {
+          if (card.type == "draw 2") {
+            playable_cards_index.push(i);
+          }
+        } else if (last_card_played.type == "wild & draw 4") {
+          if (card.type == "draw 2" && card.color == last_card_played.color) {
+            playable_cards_index.push(i);
+          }
+        } else {
+          console.log(
+            "ERROR: non-zero penalty with non-draw card as last card"
+          );
+        }
       }
     }
+
+    if (status.user_has_drew_once && playable_cards_index.length > 0) {
+      playable_cards_index = [current_user_cards.length - 1];
+    }
+    // }
   }
 
   const counts = await GamesDB.getAllUserCardCounts(gameId);
@@ -238,6 +246,7 @@ const playGame = async (req, res) => {
       if (status.penalty > 0) {
         await GamesDB.drawCards(gameId, userId, status.penalty);
         await GamesDB.setPenalty(gameId, 0);
+        await GamesDB.resetUserHasDrewOnce(gameId, userId);
 
         await gameStateUpdate(gameId, userId, req);
 
@@ -246,7 +255,9 @@ const playGame = async (req, res) => {
         });
       } else {
         await GamesDB.drawCards(gameId, userId, 1);
-        await GamesDB.setUserHasDrewOnce(gameId);
+        await GamesDB.resetUserHasDrewOnce(gameId, userId);
+        // await GamesDB.setUserHasDrewOnce(gameId);
+        // Draw cards: next player draw and skip turn
 
         await gameStateUpdate(gameId, userId, req);
 
@@ -274,7 +285,19 @@ const playGame = async (req, res) => {
       });
     }
 
+    // CASE: didn't say UNO
+    const cardLeft = status.current_user_cards.length;
+    const { uno: unoDeclared } = await GamesDB.checkUno(gameId, userId);
+    if (cardLeft === 1 && !unoDeclared) {
+      unoHandler(gameId, userId, req, res);
+      return res.status(HttpCode.OK);
+    }
+
     const card = status.current_user_cards[cardIndex];
+    console.log("===BEFORE=== CARD ID TO DELETE: " + card.id);
+    console.log("===BEFORE=== CARD INDEX: " + cardIndex);
+    let oldCardId = "";
+
     if (card.type == "wild" || card.type == "wild & draw 4") {
       let color = castColor(colorStr);
 
@@ -290,6 +313,7 @@ const playGame = async (req, res) => {
       const newCard = await castCard(
         color * 27 + (card.type == "wild" ? 26 : 27)
       );
+      oldCardId = card.id;
       card.id = newCard.id;
       card.color = newCard.color;
       if (card.type != newCard.type) {
@@ -311,7 +335,14 @@ const playGame = async (req, res) => {
         break;
     }
 
-    await GamesDB.deleteOneCard(gameId, userId, card.id);
+    console.log("===AFTER=== CARD ID TO DELETE: " + card.id);
+
+    if (card.type == "wild" || card.type == "wild & draw 4") {
+      await GamesDB.deleteOneCard(gameId, userId, oldCardId);
+    } else {
+      await GamesDB.deleteOneCard(gameId, userId, card.id);
+    }
+
     await GamesDB.setLastUserAndCard(gameId, userId, card.id);
     if (status.user_has_drew_once) {
       await GamesDB.resetUserHasDrewOnce(gameId, userId);

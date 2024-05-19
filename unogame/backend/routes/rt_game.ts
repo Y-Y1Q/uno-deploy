@@ -13,6 +13,7 @@ const router = express.Router();
 router.get("/:id/join", Games.joinGame);
 router.get("/get-games/:name?", Games.getGames);
 
+router.post("/:id/uno", Games.sayUno);
 router.post("/create", Games.createGame);
 router.post("/:id/quit", isUserInGame, isGameEnded, Games.quitGame);
 router.post(

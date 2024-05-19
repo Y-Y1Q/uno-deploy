@@ -4,6 +4,7 @@ import { getGameCurrentStatus, playGame } from "./games/gameplay";
 import { getGames } from "./games/get_games";
 import { joinGame } from "./games/join_game";
 import { quitGame } from "./games/quit_game";
+import { sayUno } from "./games/say_uno";
 import { startGame } from "./games/start_game";
 
 export {
@@ -15,4 +16,5 @@ export {
   getGameCurrentStatus,
   playGame,
   endGame,
+  sayUno,
 };
