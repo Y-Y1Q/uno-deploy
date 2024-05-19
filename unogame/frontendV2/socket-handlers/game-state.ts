@@ -21,7 +21,6 @@ const username = (
 export function gameStateUpdate(socket: Socket) {
   socket.on(SocketEvent.UPDATE(gameId), function (data) {
     gameStateInfo.innerHTML =
-      `${data.currentRoom}<br>` +
       `YOU: ${username} <br>` +
       `TURN: ${data.user_this_turn_name}<br>` +
       `PENALTY: ${data.penalty}`;
