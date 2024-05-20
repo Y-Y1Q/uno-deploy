@@ -3,18 +3,18 @@
 exports.shorthands = undefined;
 
 const Color = {
-  [0]: 'Red',
-  [1]: 'Green',
-  [2]: 'Blue',
-  [3]: 'Yellow',
+  [0]: "Red",
+  [1]: "Green",
+  [2]: "Blue",
+  [3]: "Yellow",
 };
 
 const Type = {
-  [10]: 'Skip',
-  [11]: 'Reverse',
-  [12]: 'Draw',
-  [13]: 'Wild',
-  [14]: 'Wild_Draw',
+  [10]: "Skip",
+  [11]: "Reverse",
+  [12]: "Draw",
+  [13]: "Wild",
+  [14]: "Wild_Draw",
 };
 
 exports.up = (pgm) => {
@@ -22,7 +22,7 @@ exports.up = (pgm) => {
     id: "id",
     color: { type: "int" },
     type: { type: "int" },
-    name: { type: "varchar(50)" }
+    name: { type: "varchar(50)" },
   });
 
   const cardValues = [];
@@ -39,12 +39,28 @@ exports.up = (pgm) => {
     for (let type = 1; type <= 12; type++) {
       if (type < 10) {
         // 1 - 9
-        cardValues.push({ color, type, name: `cards/${Color[color]}_${type}.png` });
-        cardValues.push({ color, type, name: `cards/${Color[color]}_${type}.png` });
+        cardValues.push({
+          color,
+          type,
+          name: `cards/${Color[color]}_${type}.png`,
+        });
+        cardValues.push({
+          color,
+          type,
+          name: `cards/${Color[color]}_${type}.png`,
+        });
       } else {
         // Skip, Reverse, Draw 2
-        cardValues.push({ color, type, name: `cards/${Color[color]}_${Type[type]}.png` });
-        cardValues.push({ color, type, name: `cards/${Color[color]}_${Type[type]}.png` });
+        cardValues.push({
+          color,
+          type,
+          name: `cards/${Color[color]}_${Type[type]}.png`,
+        });
+        cardValues.push({
+          color,
+          type,
+          name: `cards/${Color[color]}_${Type[type]}.png`,
+        });
       }
     }
 

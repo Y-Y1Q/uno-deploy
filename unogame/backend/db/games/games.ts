@@ -76,7 +76,7 @@ const getGameStarted = async (gameId) => {
 
 const getGameStatus = async (gameId) => {
   const ret = await db.one(
-    "SELECT max_players,is_clockwise,last_user,last_card_played,user_has_drew_once,penalty FROM games WHERE id=$1",
+    "SELECT max_players,is_clockwise,last_user,last_card_played,penalty FROM games WHERE id=$1",
     [gameId]
   );
 
@@ -86,7 +86,6 @@ const getGameStatus = async (gameId) => {
     is_clockwise: ret.is_clockwise,
     last_user: ret.last_user,
     last_card_played: ret.last_card_played,
-    user_has_drew_once: ret.user_has_drew_once,
     penalty: ret.penalty,
   };
 };
@@ -101,17 +100,8 @@ const toggleReverse = async (gameId) => {
   ]);
 };
 
-const resetUserHasDrewOnce = async (gameId, userId) => {
-  await db.none(
-    "UPDATE games SET last_user=$2,user_has_drew_once=FALSE WHERE id=$1",
-    [gameId, userId]
-  );
-};
-
-const setUserHasDrewOnce = async (gameId) => {
-  await db.none("UPDATE games SET user_has_drew_once=TRUE WHERE id=$1", [
-    gameId,
-  ]);
+const setLastUserOnly = async (gameId, userId) => {
+  await db.none("UPDATE games SET last_user=$2 WHERE id=$1", [gameId, userId]);
 };
 
 const setLastUserAndCard = async (gameId, userId, cardId) => {
@@ -132,7 +122,6 @@ export {
   getGameStatus,
   setPenalty,
   toggleReverse,
-  resetUserHasDrewOnce,
-  setUserHasDrewOnce,
+  setLastUserOnly,
   setLastUserAndCard,
 };

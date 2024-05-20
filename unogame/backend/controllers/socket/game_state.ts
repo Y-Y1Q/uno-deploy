@@ -44,7 +44,6 @@ export async function gameStateUpdate(gameId, userId, req) {
     // is_clockwise: status.is_clockwise,
     // last_user: status.last_user,
     // last_card_played: status.last_card_played,
-    // user_has_drew_once: status.user_has_drew_once,
     // user_this_turn: status.user_this_turn,
   });
 }

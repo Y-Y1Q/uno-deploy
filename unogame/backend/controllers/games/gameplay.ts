@@ -4,9 +4,8 @@ import * as UserDB from "../../db/db_users";
 import { unoMsg } from "../chat/send_admin_msg";
 import { gameStateUpdate } from "../socket/game_state";
 
-async function unoHandler(gameId, userId, req, res) {
+async function unoHandler(gameId, userId, req) {
   await GamesDB.drawCards(gameId, userId, 2);
-  await GamesDB.resetUserHasDrewOnce(gameId, userId);
   await unoMsg(gameId, userId, "didn't say UNO! Drew 2 penalty cards", req);
   await gameStateUpdate(gameId, userId, req);
 }
@@ -113,56 +112,48 @@ async function getAndCastGameStatus(gameId, userId) {
     //   playable_cards_index.push(i);
     // }
 
-    // if (
-    //   current_user_cards.length == 1 &&
-    //   current_user_cards[0].type == "wild & draw 4"
-    // ) {
-    //   // not allowing wild & draw 4 as the last card
-    // } else {
-    let card_list = status.user_has_drew_once
-      ? [current_user_cards[current_user_cards.length - 1]]
-      : current_user_cards;
+    if (
+      current_user_cards.length == 1 &&
+      current_user_cards[0].type == "wild & draw 4"
+    ) {
+      // not allowing wild & draw 4 as the last card
+    } else {
+      for (let i = 0; i < current_user_cards.length; i++) {
+        const card = current_user_cards[i];
 
-    for (let i = 0; i < card_list.length; i++) {
-      const card = card_list[i];
-
-      if (card.type == "wild & draw 4") {
-        playable_cards_index.push(i);
-      }
-      // has NO penalty, regular case
-      else if (status.penalty == 0) {
-        if (card.type == "wild") {
-          playable_cards_index.push(i);
-        } else if (
-          card.color == last_card_played.color ||
-          card.type == last_card_played.type
-        ) {
+        if (card.type == "wild & draw 4") {
           playable_cards_index.push(i);
         }
-      }
-      // has penalty, last card must be a draw card
-      // note that wild & draw 4 is already included
-      else {
-        if (last_card_played.type == "draw 2") {
-          if (card.type == "draw 2") {
+        // has NO penalty, regular case
+        else if (status.penalty == 0) {
+          if (card.type == "wild") {
+            playable_cards_index.push(i);
+          } else if (
+            card.color == last_card_played.color ||
+            card.type == last_card_played.type
+          ) {
             playable_cards_index.push(i);
           }
-        } else if (last_card_played.type == "wild & draw 4") {
-          if (card.type == "draw 2" && card.color == last_card_played.color) {
-            playable_cards_index.push(i);
+        }
+        // has penalty, last card must be a draw card
+        // note that wild & draw 4 is already included
+        else {
+          if (last_card_played.type == "draw 2") {
+            if (card.type == "draw 2") {
+              playable_cards_index.push(i);
+            }
+          } else if (last_card_played.type == "wild & draw 4") {
+            if (card.type == "draw 2" && card.color == last_card_played.color) {
+              playable_cards_index.push(i);
+            }
+          } else {
+            console.log(
+              "ERROR: non-zero penalty with non-draw card as last card"
+            );
           }
-        } else {
-          console.log(
-            "ERROR: non-zero penalty with non-draw card as last card"
-          );
         }
       }
     }
-
-    if (status.user_has_drew_once && playable_cards_index.length > 0) {
-      playable_cards_index = [current_user_cards.length - 1];
-    }
-    // }
   }
 
   const counts = await GamesDB.getAllUserCardCounts(gameId);
@@ -187,7 +178,6 @@ async function getAndCastGameStatus(gameId, userId) {
     penalty: status.penalty,
     last_user: status.last_user,
     last_card_played: last_card_played,
-    user_has_drew_once: status.user_has_drew_once,
     user_this_turn,
     user_this_turn_name,
     playable_cards_index,
@@ -205,7 +195,6 @@ const getGameCurrentStatus = async (req, res) => {
     .json(await getAndCastGameStatus(gameId, userId));
 };
 
-// please ignore the red error for status.*
 const playGame = async (req, res) => {
   const { card_index: cardIndexStr, wild_color: colorStr } = req.body;
   const { id: gameId } = req.params;
@@ -232,56 +221,33 @@ const playGame = async (req, res) => {
 
     // draw card(s)
     if (Number.isNaN(cardIndex)) {
-      if (status.user_has_drew_once) {
-        await GamesDB.resetUserHasDrewOnce(gameId, userId);
-
-        await gameStateUpdate(gameId, userId, req);
-
-        return res.status(HttpCode.OK).json({
-          message:
-            "user has drew once && card_index is NaN (not a number) => skip turn",
-        });
-      }
+      let msg = "";
 
       if (status.penalty > 0) {
         await GamesDB.drawCards(gameId, userId, status.penalty);
         await GamesDB.setPenalty(gameId, 0);
-        await GamesDB.resetUserHasDrewOnce(gameId, userId);
-
-        await gameStateUpdate(gameId, userId, req);
-
-        return res.status(HttpCode.OK).json({
-          message: "Taking the penalty cards, now is still user's turn",
-        });
+        msg = "Drawing penalty cards";
       } else {
         await GamesDB.drawCards(gameId, userId, 1);
-        await GamesDB.resetUserHasDrewOnce(gameId, userId);
-        // await GamesDB.setUserHasDrewOnce(gameId);
-        // Draw cards: next player draw and skip turn
-
-        await gameStateUpdate(gameId, userId, req);
-
-        return res.status(HttpCode.OK).json({
-          message: "card_index is NaN (not a number) => draw one card",
-        });
+        msg = "Drawing one card";
       }
-    }
 
-    if (status.penalty > 0) {
-      return res.status(HttpCode.BadRequest).json({
-        error: "Invalid move! You have penalty and must DRAW!!!",
+      await GamesDB.setLastUserOnly(gameId, userId);
+      await gameStateUpdate(gameId, userId, req);
+      return res.status(HttpCode.OK).json({
+        message: msg + ", the user also miss the turn",
       });
     }
 
     // validate the card
     if (cardIndexStr < 0 || cardIndexStr >= status.current_user_cards.length) {
       return res.status(HttpCode.BadRequest).json({
-        error: "invalid card_index=" + cardIndex,
+        error: "Invalid card_index=" + cardIndex,
       });
     }
     if (!status.playable_cards_index.includes(cardIndex)) {
       return res.status(HttpCode.BadRequest).json({
-        error: "not a playable card_index=" + cardIndex,
+        error: "The clicked card is not playable!!!",
       });
     }
 
@@ -289,7 +255,7 @@ const playGame = async (req, res) => {
     const cardLeft = status.current_user_cards.length;
     const { uno: unoDeclared } = await GamesDB.checkUno(gameId, userId);
     if (cardLeft === 1 && !unoDeclared) {
-      unoHandler(gameId, userId, req, res);
+      unoHandler(gameId, userId, req);
       return res.status(HttpCode.OK);
     }
 
@@ -344,12 +310,8 @@ const playGame = async (req, res) => {
     }
 
     await GamesDB.setLastUserAndCard(gameId, userId, card.id);
-    if (status.user_has_drew_once) {
-      await GamesDB.resetUserHasDrewOnce(gameId, userId);
-    }
 
     await gameStateUpdate(gameId, userId, req);
-
     return res.status(HttpCode.OK).json({
       message: "You played a card",
     });
