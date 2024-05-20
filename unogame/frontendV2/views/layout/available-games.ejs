@@ -1,0 +1,15 @@
+<% if(availableGames !==undefined && availableGames.length> 0) { %> <%
+availableGames.forEach(game=> { %>
+<li id="<%= game.id %>">
+  <a
+    class="hover:text-blue-800 hover:underline"
+    href="/game/<%= game.id %>/join"
+  >
+    <%= game.room_name %>
+  </a>
+
+  <%= game.player_count %>/<%= game.max_players %>
+</li>
+<% })} else { %>
+<p>No games available</p>
+<% } %>

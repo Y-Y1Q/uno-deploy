@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <% if(errorMsg && errorMsg.length > 0) { %>
+  <script>
+    alert("<%= errorMsg %>");
+  </script>
+  <% } %>
+
+  <head>
+    <%- include("./layout/header") %>
+    <title>Team C UNO</title>
+  </head>
+
+  <body>
+    <div class="flex justify-center items-center h-screen flex-col">
+      <img
+        src="images/UNO_Logo.svg"
+        alt="UNO logo"
+        style="padding-bottom: 200px"
+      />
+      <nav id="nav" style="padding-bottom: 100px">
+        <a
+          href="/lobby"
+          class="text-4xl 8rem font-bold hover:underline hover:text-gray-500"
+          >Lobby</a
+        >
+        &emsp;&emsp;&emsp;&emsp;
+        <a
+          href="/login"
+          class="text-4xl font-bold hover:underline hover:text-gray-500"
+          >Login</a
+        >
+        &emsp;&emsp;&emsp;&emsp;
+        <a
+          href="/signup"
+          class="text-4xl font-bold hover:underline hover:text-gray-500"
+          >Signup</a
+        >
+      </nav>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      ul.no-bullets {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .right-align {
+        text-align: right;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p><a href="http://localhost:3333/test">Test lobby page</a></p>
+
+    <h3>Test Chat</h3>
+    <b>Current User: </b>
+    <%= currentUser %>
+    <br />
+    <b>Current UserId: </b>
+    <%= currentUserId %>
+    <br /><br />
+
+    <div id="messages"></div>
+    <form id="message-form">
+      <input type="text" id="message-input" placeholder="Enter your message" />
+      <button type="submit">Send</button>
+      <br /><br />
+    </form>
+
+    <ul class="no-bullets"></ul>
+
+    <script type="module">
+      import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
+
+      const socket = io();
+
+      const messagesContainer = document.getElementById("messages");
+      const messageForm = document.getElementById("message-form");
+      const messageInput = document.getElementById("message-input");
+
+      messageForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const message = messageInput.value.trim();
+        if (message !== "") {
+          fetch(`/test/chat`, {
+            method: "post",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message }),
+          });
+        }
+
+        messageInput.value = "";
+      });
+
+      // Listening chat event from lobby (roomId - 0)
+      socket.on(`chat-0`, ({ avatar, from, timestamp, message }) => {
+        const li = document.createElement("li");
+        if (from !== "<%= currentUser %>") {
+          li.classList.add("right-align");
+          li.innerHTML = `${from}${avatar} <br> ${message} <br> `;
+        } else if (from === "ADMIN") {
+          li.innerHTML = `<br> <br>  ${message} <br> <br> `;
+        } else {
+          li.innerHTML = `${avatar}${from} <br> ${message} <br>  `;
+        }
+
+        document.querySelector("ul").appendChild(li);
+      });
+    </script>
+  </body>
+</html>

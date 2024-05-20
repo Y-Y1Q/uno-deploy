@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <%- include("./layout/server-var") %> <% if(errorMsg && errorMsg.length> 0) {
+  %>
+  <script>
+    alert("<%= errorMsg %>");
+  </script>
+  <% } %>
+
+  <head>
+    <%- include("./layout/header") %>
+    <title>Lobby</title>
+  </head>
+
+  <%- include("./layout/nav-bar") %>
+
+  <body
+    class="bg-gray-200 flex flex-col items-center justify-center min-h-screen"
+  >
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between">
+        <!-- Toggleable Container with Fixed Height and Tailwind CSS -->
+        <div class="w-1/3 border border-red-500 p-4">
+          <button
+            id="toggleContent"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded mb-4"
+          >
+            Rules
+          </button>
+
+          <!-- Game list Container -->
+          <div class="overflow-y-auto">
+            <div id="gamesContainer" class="h-[700px] overflow-y-auto">
+              <h2 class="text-lg font-bold mb-4 text-red-500">
+                Games Container
+              </h2>
+              <div class="border-l-4 border-red-500 pl-4 mb-4">
+                <h4 class="font-bold block mb-2">Current Games</h4>
+                <div id="current-games"></div>
+              </div>
+              <div class="border-l-4 border-red-500 pl-4 mb-4">
+                <h4 class="font-bold block mb-2">Available Games</h4>
+                <div id="available-games"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rules Container -->
+          <div id="rulesContent" class="hidden h-[700px] overflow-y-auto">
+            <h2 class="text-lg font-bold mb-4 text-red-500">Rules Container</h2>
+            <%- include("./layout/rules") %>
+          </div>
+        </div>
+
+        <!-- Lobby Container -->
+        <div class="w-1/3 p-4 border border-pink-500">
+          <h2 class="text-lg font-bold mb-4">Lobby Container</h2>
+          <p>Welcome, <%= user.username %></p>
+          <br />
+          <div class="flex flex-col justify-center items-center">
+            <form
+              id="roomForm"
+              class="flex flex-col justify-center items-center mt-4"
+              action="/game/create"
+              method="post"
+            >
+              <label
+                for="maxPlayers"
+                class="block text-base font-bold text-gray-700 w-32 text-center"
+                >Max Players</label
+              >
+              <br />
+              <select
+                id="maxPlayers"
+                name="maxPlayers"
+                class="mt-1 block w-32 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base"
+              >
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+              <br />
+              <label
+                for="roomName"
+                class="block text-base font-bold text-gray-700 w-32 text-center"
+                >Room Name</label
+              >
+              <input
+                id="roomName"
+                name="roomName"
+                type="text"
+                maxlength="20"
+                class="mt-1 block w-32 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-base"
+                required
+              />
+              <button
+                type="submit"
+                class="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+              >
+                Create
+              </button>
+            </form>
+
+            <form action="/logout" method="post">
+              <button
+                type="submit"
+                class="bg-green-500 text-white px-4 py-2 rounded mt-4"
+              >
+                Logout
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <%- include("./layout/chat-box") %>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("toggleContent")
+        .addEventListener("click", function () {
+          let gamesContainer = document.getElementById("gamesContainer");
+          let rulesContent = document.getElementById("rulesContent");
+          gamesContainer.classList.toggle("hidden");
+          rulesContent.classList.toggle("hidden");
+
+          let button = document.getElementById("toggleContent");
+
+          if (button.textContent === "Games") {
+            button.textContent = "Rules";
+          } else {
+            button.textContent = "Games";
+          }
+        });
+    </script>
+  </body>
+</html>

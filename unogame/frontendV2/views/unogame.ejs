@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <%- include("./layout/server-var") %>
+
+  <head>
+    <%- include("./layout/header") %>
+    <title>UNO Game</title>
+  </head>
+
+  <%- include("./layout/nav-bar") %>
+
+  <body
+    class="bg-gray-200 flex flex-col items-center justify-center min-h-screen"
+  >
+    <div class="container mx-auto px-4 h-full">
+      <div class="flex">
+        <!-- UNO Game Interface -->
+        <div
+          id="uno-interface"
+          class="w-full h-3/4 border border-yellow-500 p-4"
+        >
+          <h2 class="text-lg font-bold mb-4 text-red-500">
+            <%= game.room_name %>
+          </h2>
+
+          <div class="w-full flex justify-center">YOUR OPPONENT(S)</div>
+          <div class="w-full">
+            <!-- OPPONENT(S) -->
+            <div
+              id="opponentsContainer"
+              class="flex items-center justify-center"
+            >
+              <!-- Opponents will be dynamically inserted here by JavaScript -->
+            </div>
+          </div>
+
+          <div class="flex items-center justify-center">
+            <div id="discardPileContainer" class="w-24 h-24">
+              <!-- Dynamic content -->
+            </div>
+            <div id="game-state-info" class="text-lg font-bold mb-4 pl-4">
+              YOU: <%= user.username %>
+              <br />
+              TURN:
+              <%= gameState.user_this_turn_name %>
+              <br />
+              PENALTY:
+              <%= gameState.penalty %>
+            </div>
+          </div>
+
+          <!-- Player Cards and Controls -->
+          <div id="cardContainer" class="flex flex-wrap justify-center">
+            <!-- Dynamic cards -->
+          </div>
+
+          <div class="flex justify-center">
+            <!-- <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2"
+                id="startGameButton">
+                Start Game
+              </button> -->
+
+            <!-- <button
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2 hidden"
+              id="abandonButton"
+            >
+              Abandon
+            </button> -->
+
+            <button
+              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2"
+              id="drawButton"
+            >
+              Draw
+            </button>
+
+            <button
+              class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-2"
+              id="sayUnoButton"
+            >
+              SAY UNO!
+            </button>
+          </div>
+        </div>
+
+        <%- include("./layout/chat-box") %>
+      </div>
+    </div>
+  </body>
+</html>

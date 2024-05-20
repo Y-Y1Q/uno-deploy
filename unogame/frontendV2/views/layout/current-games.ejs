@@ -1,0 +1,13 @@
+<% if(currentGames !==undefined && currentGames.length> 0) { %> <%
+currentGames.forEach(game=> { %>
+<li id="<%= game.id %>">
+  <a
+    class="hover:text-blue-800 hover:underline"
+    href="/game/<%= game.id %>/join"
+  >
+    <%= game.room_name %>
+  </a>
+</li>
+<% })} else { %>
+<p>You are not playing any games yet</p>
+<% } %>

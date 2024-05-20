@@ -1,0 +1,6 @@
+# Ignore old frontend for auto format
+
+frontend/
+
+# Ignore waitroom.ejs due to EJS tag
+unogame/frontendV2/views/waitroom.ejs
