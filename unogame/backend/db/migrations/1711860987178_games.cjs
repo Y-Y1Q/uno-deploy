@@ -42,11 +42,6 @@ exports.up = (pgm) => {
       onDelete: "cascade",
       default: 1
     },
-    user_has_drew_once: {
-      type: "boolean",
-      notNull: true,
-      default: false,
-    },
     penalty: {
       type: "int",
       notNull: true,
