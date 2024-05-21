@@ -1,6 +1,7 @@
 import HttpCode from "../../../constants/http_code";
 import * as GamesDB from "../../db/db_games";
 import { unoMsg } from "../chat/send_admin_msg";
+import { gameStateUpdate } from "../socket/game_state";
 
 export async function sayUno(req, res) {
   const { id: gameId } = req.params;
@@ -17,6 +18,7 @@ export async function sayUno(req, res) {
 
     await GamesDB.declareUno(gameId, userId);
     await unoMsg(gameId, userId, "declared UNO!", req);
+    await gameStateUpdate(gameId, userId, req);
     return res.status(HttpCode.OK);
   } catch (err) {
     console.log(err);
