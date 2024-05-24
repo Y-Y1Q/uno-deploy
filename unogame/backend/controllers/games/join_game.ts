@@ -6,7 +6,7 @@ const joinGame = async (req, res) => {
   const { id: gameId } = req.params;
   const { id: userId } = req.session.user;
 
-  // check if user is in the game
+  // check if user is in the game, to redirect user to game page or wait page
   const users = await GamesDB.getUsersInGame(gameId);
   if (users.includes(Number(userId))) {
     return handleRedirect(gameId, res);

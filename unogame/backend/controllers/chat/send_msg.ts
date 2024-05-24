@@ -4,7 +4,7 @@ import { createAvatar } from "@dicebear/core";
 import { SocketEvent } from "../../../constants/socket_event";
 
 const sendMessage = (req, res) => {
-  let { id: roomId } = req.params; //   params - someurl/:id  (placeholder)
+  let { id: roomId } = req.params;
   const { message } = req.body;
   const { username } = req.session.user;
 
@@ -15,7 +15,7 @@ const sendMessage = (req, res) => {
 
   console.log({ username, message, roomId });
 
-  // Create funEmoji style avatar based on username
+  // Create avataaars style avatar based on username
   const avatar = createAvatar(avataaars, {
     seed: `${username}`,
     radius: 30,
@@ -24,7 +24,6 @@ const sendMessage = (req, res) => {
   });
 
   const svg = avatar.toString();
-  // console.log("test avatar:" + svg);
 
   io.emit(SocketEvent.CHAT(roomId), {
     avatar: svg,

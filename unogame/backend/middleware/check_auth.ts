@@ -3,9 +3,7 @@ import * as GamesDB from "../db/db_games";
 
 // * CHECK IF THE USER IS AUTHENTICATED
 const isAuthenticated = (req, res, next) => {
-  // check if the user session exists
   if (req.session.user !== undefined && req.session.user.id !== undefined) {
-    // if user session exists, set user info to local storage
     res.locals.user = {
       ...req.session.user,
     };

@@ -1,9 +1,6 @@
 import HttpCode from "../../../constants/http_code";
 import * as UserDB from "../../db/db_users";
 
-// delete comment later
-// get players list with id, username, fullname
-
 const getPlayersList = async (req, res) => {
   const { id: userId } = req.session.id;
   try {

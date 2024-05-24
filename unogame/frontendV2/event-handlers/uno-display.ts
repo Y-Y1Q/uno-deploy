@@ -156,19 +156,3 @@ function playCard(cardIndex, wildColor) {
     })
     .catch((error) => console.error("Error playing card:", error));
 }
-
-/*
-
-Toggle to hide interface
-
-
-// display uno
-const startGameButton = document.getElementById("startGameButton");
-startGameButton.style.display = "none";
-
-function showGameControls() {
-  drawButton.classList.remove("hidden");
-  sayUnoButton.classList.remove("hidden");
-}
-
-*/
