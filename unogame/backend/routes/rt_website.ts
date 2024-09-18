@@ -34,11 +34,6 @@ router.get("/lobby", isAuthenticated, async (req, res) => {
 });
 
 router.get("/game/:id", isAuthenticated, async (req, res) => {
-  /* 
-    TODO
-    add isUserInGame & other checks later  
-  */
-
   const user = Session.getCurrentUser(req);
   const { id: gameId } = req.params;
   const game = await GamesDB.getGameById(gameId);

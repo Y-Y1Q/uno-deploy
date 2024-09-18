@@ -1,13 +1,6 @@
-// TODO
-// Additional chat features
-// send message to all users in a lobby, when a game is created
-// send message to all users in a game, when a card is played
-// ...
 import { SocketEvent } from "../../../constants/socket_event";
 import * as GamesDB from "../../db/db_games";
 import * as UsersDB from "../../db/db_users";
-
-// import * as GamesDB from "../../db/db_games";
 
 export async function unoMsg(gameId, userId, msg, req) {
   const io = req.app.get("io");
@@ -56,10 +49,9 @@ export async function winningMsg(gameId, userId, req) {
     message: "win",
   });
 
-  //End game status
+  // CASE: There is a winner in game
   // Delete all cards and end the game after the 6 sec
   // All Player will be redirect to waitroom to start again
-  // To-be-decided: delete the game record from DB
   setTimeout(async () => {
     await GamesDB.deleteAllCards(gameId);
     await GamesDB.endGame(gameId);

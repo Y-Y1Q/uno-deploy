@@ -3,12 +3,9 @@ import { SocketEvent } from "../../../constants/socket_event";
 import * as GamesDB from "../../db/db_games";
 import { getUser } from "../../db/users";
 
-// DELETE COMMENT LATER
-// Pre-condition: the sender is in the wait-room of a game (according to FE wireframe)
-// request body: username - can fetch from /lobby/players
-// send invite message to a user
+// let game creator sends invite message to a user
 const sendInvitation = async (req, res) => {
-  const { id: fromRoomId } = req.params; //   params - someurl/:id  (placeholder)
+  const { id: fromRoomId } = req.params;
   const { username: toUser } = req.body;
   const { username: fromUser } = req.session.user; // sender
   const { id: fromUserId } = req.session.user;

@@ -106,12 +106,6 @@ async function getAndCastGameStatus(gameId, userId) {
   if (userId == user_this_turn) {
     playable_cards_index = [];
 
-    // For testing
-    // All cards playable
-    // for (let i = 0; i <= current_user_cards.length; i++) {
-    //   playable_cards_index.push(i);
-    // }
-
     if (
       current_user_cards.length == 1 &&
       current_user_cards[0].type == "wild & draw 4"
